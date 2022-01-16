@@ -51,29 +51,6 @@ export default class ProfilePics extends React.Component {
         $('#backgroundPicChoiceBar').removeClass('backgroundPicChoiceBarShow');
     }
 
-    getProfilePhoto() {
-
-        if (!this.props.users[this.userId]) return
-
-        let tempPicNum = 0;
-        if (this.userId > 100) {
-            tempPicNum = this.userId - 100
-        } else {
-            tempPicNum = this.userId
-        }
-        if (this.userId < 52) {
-            return this.props.users[this.userId].photoUrl ? 
-            <div className='profileImage' style={{backgroundImage: `url(${this.props.users[this.userId].photoUrl})`}}  ></div>
-            : <div className='profileImage' style={{backgroundImage: `url(${this.props.profImages[tempPicNum]})`}}  ></div>
-        }
-
-        return this.props.users[this.userId] ?
-        this.props.users[this.userId].photoUrl ? 
-        <div className='profileImage' style={{backgroundImage: `url(${this.props.users[this.userId].photoUrl})`}}  ></div>
-        : <div className='profileImage' style={{backgroundImage: `url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)`}}  ></div>
-        : <div className='profileImage' style={{backgroundImage: `url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)`}}  ></div>
-    }
-
     getBackgroundPhoto() {
         if (!this.props.users[this.userId]) return
 
@@ -95,6 +72,29 @@ export default class ProfilePics extends React.Component {
         <img id="profileBackgroundIMG" src={this.props.users[this.userId].coverPhotoUrl}  className='backgroundPic' />
         : <img id="profileBackgroundIMG" style={{backgroundColor: '#f0f2f5'}}  className='backgroundPic' />        
         : <img id="profileBackgroundIMG" style={{backgroundColor: '#f0f2f5'}}  className='backgroundPic' />
+    }
+
+    getProfilePhoto() {
+
+        if (!this.props.users[this.userId]) return
+
+        let tempPicNum = 0;
+        if (this.userId > 100) {
+            tempPicNum = this.userId - 100
+        } else {
+            tempPicNum = this.userId
+        }
+        if (this.userId < 52) {
+            return this.props.users[this.userId].photoUrl ? 
+            <div className='profileImage' style={{backgroundImage: `url(${this.props.users[this.userId].photoUrl})`}}  ></div>
+            : <div className='profileImage' style={{backgroundImage: `url(${this.props.profImages[tempPicNum]})`}}  ></div>
+        }
+
+        return this.props.users[this.userId] ?
+        this.props.users[this.userId].photoUrl ? 
+        <div className='profileImage' style={{backgroundImage: `url(${this.props.users[this.userId].photoUrl})`}}  ></div>
+        : <div className='profileImage' style={{backgroundImage: `url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)`}}  ></div>
+        : <div className='profileImage' style={{backgroundImage: `url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)`}}  ></div>
     }
 
     getProfileBackgroundEditButton() {
