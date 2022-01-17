@@ -128,15 +128,6 @@ export default class ProfilePics extends React.Component {
         : ''
     }
 
-    makeFriendship() {
-        let friendship = {friend: {user_id: this.props.currentUser.id, friend_id: this.userId, status: 'pending'}}
-        this.props.createFriend(friendship)
-    }
-
-    deleteFriendRequest() {
-
-    }
-
     getFriendshipStatus() {
         if (!this.props.currentUser.friendsRequested) { return }
         let div
@@ -177,6 +168,15 @@ export default class ProfilePics extends React.Component {
             <img className="addStoryIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/33EToHSZ94f.png" alt="" height="16" width="16"/>
                 Add Friend
         </div>
+    }
+
+    makeFriendship() {
+        let friendship = {friend: {user_id: this.props.currentUser.id, friend_id: this.userId, status: 'pending'}}
+        this.props.createFriend(friendship)
+    }
+
+    deleteFriendRequest() {
+
     }
 
     getAddStoryButtons() {
