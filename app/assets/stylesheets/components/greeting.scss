@@ -1,0 +1,78 @@
+
+@font-face {
+    font-family: 'klavika-bold';
+    src: font-url('klavika/klavika-bold.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SFPRODISPLAYREGULAR';
+    src: font-url('sfprodisplay/SFPRODISPLAYREGULAR.OTF') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TAHOMABD';
+    src: font-url('tahoma/TAHOMABD.TTF') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'RabbidHighwaySignIIHop';
+    src: font-url('rabbid/RabbidHighwaySignIIHop.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+
+
+.title {
+    font-size: 59px;
+    color: #1877F2;
+    font-family: 'TAHOMABD';
+}
+
+.titleF {
+    font-size: 70px;
+    color: #1877F2;
+    font-family: 'klavika-bold';
+    letter-spacing: -2px;
+}
+
+.ospacing {
+    font-size: 59px;
+    color: #1877F2;
+    font-family: 'TAHOMABD';
+    letter-spacing: -3px;
+}
+
+.espacing {
+    font-size: 59px;
+    color: #1877F2;
+    font-family: 'TAHOMABD';
+    letter-spacing: -2px;
+}
+
+.title2 {
+    font-size: 55px;
+    color: #1877F2;
+    font-family: 'TAHOMABD';
+}
+
+.connectFriends {
+    font-size: 24px;
+    color: black;
+    font-family: 'SFPRODISPLAYREGULAR', Helvetica, Arial, sans-serif;
+}
+
+
+
+
+
+
+
+
+

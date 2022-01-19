@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Root from './components/root';
 import configureStore from './store/store';
-import { login } from './actions/session_actions'
+import { login, logout } from './actions/session_actions'
 import humps from 'humps'
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.dispatch = store.dispatch;
   window.login = login;
   window.humps = humps;
+  window.logout = logout;
 
 
   const root = document.getElementById('root');

@@ -9,15 +9,20 @@ export default class Greeting extends React.Component {
     }
 
 
+
     render() {
         return this.props.currentUser ? (
+        
             <div>
+                {this.showLink()}
                 <h2>Hello, {this.props.currentUser.username}!</h2>
+                <button onClick={() => this.props.logout()} >Log Out</button>
+               
             </div>
         ) : (
             <div>
-                <h1>Freebook</h1>
-                <p>Connect with friends and the world around you on Freebook</p>
+                <h1 className='title' ><span className='titleF' >f</span>r<span className='title' >e<span className='espacing' >e</span></span>bo<span className='ospacing' >o</span><span className='titleF' >k</span></h1>
+                <p className='connectFriends' >Connect with friends and the world around you on Freebook</p>
                 <br/>
                 <LoginFormContainer/>
             </div>
