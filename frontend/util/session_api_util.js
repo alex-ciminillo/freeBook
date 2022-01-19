@@ -1,8 +1,11 @@
+import humps from 'humps'
+
 export const login = (user) => (
+
     $.ajax({
       method: 'POST',
       url: '/api/session',
-      data: { user }
+      data:  humps.decamelizeKeys( { user } ) 
     })
   );
   
@@ -10,7 +13,7 @@ export const login = (user) => (
     $.ajax({
       method: 'POST',
       url: '/api/user',
-      data: { user }
+      data: humps.decamelizeKeys( { user } ) 
     })
   );
   

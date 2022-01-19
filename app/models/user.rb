@@ -8,7 +8,7 @@ class User < ApplicationRecord
         (?=.*[[:^alnum:]]) #At least one symbol
     /x
 
-    validates :username, :password_digest, :session_token, presence: true
+    validates :username, :password_digest, :session_token, :first_name, :last_name, presence: true
     validates :username, uniqueness: true
     validates :password, format: PASSWORD_REQUIREMENTS, allow_nil: true
     attr_reader :password

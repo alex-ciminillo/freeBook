@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Root from './components/root';
 import configureStore from './store/store';
 import { login } from './actions/session_actions'
-
+import humps from 'humps'
 
 document.addEventListener('DOMContentLoaded', () => {
   let store;
@@ -19,11 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
 } else {
   store = configureStore();
 }
-  // TESTING START
+  // testing
   window.getState = store.getState;
   window.dispatch = store.dispatch;
-  window.login = login
-  // TESTING END
+  window.login = login;
+  window.humps = humps;
+
+
   const root = document.getElementById('root');
   ReactDOM.render(<Root store={ store } />, root);
 });

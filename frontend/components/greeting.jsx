@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import LoginFormContainer from "./login_form_container";
 
 export default class Greeting extends React.Component {
 
@@ -10,17 +11,16 @@ export default class Greeting extends React.Component {
 
     render() {
         return this.props.currentUser ? (
-            <hgroup>
+            <div>
                 <h2>Hello, {this.props.currentUser.username}!</h2>
-                <button onClick={this.props.logout}>Log Out</button>
-                <Link to="/login">Login</Link>
-            </hgroup>
+            </div>
         ) : (
-            <nav>
-                <Link to="/login">Login</Link>
-                &nbsp;or&nbsp;
-                <Link to="/signup">Sign up!</Link>
-            </nav>
+            <div>
+                <h1>Freebook</h1>
+                <p>Connect with friends and the world around you on Freebook</p>
+                <br/>
+                <LoginFormContainer/>
+            </div>
         )
     }
 
