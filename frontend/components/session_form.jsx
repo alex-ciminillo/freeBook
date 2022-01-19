@@ -3,23 +3,28 @@ import { Link } from 'react-router-dom'
 export default class SessionForm extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {
-        username: "",
-        password: ""
-      };
+      if (this.props.formType === "signup") {
+        this.state = {
+            username: "",
+            password: "",
+            firstName: "",
+            lastName: ""
+        };
+      } else {
+        this.state = {
+            username: "",
+            password: ""
+        };
+      }
+      
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.showModal = this.showModal.bind(this);
     }
 
     handleSubmit(e) {
         e.preventDefault();
         const user = Object.assign({}, this.state);
         this.props.processForm(user);
-    }
-    
-    makeHeader() {
-       return this.props.formType === "signup" ? 
-       <h1>Signup!</h1> : 
-       <h1>Login!</h1>
     }
 
     provideLink() {
@@ -46,35 +51,74 @@ export default class SessionForm extends React.Component {
         }
     }
 
+    showModal() {
+        this.props.showModal("signup")
+    }
+
+    createAccount() {
+        return this.props.formType === "signup" ? 
+        null : 
+        <button onClick={this.showModal} >Create new account</button>
+    }
+
+    buttonText() {
+        return this.props.formType === "signup" ? 
+        "Sign Up" : 
+        "Log In"
+    }
+
+    hideModal() {
+        return this.props.formType === "signup" ?
+        <button onClick={() => this.props.hideModal()} >Hide</button> :
+        null
+    }
+
+    firstLastName() {
+        return this.props.formType === "signup" ? 
+        <div>
+            <br/>
+            <h1>Sign Up</h1>
+            <p>It's quick and easy</p>
+            <input placeholder='First name' 
+                type="text"
+                value={this.state.firstName}
+                onChange={this.update('firstName')}
+            />
+            <br/>
+            <input placeholder='Last name' 
+                type="text"
+                value={this.state.lastName}
+                onChange={this.update('lastName')}
+            />
+        </div> : 
+        null
+    }
+
     render() {
         return (
             <div>
+                {this.hideModal()}
                 <form onSubmit={this.handleSubmit}>
-                    {this.makeHeader()}
-                    <br/>
-                    Welcome!
-                    <br/>
-                    Please {this.props.formType} or {this.provideLink()}
                     {this.renderErrors()}
                     <div>
-                        <br/>
-                        <label>Username:
-                            <input type="text"
+                        {this.firstLastName()}
+                            <input placeholder='Email or phone number' 
+                                type="text"
                                 value={this.state.username}
                                 onChange={this.update('username')}
                             />
-                        </label>
                         <br/>
-                        <label>Password:
-                            <input type="password"
+                            <input placeholder='Password' 
+                                type="password"
                                 value={this.state.password}
                                 onChange={this.update('password')}
                             />
-                        </label>
                         <br/>
-                        <input type="submit" value={this.props.formType} />
+                        <input type="submit" value={this.buttonText()} />
+                       
                     </div>
                 </form>
+                {this.createAccount()}
             </div>
         )
     }

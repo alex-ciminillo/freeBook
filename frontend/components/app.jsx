@@ -4,18 +4,15 @@ import LoginFormContainer from "./login_form_container";
 import SignupFormContainer from "./signup_form_container";
 import { Route, Switch } from 'react-router-dom';
 import { AuthRoute, ProtectedRoute } from "../util/route_util";
+import ModalContainer from './modal/modal_container'
 
 
 const App = () => {
     return (
         <div>
-            <header>
-                <h1>FreeBook</h1>
-                <GreetingContainer />
-            </header>
+            <ModalContainer />
             <Switch>
-                <AuthRoute path="/login" component={LoginFormContainer} />
-                <AuthRoute path="/signup" component={SignupFormContainer} />
+                <AuthRoute exact path="/" component={LoginFormContainer} />
             </Switch>
         </div>
     )
