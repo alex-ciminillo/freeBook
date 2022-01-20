@@ -58,7 +58,7 @@ export default class SessionForm extends React.Component {
     createAccount() {
         return this.props.formType === "signup" ? 
         null : 
-        <button onClick={this.showModal} >Create new account</button>
+        <button className='createAccount' onClick={this.showModal} >Create new account</button>
     }
 
     buttonText() {
@@ -77,49 +77,84 @@ export default class SessionForm extends React.Component {
         return this.props.formType === "signup" ? 
         <div>
             <br/>
-            <h1>Sign Up</h1>
-            <p>It's quick and easy</p>
-            <input placeholder='First name' 
+            <h1 className='signupText' >Sign Up</h1>
+            <p className='quickAndEasyText' >It's quick and easy</p>
+            <div className='firstAndLastOuterBox' >
+            <input className='outerInputBox2 firstAndLast' placeholder='First name' 
                 type="text"
                 value={this.state.firstName}
                 onChange={this.update('firstName')}
             />
             <br/>
-            <input placeholder='Last name' 
+            <input className='outerInputBox2 firstAndLast' placeholder='Last name' 
                 type="text"
                 value={this.state.lastName}
                 onChange={this.update('lastName')}
             />
+            </div>
         </div> : 
         null
     }
 
     render() {
-        return (
-            <div>
+        return this.props.formType === "login" ?
+            <div className='sessionForm' >
                 {this.hideModal()}
                 <form onSubmit={this.handleSubmit}>
                     {this.renderErrors()}
                     <div>
                         {this.firstLastName()}
-                            <input placeholder='Email or phone number' 
+                            <div className='outerInputBox' >
+                            <input className='emailAndPassword' placeholder='Email or phone number' 
                                 type="text"
                                 value={this.state.username}
                                 onChange={this.update('username')}
                             />
+                            </div>
                         <br/>
-                            <input placeholder='Password' 
+                            <div className='outerInputBox' >
+                            <input className='emailAndPassword' placeholder='Password' 
                                 type="password"
                                 value={this.state.password}
                                 onChange={this.update('password')}
                             />
+                            </div>
                         <br/>
-                        <input type="submit" value={this.buttonText()} />
+                        <input className='logIn' type="submit" value={this.buttonText()} />
                        
                     </div>
                 </form>
                 {this.createAccount()}
             </div>
-        )
+            :
+            <div className='backgroundFade' >
+                <div className='sessionForm2' >
+                    {this.hideModal()}
+                    <form onSubmit={this.handleSubmit}>
+                        {this.renderErrors()}
+                        <div>
+                            {this.firstLastName()}
+                                <div  >
+                                <input className='emailAndPassword' placeholder='Email or phone number' 
+                                    type="text"
+                                    value={this.state.username}
+                                    onChange={this.update('username')}
+                                />
+                                </div>
+                            <br/>
+                                <div  >
+                                <input className='emailAndPassword' placeholder='Password' 
+                                    type="password"
+                                    value={this.state.password}
+                                    onChange={this.update('password')}
+                                />
+                                </div>
+                            <br/>
+                            <input className='signup' type="submit" value={this.buttonText()} />
+                        
+                        </div>
+                    </form>
+                </div>
+            </div>
     }
   }

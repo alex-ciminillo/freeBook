@@ -27,6 +27,15 @@
     font-style: normal;
 }
 
+body {
+    background: #f2f2f2;
+    color: #1c1e21;
+    direction: ltr;
+    line-height: 1.34;
+    margin: 0;
+    padding: 0;
+    unicode-bidi: embed;
+}
 
 
 .title {
@@ -64,11 +73,32 @@
 
 .connectFriends {
     font-size: 24px;
-    color: black;
+    color: #1c1e21;
+    line-height: 28px;
+    width: auto;
     font-family: 'SFPRODISPLAYREGULAR', Helvetica, Arial, sans-serif;
 }
 
+.greetingContainer {
+    padding: 20px 0;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
 
+
+
+@media only screen and (max-width: 1075px) {
+   .greetingContainer {
+        height: 496px;
+        margin: 0 40px;
+        width: auto;
+    } 
+}
 
 
 
