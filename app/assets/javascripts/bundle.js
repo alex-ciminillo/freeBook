@@ -540,6 +540,45 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       this.props.processForm(user);
     }
   }, {
+    key: "getDemoEmail",
+    value: function getDemoEmail(email, input) {
+      return email.slice(0, input.value.length + 1);
+    }
+  }, {
+    key: "getDemoPassword",
+    value: function getDemoPassword(password, input) {
+      return password.slice(0, input.value.length + 1);
+    }
+  }, {
+    key: "startDemo",
+    value: function startDemo() {
+      var processForm = this.props.processForm.bind();
+      var getDemoEmail = this.getDemoEmail.bind(this);
+      var getDemoPassword = this.getDemoPassword.bind(this);
+      var usernameInput = document.getElementById('username');
+      var passwordInput = document.getElementById('password');
+      var username = 'alex@gmail.com';
+      var password = 'Password1!';
+      setTimeout(function fillInput() {
+        if (usernameInput.value !== username) {
+          usernameInput.setAttribute('value', getDemoEmail(username, usernameInput));
+          setTimeout(fillInput, 150);
+        } else {
+          passwordInput.setAttribute('value', getDemoPassword(password, passwordInput));
+
+          if (passwordInput.value !== password) {
+            setTimeout(fillInput, 150);
+          } else {
+            var user = Object.assign({}, {
+              username: username,
+              password: password
+            });
+            processForm(user);
+          }
+        }
+      }, 150);
+    }
+  }, {
     key: "provideLink",
     value: function provideLink() {
       return this.props.formType === "signup" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
@@ -623,6 +662,8 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this4 = this;
+
       return this.props.formType === "login" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "sessionForm"
       }, this.hideModal(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
@@ -630,6 +671,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }, this.renderErrors(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.firstLastName(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "outerInputBox"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        id: "username",
         className: "emailAndPassword",
         placeholder: "Email or phone number",
         type: "text",
@@ -638,6 +680,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "outerInputBox"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        id: "password",
         className: "emailAndPassword",
         placeholder: "Password",
         type: "password",
@@ -647,7 +690,12 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         className: "logIn",
         type: "submit",
         value: this.buttonText()
-      }))), this.createAccount()) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
+        className: "demoLogin",
+        onClick: function onClick() {
+          return _this4.startDemo();
+        }
+      }, "Click here to demo login"))), this.createAccount()) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "backgroundFade"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "sessionForm2"

@@ -27,6 +27,39 @@ export default class SessionForm extends React.Component {
         this.props.processForm(user);
     }
 
+    getDemoEmail(email, input) {
+        return email.slice(0, input.value.length + 1)
+    }
+
+    getDemoPassword(password, input) {
+        return password.slice(0, input.value.length + 1)
+    }
+
+    startDemo() {
+        let processForm = this.props.processForm.bind()
+        let getDemoEmail = this.getDemoEmail.bind(this)
+        let getDemoPassword = this.getDemoPassword.bind(this)
+        let usernameInput = document.getElementById('username')
+        let passwordInput = document.getElementById('password')
+        let username = 'alex@gmail.com'
+        let password = 'Password1!'
+        setTimeout(function fillInput() {
+            if (usernameInput.value !== username) { 
+                usernameInput.setAttribute('value', getDemoEmail(username, usernameInput))
+                setTimeout(fillInput, 150) 
+            } else { 
+                passwordInput.setAttribute('value', getDemoPassword(password, passwordInput)) 
+                if (passwordInput.value !== password) { 
+                    setTimeout(fillInput, 150) 
+                } else {
+                    const user = Object.assign({}, {username: username, password: password});
+                    processForm(user);
+                }
+            }
+        }, 150)
+        
+    }
+
     provideLink() {
         return this.props.formType === "signup" ? 
         <Link to="/login">Login!</Link> : 
@@ -105,7 +138,7 @@ export default class SessionForm extends React.Component {
                     <div>
                         {this.firstLastName()}
                             <div className='outerInputBox' >
-                            <input className='emailAndPassword' placeholder='Email or phone number' 
+                            <input id='username' className='emailAndPassword' placeholder='Email or phone number' 
                                 type="text"
                                 value={this.state.username}
                                 onChange={this.update('username')}
@@ -113,7 +146,7 @@ export default class SessionForm extends React.Component {
                             </div>
                         <br/>
                             <div className='outerInputBox' >
-                            <input className='emailAndPassword' placeholder='Password' 
+                            <input id='password' className='emailAndPassword' placeholder='Password' 
                                 type="password"
                                 value={this.state.password}
                                 onChange={this.update('password')}
@@ -121,7 +154,7 @@ export default class SessionForm extends React.Component {
                             </div>
                         <br/>
                         <input className='logIn' type="submit" value={this.buttonText()} />
-                       
+                       <p className='demoLogin' onClick={()=>this.startDemo()} >Click here to demo login</p>
                     </div>
                 </form>
                 {this.createAccount()}
