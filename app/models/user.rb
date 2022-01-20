@@ -8,8 +8,10 @@ class User < ApplicationRecord
         (?=.*[[:^alnum:]]) #At least one symbol
     /x
 
+    EMAIL_REQUIREMENTS = /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
+
     validates :username, :password_digest, :session_token, :first_name, :last_name, presence: true
-    validates :username, uniqueness: true
+    validates :username, format: EMAIL_REQUIREMENTS, uniqueness: true
     validates :password, format: PASSWORD_REQUIREMENTS, allow_nil: true
     attr_reader :password
 

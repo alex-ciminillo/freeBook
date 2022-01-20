@@ -60,12 +60,6 @@ export default class SessionForm extends React.Component {
         
     }
 
-    provideLink() {
-        return this.props.formType === "signup" ? 
-        <Link to="/login">Login!</Link> : 
-        <Link to="/signup">Signup!</Link>
-    }
-
     renderErrors() {
         if (this.props.errors.session.length === 0) {
             return null
