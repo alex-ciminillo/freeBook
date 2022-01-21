@@ -11,14 +11,10 @@ export default class ProfilePics extends React.Component {
 
     render() {
         return (
-            <div>
-                <div>Profile Pics</div>
-                <div>Nav Bar</div>
-                <div>Intro</div>
-                <div>Photos</div>
-                <div>Friends</div>
-                <div>Life Events</div>
-                <div>Posts</div>
+            <div className='totalContainer' >
+                <div className='backgroundPicDiv'>
+                    <img src='assets/profile/married.jpg' className='backgroundPic' />
+                </div>
             </div>
         )
     }

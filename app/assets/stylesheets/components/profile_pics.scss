@@ -1,0 +1,47 @@
+
+.totalContainer {
+    width: 100%;
+    background-color: white;
+    height: calc(20vw + 50vh);
+    min-height: 580px;
+    max-height: 625px;
+}
+
+.backgroundPicDiv {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    margin-top: -12px;
+    display:flex;
+    justify-content: center;
+    height: calc(30vw + 10vh);
+    max-height: 412px;
+    overflow: hidden;
+}
+
+.backgroundPic {
+    width:100%;
+    height: auto;
+    background-color: #cccccc; 
+    background-attachment: fixed;
+    object-position: 50% 15%;
+    background-repeat: no-repeat; 
+    background-size: cover; 
+    border-radius: 10px;
+    max-width: 952px;
+    object-fit: cover;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

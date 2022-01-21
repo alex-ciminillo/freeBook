@@ -8,6 +8,8 @@
     position: fixed;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.062); 
     justify-content: space-between;
+    top: 0;
+    
 }
 
 
@@ -28,8 +30,8 @@
 
 .searchDiv {
     cursor: pointer;
-    margin-left: 5px;
-    margin-top: 10px;
+    margin-left: 4.5px;
+    margin-top: 9.5px;
     padding-top: 12px;
     padding-left: 12px;
     height: 38px;
@@ -48,6 +50,7 @@
 
 
 .sandwichMenuDiv {
+    cursor: pointer;
     width: 45px;
     margin-left: 15px;
     margin-top: 4px;

@@ -13,7 +13,7 @@ export default class Profile extends React.Component {
     render() {
         return (
             <div>
-                <div>Profile Pics</div>
+                <ProfilePicsContainer/>
                 <div>Nav Bar</div>
                 <div>Intro</div>
                 <div>Photos</div>

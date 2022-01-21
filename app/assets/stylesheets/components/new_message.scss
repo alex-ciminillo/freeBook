@@ -1,0 +1,36 @@
+
+
+
+
+
+
+.newMessageDiv {
+    width: 48px;
+    height: 48px;
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background-color: rgb(254, 254, 254);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15), 0 12px 28px rgba(0, 0, 0, 0.1);
+}
+.newMessageDiv:hover {
+    background-color: #F0F2F5;
+}
+
+
+.newMessage {
+    margin-left: 14px;
+    margin-top: 14px;
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/y1/r/UrpOJKCapUK.png); 
+    background-position: -84px -67px; 
+    background-size: auto; 
+    width: 20px; 
+    height: 20px; 
+    background-repeat: no-repeat; 
+    display: inline-block;
+}
+
+
+
+

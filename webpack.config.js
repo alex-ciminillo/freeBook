@@ -1,5 +1,5 @@
 const path = require('path');
-
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   context: __dirname,
   entry: './frontend/freebook.jsx',
@@ -7,6 +7,11 @@ module.exports = {
     path: path.resolve(__dirname, 'app', 'assets', 'javascripts'),
     filename: 'bundle.js'
   },
+  plugins: [
+    new HtmlWebpackPlugin({ 
+      favicon: "./favicon.ico"
+   })
+  ],
   module: {
     rules: [
       {
