@@ -13,6 +13,19 @@
 }
 
 
+
+
+.searchBarResultsDiv {
+    position: fixed;
+    width: 350px;
+    // height: 350px;
+    top: 55px;
+    left: 0;
+    background-color: white;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15); 
+    z-index: 51;
+}
+
 .outerFIcon {
     transform-origin: 0px 0px;
     -webkit-tap-highlight-color: transparent;
@@ -41,17 +54,6 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    z-index: 51;
-}
-
-.searchBarResultsDiv {
-    position: fixed;
-    width: 350px;
-    // height: 350px;
-    top: 55px;
-    left: 0;
-    background-color: white;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15); 
     z-index: 51;
 }
 
