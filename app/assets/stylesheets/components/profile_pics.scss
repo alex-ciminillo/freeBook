@@ -3,7 +3,7 @@
     width: 100%;
     background-color: white;
     height: calc(20vw + 50vh);
-    min-height: 580px;
+    min-height: 576px;
     max-height: 625px;
 }
 
@@ -164,6 +164,113 @@
     margin-left: 8px;
     margin-top: 8px;
 }
+
+
+.name {
+    align-self: flex-end;
+    z-index: 6;
+    font-size: 30px;
+    color: #050505;
+    font-family: 'TAHOMABD';
+    margin-bottom: -45px;
+}
+
+.friendsNumber {
+    align-self: flex-end;
+    z-index: 6;
+    font-size: 18px;
+    color: #65676B;
+    font-family: 'SFPRODISPLAYREGULAR';
+    margin-bottom: -70px;
+}
+
+.friendsImages {
+    width: 240px;
+    height: 36px;
+    align-self: flex-end;
+    z-index: 7;
+    background-color: #ffffff;
+    margin-bottom: -110px;
+    display: flex;
+    -webkit-flex-direction: row-reverse; 
+    flex-direction: row-reverse;
+}
+
+.friendPicDiv {
+    width: 36px;
+    height: 36px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 50%;
+    margin-right: -7px;
+    overflow: hidden;
+    display: flex;
+    
+}
+
+.friendPicDiv:first-child {
+    margin-right: 0px;
+}
+
+
+
+.friendPic {
+    background-attachment: fixed;
+    object-position: 50% 0;
+    background-repeat: no-repeat; 
+    background-size: cover; 
+    object-fit: cover;
+    margin-left: 2px;
+    margin-top: 2px;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+}
+
+
+
+.addStoryAndEditButtonsDiv {
+    width: 94%;
+    height: 36px;
+    align-self: flex-end;
+    z-index: 8;
+    background-color: #ffffff;
+    margin-bottom: -170px;
+    display: flex;
+    border-radius: 6px;
+}
+
+
+.addStoryDiv {
+    position: relative;
+    border-radius: inherit;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: space-between;
+}
+
+.addStoryButton {
+    position: relative;
+    border-radius: inherit;
+    width: 49.2%;
+    height: 100%;
+    background-color: #1B74E4;
+}
+
+.editProfileButton {
+    position: relative;
+    border-radius: inherit;
+    width: 49.2%;
+    height: 100%;
+    background-color: #E4E6EB;
+}
+
+
+
+
+
+
 
 
 
