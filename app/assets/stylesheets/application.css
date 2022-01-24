@@ -18,7 +18,7 @@
 
 @import 'base/reset.css';
 @import 'components/greeting.scss';
-@import 'compontents/login_form.scss';
+@import 'components/login_form.scss';
 @import 'components/navbar.scss';
 @import 'components/new_message.scss';
 @import 'components/profile_nav_bar.scss';
