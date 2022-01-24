@@ -13,3 +13,19 @@
  *= require_tree .
  *= require_self
  */
+
+
+
+@import 'base/reset.css';
+@import 'components/greeting.scss';
+@import 'compontents/login_form.scss';
+@import 'components/navbar.scss';
+@import 'components/new_message.scss';
+@import 'components/profile_nav_bar.scss';
+@import 'components/profile_pics.scss';
+@import 'components/signup_form.scss';
+@import 'app.scss';
+
+
+
+
