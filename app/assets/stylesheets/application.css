@@ -17,13 +17,13 @@
 
 
 @import 'base/reset.css';
-@import 'components/greeting.scss';
-@import 'components/login_form.scss';
-@import 'components/navbar.scss';
-@import 'components/new_message.scss';
-@import 'components/profile_nav_bar.scss';
-@import 'components/profile_pics.scss';
-@import 'components/signup_form.scss';
+@import 'base/greeting.scss';
+@import 'base/login_form.scss';
+@import 'base/navbar.scss';
+@import 'base/new_message.scss';
+@import 'base/profile_nav_bar.scss';
+@import 'base/profile_pics.scss';
+@import 'base/signup_form.scss';
 @import 'app.scss';
 
 
