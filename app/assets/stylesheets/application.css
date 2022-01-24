@@ -16,15 +16,15 @@
 
 
 
-@import 'base/reset.css';
-@import 'base/greeting.scss';
-@import 'base/login_form.scss';
-@import 'base/navbar.scss';
-@import 'base/new_message.scss';
-@import 'base/profile_nav_bar.scss';
-@import 'base/profile_pics.scss';
-@import 'base/signup_form.scss';
-@import 'app.scss';
+/* @import 'reset.css';
+@import 'greeting.scss';
+@import 'login_form.scss';
+@import 'navbar.scss';
+@import 'new_message.scss';
+@import 'profile_nav_bar.scss';
+@import 'profile_pics.scss';
+@import 'signup_form.scss';
+@import 'app.scss'; */
 
 
 
