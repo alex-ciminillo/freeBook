@@ -6,9 +6,11 @@ export default class Greeting extends React.Component {
 
     constructor(props) {
         super(props)
+        
     }
 
 
+    
 
     render() {
         return this.props.currentUser ? (
@@ -98,7 +100,7 @@ export default class Greeting extends React.Component {
                     </div>
                     
                     <div className='grettingCopyright' >
-                    Mata © 2022
+                        Mata © 2022
                     </div>
                     </div>
                 </div>

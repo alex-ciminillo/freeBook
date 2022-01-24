@@ -70,6 +70,14 @@
     opacity: 1;
 }
 
+
+.emailAndPassword:focus {
+    outline: 2px solid #E7F3FF;
+    border: 1px solid #1075f8;
+}
+
+
+
 .logIn {
     font-family: 'SFPRODISPLAYREGULAR', Helvetica, Arial, sans-serif;
     padding-top: 6px;
@@ -165,8 +173,4 @@
     height: 1px;
     width: 90%;
 }
-
-
-
-.
 

@@ -9,6 +9,9 @@ import NewMessageContainer from './new_message/new_message_container'
 
 
 const App = () => {
+
+    
+
     return (
         <div className="appPageConatianerDiv" >
             <ModalContainer />

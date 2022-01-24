@@ -1301,6 +1301,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var SessionForm = /*#__PURE__*/function (_React$Component) {
   _inherits(SessionForm, _React$Component);
 
@@ -1329,6 +1330,8 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
 
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     _this.showModal = _this.showModal.bind(_assertThisInitialized(_this));
+    _this.makeInvalid = _this.makeInvalid.bind(_assertThisInitialized(_this));
+    _this.optionClick = _this.optionClick.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -1408,7 +1411,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
     value: function createAccount() {
       return this.props.formType === "signup" ? null : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
         className: "createAccount",
-        onClick: this.showModal
+        onClick: this.showModal()
       }, "Create new account");
     }
   }, {
@@ -1451,9 +1454,81 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }))) : null;
     }
   }, {
+    key: "makeInvalid",
+    value: function makeInvalid(e) {
+      if (!$('#firstName').is(":focus") && $('#firstName').hasClass('touched')) {
+        $('#firstNamei').addClass('iconTouch');
+      } else if ($('#firstName').is(":focus")) {
+        $('#firstNamei').removeClass('iconTouch');
+        $('#firstName').addClass('touched');
+        $('#firstNamei').addClass('touched');
+      }
+
+      if (!$('#lastName').is(":focus") && $('#lastName').hasClass('touched')) {
+        $('#lastNamei').addClass('iconTouch');
+      } else if ($('#lastName').is(":focus")) {
+        $('#lastNamei').removeClass('iconTouch');
+        $('#lastName').addClass('touched');
+        $('#lastNamei').addClass('touched');
+      }
+
+      if (!$('#emailMobile').is(":focus") && $('#emailMobile').hasClass('touched')) {
+        $('#emailMobilei').addClass('iconTouch');
+      } else if ($('#emailMobile').is(":focus")) {
+        $('#emailMobilei').removeClass('iconTouch');
+        $('#emailMobile').addClass('touched');
+        $('#emailMobilei').addClass('touched');
+      }
+
+      if (!$('#signUpPassword').is(":focus") && $('#signUpPassword').hasClass('touched')) {
+        $('#signUpPasswordi').addClass('iconTouch');
+      } else if ($('#signUpPassword').is(":focus")) {
+        $('#signUpPasswordi').removeClass('iconTouch');
+        $('#signUpPassword').addClass('touched');
+        $('#signUpPasswordi').addClass('touched');
+      }
+
+      if ($('#month').is(":focus") || $('#day').is(":focus") || $('#year').is(":focus")) {
+        $('#birthdayI').removeClass('iconTouch');
+        $('#month').removeClass('touchedYear');
+        $('#day').removeClass('touchedYear');
+        $('#year').removeClass('touchedYear');
+        $('#month').addClass('touchedYear2');
+        $('#day').addClass('touchedYear2');
+        $('#year').addClass('touchedYear2');
+        $('#birthdayI').addClass('touched');
+      } else if (!$('#month').is(":focus") && $('#month').hasClass('touchedYear2') || !$('#day').is(":focus") && $('#day').hasClass('touchedYear2') || !$('#year').is(":focus") && $('#year').hasClass('touchedYear2')) {
+        console.log($('#year').val());
+
+        if (parseInt($('#year').val()) > 2017) {
+          $('#month').addClass('touchedYear');
+          $('#day').addClass('touchedYear');
+          $('#year').addClass('touchedYear');
+          $('#birthdayI').addClass('iconTouch');
+        }
+      }
+    }
+  }, {
+    key: "optionClick",
+    value: function optionClick() {
+      console.log("hi");
+
+      if (parseInt($('#year').val()) > 2017) {
+        $('#month').addClass('touchedYear');
+        $('#day').addClass('touchedYear');
+        $('#year').addClass('touchedYear');
+        $('#birthdayI').addClass('iconTouch');
+        $('#month').blur();
+        $('#day').blur();
+        $('#year').blur();
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this4 = this,
+          _React$createElement,
+          _React$createElement2;
 
       return this.props.formType === "login" ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "sessionForm"
@@ -1489,7 +1564,8 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }, "Want to try a demo?")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "loginGrayLineDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, " "))), this.createAccount()) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "backgroundFade"
+        className: "backgroundFade",
+        onClick: this.makeInvalid
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "sessionForm2"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -1518,37 +1594,51 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         className: "signUpFirstAndLast"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         id: "firstName",
+        required: true,
         type: "text",
         placeholder: "First name",
         value: this.state.firstName,
         onChange: this.update('firstName')
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        id: "firstNamei"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         id: "lastName",
+        required: true,
         type: "text",
         placeholder: "Last name",
         value: this.state.lastName,
         onChange: this.update('lastName')
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        id: "lastNamei"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "signUpMobileEmailPassword"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-        type: "text",
-        placeholder: "Mobile number or email",
-        value: this.state.username,
-        onChange: this.update('username')
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", (_React$createElement = {
+        id: "emailMobile",
+        required: true,
+        type: "text"
+      }, _defineProperty(_React$createElement, "required", true), _defineProperty(_React$createElement, "placeholder", "Mobile number or email"), _defineProperty(_React$createElement, "value", this.state.username), _defineProperty(_React$createElement, "onChange", this.update('username')), _React$createElement)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        id: "emailMobilei"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "signUpMobileEmailPassword"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
-        type: "password",
-        placeholder: "New password",
-        value: this.state.password,
-        onChange: this.update('password')
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", (_React$createElement2 = {
+        id: "signUpPassword",
+        required: true,
+        type: "password"
+      }, _defineProperty(_React$createElement2, "required", true), _defineProperty(_React$createElement2, "placeholder", "New password"), _defineProperty(_React$createElement2, "value", this.state.password), _defineProperty(_React$createElement2, "onChange", this.update('password')), _React$createElement2)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        id: "signUpPasswordi"
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "signUpBirthday"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Birthday", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
         className: "signUpQuestionIcon"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        id: "birthdayI"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "signUpDate"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "dropdown"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
+        required: true,
+        onChange: this.optionClick,
         "aria-label": "Month",
         name: "birthday_month",
         id: "month",
@@ -1579,6 +1669,8 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }, "Nov"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
         value: "12"
       }, "Dec")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
+        required: true,
+        onChange: this.optionClick,
         "aria-label": "Day",
         name: "birthday_day",
         id: "day",
@@ -1647,6 +1739,8 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       }, "30"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", {
         value: "31"
       }, "31")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", {
+        required: true,
+        onChange: this.optionClick,
         "aria-label": "Year",
         name: "birthday_year",
         id: "year",
@@ -1898,21 +1992,27 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         "data-type": "radio",
         "data-name": "gender_wrapper",
         id: "u_1_o_Op"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Female"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+        htmlFor: "signUpFemale"
+      }, "Female"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         type: "radio",
         name: "sex",
         value: "1",
-        id: "u_1_2_X0"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Male"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        id: "signUpFemale"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+        htmlFor: "signUpMale"
+      }, "Male"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         type: "radio",
         name: "sex",
         value: "2",
-        id: "u_1_3_qK"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, "Custom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        id: "signUpMale"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+        htmlFor: "signUpCustom"
+      }, "Custom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         type: "radio",
         name: "sex",
         value: "-1",
-        id: "u_1_4_Tm"
+        id: "signUpCustom"
       }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "signUpPolicy"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "By clicking Sign Up, you agree to our ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Terms"), ", ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Data Policy"), " and ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Cookies Policy"), ". You may receive SMS Notifications from us and can opt out any time.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
