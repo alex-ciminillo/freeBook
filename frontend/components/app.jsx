@@ -10,8 +10,7 @@ import NewMessageContainer from './new_message/new_message_container'
 
 const App = () => {
     return (
-        <div>
-            
+        <div className="appPageConatianerDiv" >
             <ModalContainer />
             <Switch>
                 <ProtectedRoute path="/users/:id" component={ProfileContainer} />

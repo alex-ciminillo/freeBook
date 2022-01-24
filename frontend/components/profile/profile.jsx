@@ -14,12 +14,8 @@ export default class Profile extends React.Component {
         return (
             <div>
                 <ProfilePicsContainer/>
-                <div>Nav Bar</div>
-                <div>Intro</div>
-                <div>Photos</div>
-                <div>Friends</div>
-                <div>Life Events</div>
                 <div>Posts</div>
+                <div onClick={()=>this.props.logout()} >Logout</div>
             </div>
         )
     }

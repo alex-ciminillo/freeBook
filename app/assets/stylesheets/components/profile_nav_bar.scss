@@ -1,0 +1,85 @@
+
+
+.navBarTotalContainer {
+    width: 100%;
+    position: absolute;   
+    top: 0;
+    height: calc(30vw + 10vh + 75px);
+    max-height: 412px  + 75px;
+    min-height: 250px  + 70px;
+    display: flex;
+    justify-content: center;
+    border-radius: 7px;
+}
+
+
+.profileNavBar {
+    border-radius: inherit;
+    position: absolute;
+    z-index: 9;
+    background-color: #ffffff;
+    width: 94%;
+    height: 55px;
+    align-self: flex-end;
+    margin-bottom: -253px;
+    display: flex;
+}
+
+.profileNavButtons {
+    cursor: pointer;
+    width: 79px;
+    border-radius: inherit;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+}
+
+.profileNavButtons:hover {
+    background-color: rgb(241, 241, 241);
+}
+
+.profileNavButtons:last-child:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+.profileNavButtonsWord {
+    font-size: 15px;
+    font-family: 'Tahoma';
+    background-color: inherit;
+    align-self: center;
+    color: #6f7175;
+}
+
+.profileNavBarMoreIcon {
+    fill: #6f7175;
+    align-self: center;
+    margin-left: 5px;
+}
+
+
+.profileNavButtonsOptions {
+    border-radius: inherit;
+    background-color: #E4E6EB;
+    align-self: center;
+    width: 50px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+}
+
+.profileNavButtonsOptions:hover {
+    background-color: #d6d8db;
+}
+
+.profileNavButtonsOptions svg {
+    align-self: center;
+}
+
+.profileNavButtonsOptions circle {
+    color: #050505;
+}
+
+
+
+
+

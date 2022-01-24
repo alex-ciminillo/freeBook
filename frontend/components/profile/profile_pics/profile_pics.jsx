@@ -1,5 +1,6 @@
 
 import React from 'react'
+import ProfileNavBarContainer from './../profile_nav_bar/profile_nav_bar_container'
 
 
 export default class ProfilePics extends React.Component {
@@ -67,14 +68,23 @@ export default class ProfilePics extends React.Component {
                 </div>
                 <div className='profilePicMaxHeight' >
                     <div className='addStoryAndEditButtonsDiv'>
-                        <div className='addStoryDiv' >
+                        <div className='addStoryEditProfileDiv' >
                             <div className='addStoryButton' >
+                            <img className="addStoryIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yp/r/bR3-u2s-xwG.png" alt="" height="16" width="16"/>
+                                Add to story
                             </div>
                             <div className='editProfileButton' >
+                            <img className="editProfileIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yW/r/OR6SzrfoMFg.png" alt="" height="16" width="16" /> 
+                                Edit profile
                             </div>
                         </div>
                     </div>
                 </div>
+                <div className='profilePicMaxHeight' >
+                    <div className='grayLine' ></div> 
+                </div>
+                <ProfileNavBarContainer /> 
+                
                 
             </div>
         )

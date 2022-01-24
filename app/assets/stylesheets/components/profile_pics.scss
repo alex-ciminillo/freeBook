@@ -2,9 +2,10 @@
 .totalContainer {
     width: 100%;
     background-color: white;
-    height: calc(20vw + 50vh);
+    height: calc(30vw + 10vh + 330px);
     min-height: 576px;
-    max-height: 625px;
+    max-height: 718px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.11); 
 }
 
 .backgroundPicDiv {
@@ -181,7 +182,7 @@
     font-size: 18px;
     color: #65676B;
     font-family: 'SFPRODISPLAYREGULAR';
-    margin-bottom: -70px;
+    margin-bottom: -74px;
 }
 
 .friendsImages {
@@ -190,7 +191,7 @@
     align-self: flex-end;
     z-index: 7;
     background-color: #ffffff;
-    margin-bottom: -110px;
+    margin-bottom: -117px;
     display: flex;
     -webkit-flex-direction: row-reverse; 
     flex-direction: row-reverse;
@@ -234,13 +235,13 @@
     align-self: flex-end;
     z-index: 8;
     background-color: #ffffff;
-    margin-bottom: -170px;
+    margin-bottom: -174px;
     display: flex;
     border-radius: 6px;
 }
 
 
-.addStoryDiv {
+.addStoryEditProfileDiv {
     position: relative;
     border-radius: inherit;
     width: 100%;
@@ -248,27 +249,69 @@
     background-color: rgb(255, 255, 255);
     display: flex;
     justify-content: space-between;
+    
 }
 
 .addStoryButton {
+    cursor: pointer;
+    text-align: center;
     position: relative;
     border-radius: inherit;
     width: 49.2%;
     height: 100%;
     background-color: #1B74E4;
+    color: white;
+    font-family: 'Tahoma';
+    line-height: 255%;
+    font-size: 14.5px;
+}
+
+.addStoryButton:hover {
+    background-color: #176ace;
+}
+
+.addStoryIcon {
+    margin-bottom: 11px;
+    margin-right: 5px;
+    filter: invert(1);
 }
 
 .editProfileButton {
+    cursor: pointer;
+    text-align: center;
     position: relative;
     border-radius: inherit;
     width: 49.2%;
     height: 100%;
     background-color: #E4E6EB;
+    color: #050505;
+    font-family: 'Tahoma';
+    line-height: 255%;
+    font-size: 14.5px;
+    font-weight: 900 !important;
+}
+
+.editProfileButton:hover {
+    background-color: #ced1d6;
+}
+
+.editProfileIcon {
+    margin-bottom: 10px;
+    margin-right: 5px;
 }
 
 
 
-
+.grayLine {
+    position: absolute;
+    z-index: 9;
+    background-color: #CCCED2;
+    width: 90%;
+    height: 1px;
+    align-self: flex-end;
+    margin-bottom: -194px;
+    width: 94%;
+}
 
 
 

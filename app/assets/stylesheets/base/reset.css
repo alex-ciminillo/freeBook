@@ -418,3 +418,8 @@ th {
   text-align: left;
   font-weight: bold;
 }
+
+
+html, body, #root, #app>div {
+  height: 100%
+}

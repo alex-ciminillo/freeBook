@@ -3,18 +3,16 @@
 
 .sessionForm {
     font-family: inherit;
-    padding-bottom: 24px;
-    padding-top: 10px;
+    padding-top: 25px;
     text-align: center;
     align-items: center;
     background-color: rgb(254, 254, 254);
     border: none;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.11); 
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.11); 
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.158); 
     box-sizing: border-box;
     margin: 20px 0 0;
-    padding: 20px 0 28px;
+    padding: 10px 0 28px;
     width: 396px;
     display: block;
 
@@ -23,7 +21,7 @@
 .outerInputBox {
     font-family: 'SFPRODISPLAYREGULAR', Helvetica, Arial, sans-serif;
     font-size: 17px;
-    width: 364px;
+    width: 100%;
     display: inline-block;
     margin: auto;
     padding: 6px 0;
@@ -37,7 +35,7 @@
     border-radius: 6px;
     font-size: 17px;
     padding: 26px 16px;
-    width: 330px;
+    width: 365px;
     vertical-align: middle;
     line-height: 16px;
     height: 22px;
@@ -57,8 +55,15 @@
     text-rendering: auto;
     -webkit-writing-mode: horizontal-tb !important;
     direction: ltr;
-
 }
+
+.emailAndPassword {
+    box-shadow: inset 0px 1px 1px -1px #aaaaaa;
+}
+
+
+//F5F5F5
+
 
 .emailAndPassword::placeholder { 
     color: #9094A9;
@@ -77,7 +82,7 @@
     font-size: 20px;
     line-height: 48px;
     padding: 0 16px;
-    width: 332px;
+    width: 365px !important;
     cursor: pointer;
     display: inline-block;
     text-decoration: none;
@@ -89,10 +94,12 @@
     position: relative;
     text-align: center;
     text-shadow: none;
-    
-
     transition: 200ms cubic-bezier(.08,.52,.52,1) background-color, 200ms cubic-bezier(.08,.52,.52,1) box-shadow, 200ms cubic-bezier(.08,.52,.52,1) transform;
     margin-top: 10px;
+}
+
+.logIn:hover {
+    background-color: #116ce4;
 }
 
 .createAccount {
@@ -125,14 +132,41 @@
     margin-top: 10px;
 }
 
+.createAccount:hover {
+    background-color: #3baa24;
+}
+
 
 .demoLogin {
+    padding-top: 10px;
     margin-top: 5px;
     font-family: 'SFPRODISPLAYREGULAR', Helvetica, Arial, sans-serif;
     cursor: pointer;
     font-size: 14px;
+    color: #2e85f7;
 }
 
 .demoLogin:hover {
+    text-decoration: underline;
+}
+
+
+.loginGrayLineDiv {
+    padding-top: 17px;
+    padding-bottom: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
     
 }
+
+.loginGrayLineDiv div {
+    background-color: #DADDE1;
+    height: 1px;
+    width: 90%;
+}
+
+
+
+.
+
