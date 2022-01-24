@@ -88,7 +88,7 @@ export default class SessionForm extends React.Component {
     createAccount() {
         return this.props.formType === "signup" ? 
         null : 
-        <button className='createAccount' onClick={this.showModal()} >Create new account</button>
+        <button className='createAccount' onClick={this.showModal} >Create new account</button>
     }
 
     buttonText() {
@@ -195,7 +195,7 @@ export default class SessionForm extends React.Component {
     
     }
 
-    
+
 
 
     render() {
