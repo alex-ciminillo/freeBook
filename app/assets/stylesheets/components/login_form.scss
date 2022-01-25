@@ -18,6 +18,19 @@
 
 }
 
+
+
+.emailAndPassword::placeholder { 
+    color: #9094A9;
+    opacity: 1;
+}
+
+
+.emailAndPassword:focus {
+    outline: 2px solid #E7F3FF;
+    border: 1px solid #1075f8;
+}
+
 .outerInputBox {
     font-family: 'SFPRODISPLAYREGULAR', Helvetica, Arial, sans-serif;
     font-size: 17px;
@@ -60,23 +73,6 @@
 .emailAndPassword {
     box-shadow: inset 0px 1px 1px -1px #aaaaaa;
 }
-
-
-//F5F5F5
-
-
-.emailAndPassword::placeholder { 
-    color: #9094A9;
-    opacity: 1;
-}
-
-
-.emailAndPassword:focus {
-    outline: 2px solid #E7F3FF;
-    border: 1px solid #1075f8;
-}
-
-
 
 .logIn {
     font-family: 'SFPRODISPLAYREGULAR', Helvetica, Arial, sans-serif;
