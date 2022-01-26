@@ -29,66 +29,69 @@ export default class SessionForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        if (this.props.modal) {
-        if ($('#signUpFemale').is(':checked')) { this.state.gender = 'female' }
-        else if ($('#signUpMale').is(':checked')) { this.state.gender = 'male' }
+        if (!this.props.modal) { 
+            const user = Object.assign({}, this.state);
+            this.props.processForm(user);
+         }
         else {
-            if (!$('#customGenderOptional').val()) {
-                this.state.gender = $('#pronounSelectBox').val()
-            } else {
-                this.state.gender = $('#customGenderOptional').val()
+            if ($('#signUpFemale').is(':checked')) { this.state.gender = 'female' }
+            else if ($('#signUpMale').is(':checked')) { this.state.gender = 'male' }
+            else {
+                if (!$('#customGenderOptional').val()) {
+                    this.state.gender = $('#pronounSelectBox').val()
+                } else {
+                    this.state.gender = $('#customGenderOptional').val()
+                }
+                
             }
-            
-        }
-        if (parseInt($('#year').val()) > 2017) {
-            $('#month').addClass('touchedYear2')
-            $('#day').addClass('touchedYear2')
-            $('#year').addClass('touchedYear2')
-            $('#birthdayI').addClass('touched')
-            this.makeInvalid()
-            return
-        }
+            if (parseInt($('#year').val()) > 2017) {
+                $('#month').addClass('touchedYear2')
+                $('#day').addClass('touchedYear2')
+                $('#year').addClass('touchedYear2')
+                $('#birthdayI').addClass('touched')
+                this.makeInvalid()
+                return
+            }
 
-        if (!$('#signUpMale').is(':checked') && !$('#signUpFemale').is(':checked') && !$('#signUpCustom').is(':checked')) {
-            $('#sessionForm2').addClass('sessionFormCustom')
-            $('#signUpMobileEmailTip').addClass('sessionFormCustom')
-            $('#signUpPasswordTip').addClass('sessionFormCustom')
-            $('#signUpEmailExistTip').addClass('sessionFormCustom')
-            $('#signUpBirthdayTip').addClass('sessionFormCustom')
-            $('#signUpFirstNameTip').addClass('sessionFormCustom')
-            $('#signUpGenderSelector').addClass('signUpGenderSelectorCustom')
-            $('#pronounSelectBox').addClass('touchedYear2')
-            $('#signUpGenderSelecterI').addClass('touched')
-            $('#pronounSelectBox').addClass('touchedYear')
-            $('#signUpGenderSelecterI').addClass('iconTouch')
-            $('#pronounSelectBox').addClass('needTip')
-            this.makeInvalid()
-            return
-        }
+            if (!$('#signUpMale').is(':checked') && !$('#signUpFemale').is(':checked') && !$('#signUpCustom').is(':checked')) {
+                $("#signUpCustom").prop("checked", true);
+                $('#sessionForm2').addClass('sessionFormCustom')
+                $('#signUpMobileEmailTip').addClass('sessionFormCustom')
+                $('#signUpPasswordTip').addClass('sessionFormCustom')
+                $('#signUpEmailExistTip').addClass('sessionFormCustom')
+                $('#signUpBirthdayTip').addClass('sessionFormCustom')
+                $('#signUpFirstNameTip').addClass('sessionFormCustom')
+                $('#signUpGenderSelector').addClass('signUpGenderSelectorCustom')
+                $('#pronounSelectBox').addClass('touchedYear2')
+                $('#signUpGenderSelecterI').addClass('touched')
+                $('#pronounSelectBox').addClass('touchedYear')
+                $('#signUpGenderSelecterI').addClass('iconTouch')
+                $('#pronounSelectBox').addClass('needTip')
+                this.makeInvalid()
+                return
+            }
 
-        if ($('#signUpCustom').is(':checked') && $('#pronounSelectBox').val() === null) {
-            $('#sessionForm2').addClass('sessionFormCustom')
-            $('#signUpMobileEmailTip').addClass('sessionFormCustom')
-            $('#signUpPasswordTip').addClass('sessionFormCustom')
-            $('#signUpBirthdayTip').addClass('sessionFormCustom')
-            $('#signUpFirstNameTip').addClass('sessionFormCustom')
-            $('#signUpEmailExistTip').addClass('sessionFormCustom')
-            $('#signUpGenderSelector').addClass('signUpGenderSelectorCustom')
-            $('#pronounSelectBox').addClass('touchedYear2')
-            $('#signUpGenderSelecterI').addClass('touched')
-            $('#pronounSelectBox').addClass('touchedYear')
-            $('#signUpGenderSelecterI').addClass('iconTouch')
-            $('#pronounSelectBox').addClass('needTip')
-            this.makeInvalid()
-            return
-        }
+            if ($('#signUpCustom').is(':checked') && $('#pronounSelectBox').val() === null) {
+                $('#sessionForm2').addClass('sessionFormCustom')
+                $('#signUpMobileEmailTip').addClass('sessionFormCustom')
+                $('#signUpPasswordTip').addClass('sessionFormCustom')
+                $('#signUpBirthdayTip').addClass('sessionFormCustom')
+                $('#signUpFirstNameTip').addClass('sessionFormCustom')
+                $('#signUpEmailExistTip').addClass('sessionFormCustom')
+                $('#signUpGenderSelector').addClass('signUpGenderSelectorCustom')
+                $('#pronounSelectBox').addClass('touchedYear2')
+                $('#signUpGenderSelecterI').addClass('touched')
+                $('#pronounSelectBox').addClass('touchedYear')
+                $('#signUpGenderSelecterI').addClass('iconTouch')
+                $('#pronounSelectBox').addClass('needTip')
+                this.makeInvalid()
+                return
+            }
 
-        this.state.birthday = $('#month').val() + ' ' + $('#day').val()  + ' ' + $('#year').val()      
+            this.state.birthday = $('#month').val() + ' ' + $('#day').val()  + ' ' + $('#year').val()      
+            const user = Object.assign({}, this.state);
+            this.props.processForm(user);
         }
-        console.log('click')
-        const user = Object.assign({}, this.state);
-        this.props.processForm(user);
-        
     }
 
     getDemoEmail(email, input) {
@@ -128,7 +131,6 @@ export default class SessionForm extends React.Component {
     }
 
     renderErrors() {
-        console.log(this.props.errors.session)
         if (!this.props.modal) {
             if (this.props.errors.session.includes('Username does not exist')) {
                 $('#username').addClass('loginErrorRed')

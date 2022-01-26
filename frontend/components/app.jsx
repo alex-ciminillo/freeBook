@@ -16,9 +16,11 @@ const App = () => {
         <div className="appPageConatianerDiv" >
             <ModalContainer />
             <Switch>
+                
                 <ProtectedRoute path="/users/:id" component={ProfileContainer} />
                 <Route exact path="/" component={GreetingContainer} />
                 <AuthRoute component={NotFound} />
+                
             </Switch>
             <ProtectedRoute component={NavBarContainer} />
             <ProtectedRoute component={NewMessageContainer} />

@@ -6,7 +6,8 @@ import { hideModal } from '../actions/modal_actions';
 const mapStateToProps = (state, ownProps) => {
     return {
         errors: state.errors,
-        formType: 'signup'
+        formType: 'signup',
+        modal: state.ui.modal
     };
 };
 
