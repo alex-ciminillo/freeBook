@@ -1245,7 +1245,7 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "backgroundPicDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: "assets/profile/married.jpg",
+        src: window.profileBackgroundURL,
         className: "backgroundPic"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "backgroundPicShadow"
@@ -1262,7 +1262,7 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profilePicDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: "assets/profile/profile_pic.jpg",
+        src: window.profilePicURL,
         className: "profilePic"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profilePicCameraButtonDiv"
@@ -1283,42 +1283,42 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "friendPicDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: "assets/profile/friends/friend_1.png",
+        src: window.friend1URL,
         className: "friendPic"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "friendPicDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: "assets/profile/friends/friend_2.jpg",
+        src: window.friend2URL,
         className: "friendPic"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "friendPicDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: "assets/profile/friends/friend_3.jpg",
+        src: window.friend3URL,
         className: "friendPic"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "friendPicDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: "assets/profile/friends/friend_4.jpg",
+        src: window.friend4URL,
         className: "friendPic"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "friendPicDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: "assets/profile/friends/friend_5.jpg",
+        src: window.friend5URL,
         className: "friendPic"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "friendPicDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: "assets/profile/friends/friend_6.webp",
+        src: window.friend6URL,
         className: "friendPic"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "friendPicDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: "assets/profile/friends/friend_7.jpg",
+        src: window.friend7URL,
         className: "friendPic"
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "friendPicDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: "assets/profile/friends/friend_8.jpg",
+        src: window.friend8URL,
         className: "friendPic"
       })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profilePicMaxHeight"

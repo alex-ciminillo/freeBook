@@ -14,7 +14,7 @@ export default class ProfilePics extends React.Component {
         return (
             <div className='totalContainer' >
                 <div className='backgroundPicDiv'>
-                    <img src='assets/profile/married.jpg' className='backgroundPic' />
+                    <img src={window.profileBackgroundURL}  className='backgroundPic' />
                     <div className='backgroundPicShadow' ></div>
                 </div>
                 <div className='backgroundPicCameraButtonOuterDiv2'>
@@ -26,7 +26,7 @@ export default class ProfilePics extends React.Component {
                 </div>
                 <div className='profilePicMaxHeight' >
                     <div className='profilePicDiv' >
-                        <img src='assets/profile/profile_pic.jpg' className='profilePic' />
+                        <img src={window.profilePicURL} className='profilePic' />
                     </div>
                     <div className='profilePicCameraButtonDiv' >
                         <i className='profilePicCameraButton' ></i>
@@ -41,28 +41,28 @@ export default class ProfilePics extends React.Component {
                 <div className='profilePicMaxHeight' >
                     <div className='friendsImages' >
                         <div className='friendPicDiv' >
-                            <img src='assets/profile/friends/friend_1.png' className='friendPic' />
+                            <img src={window.friend1URL} className='friendPic' />
                         </div>
                         <div className='friendPicDiv' >
-                            <img src='assets/profile/friends/friend_2.jpg' className='friendPic' />
+                            <img src={window.friend2URL}  className='friendPic' />
                         </div>
                         <div className='friendPicDiv' >
-                            <img src='assets/profile/friends/friend_3.jpg' className='friendPic' />
+                            <img src={window.friend3URL}  className='friendPic' />
                         </div>
                         <div className='friendPicDiv' >
-                            <img src='assets/profile/friends/friend_4.jpg' className='friendPic' />
+                            <img src={window.friend4URL}  className='friendPic' />
                         </div>
                         <div className='friendPicDiv' >
-                            <img src='assets/profile/friends/friend_5.jpg' className='friendPic' />
+                            <img src={window.friend5URL}  className='friendPic' />
                         </div>
                         <div className='friendPicDiv' >
-                            <img src='assets/profile/friends/friend_6.webp' className='friendPic' />
+                            <img src={window.friend6URL}  className='friendPic' />
                         </div>
                         <div className='friendPicDiv' >
-                            <img src='assets/profile/friends/friend_7.jpg' className='friendPic' />
+                            <img src={window.friend7URL}  className='friendPic' />
                         </div>
                         <div className='friendPicDiv' >
-                            <img src='assets/profile/friends/friend_8.jpg' className='friendPic' />
+                            <img src={window.friend8URL}  className='friendPic' />
                         </div>
                     </div>
                 </div>
