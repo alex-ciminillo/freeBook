@@ -174,3 +174,69 @@
     width: 90%;
 }
 
+
+
+.loginErrorRed {
+    border: 1px solid red;
+}
+
+.loginUsernameErrorIcon {
+    position: absolute;
+    margin-top: 18px;
+    margin-left: -30px;
+    visibility: hidden;
+}
+
+.loginPasswordErrorIcon {
+    position: absolute;
+    margin-top: 18px;
+    margin-left: -30px;
+    visibility: hidden;
+}
+
+
+.loginUsernameErrorText {
+    display: flex;
+    justify-content: center;
+    height: 0px;
+    width: 0px;
+    visibility: hidden;
+}
+.loginUsernameErrorText > div {
+    color: #f02849;
+    text-align: left;
+    width: 92%;
+    font-size: 13px;
+    font-family: Tahoma;
+}
+
+.loginPasswordErrorText {
+    display: flex;
+    justify-content: center;
+    height: 0px;
+    width: 0px;
+    visibility: hidden;
+}
+.loginPasswordErrorText > div {
+    color: #f02849;
+    text-align: left;
+    width: 92%;
+    font-size: 13px;
+    font-family: Tahoma;
+}
+
+.loginShowErrorIcons {
+    visibility: visible !important;
+}
+
+.loginShowErrorText {
+    width: 100%;
+    height: 35px;
+    visibility: visible !important;
+}
+
+.loginShowErrorText2 {
+    width: 100%;
+    height: 15px;
+    visibility: visible !important;
+}

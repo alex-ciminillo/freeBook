@@ -18,7 +18,7 @@ const App = () => {
             <Switch>
                 <ProtectedRoute path="/users/:id" component={ProfileContainer} />
                 <Route exact path="/" component={GreetingContainer} />
-                <Route component={NotFound} />
+                <AuthRoute component={NotFound} />
             </Switch>
             <ProtectedRoute component={NavBarContainer} />
             <ProtectedRoute component={NewMessageContainer} />

@@ -140,7 +140,7 @@ var App = function App() {
     exact: true,
     path: "/",
     component: _greeting_container__WEBPACK_IMPORTED_MODULE_1__["default"]
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_route_util__WEBPACK_IMPORTED_MODULE_3__.AuthRoute, {
     component: _not_found_not_found__WEBPACK_IMPORTED_MODULE_7__["default"]
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_util_route_util__WEBPACK_IMPORTED_MODULE_3__.ProtectedRoute, {
     component: _navbar_navbar_container__WEBPACK_IMPORTED_MODULE_5__["default"]
@@ -795,7 +795,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -835,9 +834,21 @@ var NotFound = /*#__PURE__*/function (_React$Component) {
   _createClass(NotFound, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "This page isn't available"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, "The link you followed may be broken, or the page may have been removed."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link, {
-        to: "/"
-      }, "Log In")));
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "notFoundNavBar"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", {
+        className: "title"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "titleF"
+      }, "f"), "r", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "title"
+      }, "e", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "espacing"
+      }, "e")), "bo", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "ospacing"
+      }, "o"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        className: "titleF"
+      }, "k"))));
     }
   }]);
 
@@ -1422,62 +1433,66 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
     value: function handleSubmit(e) {
       e.preventDefault();
 
-      if ($('#signUpFemale').is(':checked')) {
-        this.state.gender = 'female';
-      } else if ($('#signUpMale').is(':checked')) {
-        this.state.gender = 'male';
-      } else {
-        if (!$('#customGenderOptional').val()) {
-          this.state.gender = $('#pronounSelectBox').val();
+      if (this.props.modal) {
+        if ($('#signUpFemale').is(':checked')) {
+          this.state.gender = 'female';
+        } else if ($('#signUpMale').is(':checked')) {
+          this.state.gender = 'male';
         } else {
-          this.state.gender = $('#customGenderOptional').val();
+          if (!$('#customGenderOptional').val()) {
+            this.state.gender = $('#pronounSelectBox').val();
+          } else {
+            this.state.gender = $('#customGenderOptional').val();
+          }
         }
+
+        if (parseInt($('#year').val()) > 2017) {
+          $('#month').addClass('touchedYear2');
+          $('#day').addClass('touchedYear2');
+          $('#year').addClass('touchedYear2');
+          $('#birthdayI').addClass('touched');
+          this.makeInvalid();
+          return;
+        }
+
+        if (!$('#signUpMale').is(':checked') && !$('#signUpFemale').is(':checked') && !$('#signUpCustom').is(':checked')) {
+          $('#sessionForm2').addClass('sessionFormCustom');
+          $('#signUpMobileEmailTip').addClass('sessionFormCustom');
+          $('#signUpPasswordTip').addClass('sessionFormCustom');
+          $('#signUpEmailExistTip').addClass('sessionFormCustom');
+          $('#signUpBirthdayTip').addClass('sessionFormCustom');
+          $('#signUpFirstNameTip').addClass('sessionFormCustom');
+          $('#signUpGenderSelector').addClass('signUpGenderSelectorCustom');
+          $('#pronounSelectBox').addClass('touchedYear2');
+          $('#signUpGenderSelecterI').addClass('touched');
+          $('#pronounSelectBox').addClass('touchedYear');
+          $('#signUpGenderSelecterI').addClass('iconTouch');
+          $('#pronounSelectBox').addClass('needTip');
+          this.makeInvalid();
+          return;
+        }
+
+        if ($('#signUpCustom').is(':checked') && $('#pronounSelectBox').val() === null) {
+          $('#sessionForm2').addClass('sessionFormCustom');
+          $('#signUpMobileEmailTip').addClass('sessionFormCustom');
+          $('#signUpPasswordTip').addClass('sessionFormCustom');
+          $('#signUpBirthdayTip').addClass('sessionFormCustom');
+          $('#signUpFirstNameTip').addClass('sessionFormCustom');
+          $('#signUpEmailExistTip').addClass('sessionFormCustom');
+          $('#signUpGenderSelector').addClass('signUpGenderSelectorCustom');
+          $('#pronounSelectBox').addClass('touchedYear2');
+          $('#signUpGenderSelecterI').addClass('touched');
+          $('#pronounSelectBox').addClass('touchedYear');
+          $('#signUpGenderSelecterI').addClass('iconTouch');
+          $('#pronounSelectBox').addClass('needTip');
+          this.makeInvalid();
+          return;
+        }
+
+        this.state.birthday = $('#month').val() + ' ' + $('#day').val() + ' ' + $('#year').val();
       }
 
-      if (parseInt($('#year').val()) > 2017) {
-        $('#month').addClass('touchedYear2');
-        $('#day').addClass('touchedYear2');
-        $('#year').addClass('touchedYear2');
-        $('#birthdayI').addClass('touched');
-        this.makeInvalid();
-        return;
-      }
-
-      if (!$('#signUpMale').is(':checked') && !$('#signUpFemale').is(':checked') && !$('#signUpCustom').is(':checked')) {
-        $('#sessionForm2').addClass('sessionFormCustom');
-        $('#signUpMobileEmailTip').addClass('sessionFormCustom');
-        $('#signUpPasswordTip').addClass('sessionFormCustom');
-        $('#signUpEmailExistTip').addClass('sessionFormCustom');
-        $('#signUpBirthdayTip').addClass('sessionFormCustom');
-        $('#signUpFirstNameTip').addClass('sessionFormCustom');
-        $('#signUpGenderSelector').addClass('signUpGenderSelectorCustom');
-        $('#pronounSelectBox').addClass('touchedYear2');
-        $('#signUpGenderSelecterI').addClass('touched');
-        $('#pronounSelectBox').addClass('touchedYear');
-        $('#signUpGenderSelecterI').addClass('iconTouch');
-        $('#pronounSelectBox').addClass('needTip');
-        this.makeInvalid();
-        return;
-      }
-
-      if ($('#signUpCustom').is(':checked') && $('#pronounSelectBox').val() === null) {
-        $('#sessionForm2').addClass('sessionFormCustom');
-        $('#signUpMobileEmailTip').addClass('sessionFormCustom');
-        $('#signUpPasswordTip').addClass('sessionFormCustom');
-        $('#signUpBirthdayTip').addClass('sessionFormCustom');
-        $('#signUpFirstNameTip').addClass('sessionFormCustom');
-        $('#signUpEmailExistTip').addClass('sessionFormCustom');
-        $('#signUpGenderSelector').addClass('signUpGenderSelectorCustom');
-        $('#pronounSelectBox').addClass('touchedYear2');
-        $('#signUpGenderSelecterI').addClass('touched');
-        $('#pronounSelectBox').addClass('touchedYear');
-        $('#signUpGenderSelecterI').addClass('iconTouch');
-        $('#pronounSelectBox').addClass('needTip');
-        this.makeInvalid();
-        return;
-      }
-
-      this.state.birthday = $('#month').val() + ' ' + $('#day').val() + ' ' + $('#year').val();
+      console.log('click');
       var user = Object.assign({}, this.state);
       this.props.processForm(user);
     }
@@ -1494,19 +1509,21 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "startDemo",
     value: function startDemo() {
+      var usernameInput = document.getElementById('username');
+      var passwordInput = document.getElementById('password');
+      usernameInput.value = '';
+      passwordInput.value = '';
       var processForm = this.props.processForm.bind();
       var getDemoEmail = this.getDemoEmail.bind(this);
       var getDemoPassword = this.getDemoPassword.bind(this);
-      var usernameInput = document.getElementById('username');
-      var passwordInput = document.getElementById('password');
       var username = 'ciminilloa@findlay.edu';
       var password = 'Password1!';
       setTimeout(function fillInput() {
         if (usernameInput.value !== username) {
-          usernameInput.setAttribute('value', getDemoEmail(username, usernameInput));
+          usernameInput.value = getDemoEmail(username, usernameInput);
           setTimeout(fillInput, 150);
         } else {
-          passwordInput.setAttribute('value', getDemoPassword(password, passwordInput));
+          passwordInput.value = getDemoPassword(password, passwordInput);
 
           if (passwordInput.value !== password) {
             setTimeout(fillInput, 150);
@@ -1526,19 +1543,29 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       console.log(this.props.errors.session);
 
       if (!this.props.modal) {
-        if (this.props.errors.session.length === 0) {
-          return null;
+        if (this.props.errors.session.includes('Username does not exist')) {
+          $('#username').addClass('loginErrorRed');
+          $('#loginUsernameErrorIcon').addClass('loginShowErrorIcons');
+          $('#loginUsernameErrorText').addClass('loginShowErrorText');
+        } else {
+          $('#username').removeClass('loginErrorRed');
+          $('#loginUsernameErrorIcon').removeClass('loginShowErrorIcons');
+          $('#loginUsernameErrorText').removeClass('loginShowErrorText');
         }
 
-        return this.props.errors.session.map(function (error, idx) {
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
-            key: idx
-          }, error);
-        });
-      }
-
-      if (this.props.errors.session.includes('Username has already been taken')) {
-        $('#signUpEmailExistTip').addClass('signUpShowTips');
+        if (this.props.errors.session.includes('Invalid username/password')) {
+          $('#password').addClass('loginErrorRed');
+          $('#loginPasswordErrorText').addClass('loginShowErrorText2');
+          $('#loginPasswordErrorIcon').addClass('loginShowErrorIcons');
+        } else {
+          $('#password').removeClass('loginErrorRed');
+          $('#loginPasswordErrorText').removeClass('loginShowErrorText2');
+          $('#loginPasswordErrorIcon').removeClass('loginShowErrorIcons');
+        }
+      } else {
+        if (this.props.errors.session.includes('Username has already been taken')) {
+          $('#signUpEmailExistTip').addClass('signUpShowTips');
+        }
       }
     }
   }, {
@@ -1823,7 +1850,17 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         type: "text",
         value: this.state.username,
         onChange: this.update('username')
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        id: "loginUsernameErrorIcon",
+        className: "loginUsernameErrorIcon",
+        src: "https://static.xx.fbcdn.net/rsrc.php/v3/yT/r/57kC6DHzoam.png",
+        alt: "",
+        width: "20",
+        height: "20"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "loginUsernameErrorText",
+        className: "loginUsernameErrorText"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "The email or mobile number you entered isn't connected to an account.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "outerInputBox"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         required: true,
@@ -1833,7 +1870,17 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
         type: "password",
         value: this.state.password,
         onChange: this.update('password')
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        id: "loginPasswordErrorIcon",
+        className: "loginPasswordErrorIcon",
+        src: "https://static.xx.fbcdn.net/rsrc.php/v3/yT/r/57kC6DHzoam.png",
+        alt: "",
+        width: "20",
+        height: "20"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "loginPasswordErrorText",
+        className: "loginPasswordErrorText"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "The password you've entered is incorrect.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         className: "logIn",
         type: "submit",
         value: this.buttonText()

@@ -29,6 +29,7 @@ export default class SessionForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
+        if (this.props.modal) {
         if ($('#signUpFemale').is(':checked')) { this.state.gender = 'female' }
         else if ($('#signUpMale').is(':checked')) { this.state.gender = 'male' }
         else {
@@ -82,7 +83,9 @@ export default class SessionForm extends React.Component {
             return
         }
 
-        this.state.birthday = $('#month').val() + ' ' + $('#day').val()  + ' ' + $('#year').val()
+        this.state.birthday = $('#month').val() + ' ' + $('#day').val()  + ' ' + $('#year').val()      
+        }
+        console.log('click')
         const user = Object.assign({}, this.state);
         this.props.processForm(user);
         
@@ -97,19 +100,22 @@ export default class SessionForm extends React.Component {
     }
 
     startDemo() {
+        let usernameInput = document.getElementById('username')
+        let passwordInput = document.getElementById('password')
+        usernameInput.value = ''
+        passwordInput.value = ''
         let processForm = this.props.processForm.bind()
         let getDemoEmail = this.getDemoEmail.bind(this)
         let getDemoPassword = this.getDemoPassword.bind(this)
-        let usernameInput = document.getElementById('username')
-        let passwordInput = document.getElementById('password')
         let username = 'ciminilloa@findlay.edu'
         let password = 'Password1!'
+        
         setTimeout(function fillInput() {
             if (usernameInput.value !== username) { 
-                usernameInput.setAttribute('value', getDemoEmail(username, usernameInput))
+                usernameInput.value = getDemoEmail(username, usernameInput);
                 setTimeout(fillInput, 150) 
             } else { 
-                passwordInput.setAttribute('value', getDemoPassword(password, passwordInput)) 
+                passwordInput.value = getDemoPassword(password, passwordInput); 
                 if (passwordInput.value !== password) { 
                     setTimeout(fillInput, 150) 
                 } else {
@@ -124,16 +130,30 @@ export default class SessionForm extends React.Component {
     renderErrors() {
         console.log(this.props.errors.session)
         if (!this.props.modal) {
-            if (this.props.errors.session.length === 0) {
-                return null
+            if (this.props.errors.session.includes('Username does not exist')) {
+                $('#username').addClass('loginErrorRed')
+                $('#loginUsernameErrorIcon').addClass('loginShowErrorIcons')
+                $('#loginUsernameErrorText').addClass('loginShowErrorText')
+            } else {
+                $('#username').removeClass('loginErrorRed')
+                $('#loginUsernameErrorIcon').removeClass('loginShowErrorIcons')
+                $('#loginUsernameErrorText').removeClass('loginShowErrorText')
             }
-            return this.props.errors.session.map((error, idx) => {
-                return <p key={idx} >{error}</p>
-            })
+            if (this.props.errors.session.includes('Invalid username/password')) {
+                $('#password').addClass('loginErrorRed')
+                $('#loginPasswordErrorText').addClass('loginShowErrorText2')
+                $('#loginPasswordErrorIcon').addClass('loginShowErrorIcons')
+            } else {
+                $('#password').removeClass('loginErrorRed')
+                $('#loginPasswordErrorText').removeClass('loginShowErrorText2')
+                $('#loginPasswordErrorIcon').removeClass('loginShowErrorIcons')
+            }
+        } else {
+            if (this.props.errors.session.includes('Username has already been taken')) {
+                $('#signUpEmailExistTip').addClass('signUpShowTips')
+            }
         }
-        if (this.props.errors.session.includes('Username has already been taken')) {
-            $('#signUpEmailExistTip').addClass('signUpShowTips')
-        }
+        
     }
 
     
@@ -398,16 +418,28 @@ export default class SessionForm extends React.Component {
                                 value={this.state.username}
                                 onChange={this.update('username')}
                             />
+                            <img id='loginUsernameErrorIcon' className='loginUsernameErrorIcon' src="https://static.xx.fbcdn.net/rsrc.php/v3/yT/r/57kC6DHzoam.png" alt="" width="20" height="20"></img>
                             </div>
-                        <br/>
+                            <div id='loginUsernameErrorText' className='loginUsernameErrorText'  >
+                                <div >
+                                    The email or mobile number you entered isn't connected to an account.
+                                </div>
+                            </div>
+                           
                             <div className='outerInputBox' >
                             <input required id='password' className='emailAndPassword' placeholder='Password' 
                                 type="password"
                                 value={this.state.password}
                                 onChange={this.update('password')}
                             />
+                            <img id='loginPasswordErrorIcon' className='loginPasswordErrorIcon' src="https://static.xx.fbcdn.net/rsrc.php/v3/yT/r/57kC6DHzoam.png" alt="" width="20" height="20"></img>
+                           
                             </div>
-                        <br/>
+                            <div id='loginPasswordErrorText' className='loginPasswordErrorText'  >
+                                <div >
+                                    The password you've entered is incorrect.
+                                </div>
+                            </div>
                         <input className='logIn' type="submit" value={this.buttonText()} />
                        <p className='demoLogin' onClick={()=>this.startDemo()} >Want to try a demo?</p>
                     </div>
