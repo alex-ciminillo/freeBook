@@ -1,18 +1,19 @@
 class User < ApplicationRecord
 
     PASSWORD_REQUIREMENTS = /\A 
-        (?=.{8,}) # At least 8 characters
-        (?=.*\d) # At least one number
-        (?=.*[a-z]) # At least one lowercase character
-        (?=.*[A-Z]) # At least one uppercase character
-        (?=.*[[:^alnum:]]) #At least one symbol
+        (?=.{6,}) # At least 6 characters
+        # (?=.*\d) # At least one number
+        # (?=.*[a-z]) # At least one lowercase character
+        # (?=.*[A-Z]) # At least one uppercase character
+        # (?=.*[[:^alnum:]]) #At least one symbol
     /x
 
-    EMAIL_REQUIREMENTS = /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
+    # EMAIL_REQUIREMENTS = /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
 
     validates :username, :password_digest, :session_token, :first_name, :last_name, presence: true
-    validates :username, format: EMAIL_REQUIREMENTS, uniqueness: true
+    validates :username, uniqueness: true
     validates :password, format: PASSWORD_REQUIREMENTS, allow_nil: true
+    validates :birthday, :gender, presence: true
     attr_reader :password
 
     after_initialize :ensure_session_token

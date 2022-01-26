@@ -9,13 +9,15 @@ export default class Greeting extends React.Component {
         
     }
 
-
+    componentDidMount() {
+        this.props.hideModal()
+    }
     
 
     render() {
         return this.props.currentUser ? (
-        
             <div>
+                
                 <h2>Hello, {this.props.currentUser.username}!</h2>
                 <button onClick={() => this.props.logout()} >Log Out</button>
                 <br/>

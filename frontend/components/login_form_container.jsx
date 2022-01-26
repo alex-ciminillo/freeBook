@@ -6,7 +6,8 @@ import { showModal } from '../actions/modal_actions';
 const mapStateToProps = (state, ownProps) => {
     return {
         errors: state.errors,
-        formType: 'login'
+        formType: 'login',
+        modal: state.ui.modal
     };
 };
 

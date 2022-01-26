@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import { $CombinedState } from 'redux';
 export default class SessionForm extends React.Component {
     constructor(props) {
       super(props);
@@ -9,7 +7,9 @@ export default class SessionForm extends React.Component {
             username: "",
             password: "",
             firstName: "",
-            lastName: ""
+            lastName: "",
+            gender: "",
+            birthday: ""
         };
       } else {
         this.state = {
@@ -22,12 +22,70 @@ export default class SessionForm extends React.Component {
       this.showModal = this.showModal.bind(this);
       this.makeInvalid = this.makeInvalid.bind(this);
       this.optionClick = this.optionClick.bind(this);
+      this.optionClick2 = this.optionClick2.bind(this);
+      this.hideModalAction = this.hideModalAction.bind(this);
+      
     }
 
     handleSubmit(e) {
         e.preventDefault();
+        if ($('#signUpFemale').is(':checked')) { this.state.gender = 'female' }
+        else if ($('#signUpMale').is(':checked')) { this.state.gender = 'male' }
+        else {
+            if (!$('#customGenderOptional').val()) {
+                this.state.gender = $('#pronounSelectBox').val()
+            } else {
+                this.state.gender = $('#customGenderOptional').val()
+            }
+            
+        }
+        if (parseInt($('#year').val()) > 2017) {
+            $('#month').addClass('touchedYear2')
+            $('#day').addClass('touchedYear2')
+            $('#year').addClass('touchedYear2')
+            $('#birthdayI').addClass('touched')
+            this.makeInvalid()
+            return
+        }
+
+        if (!$('#signUpMale').is(':checked') && !$('#signUpFemale').is(':checked') && !$('#signUpCustom').is(':checked')) {
+            $('#sessionForm2').addClass('sessionFormCustom')
+            $('#signUpMobileEmailTip').addClass('sessionFormCustom')
+            $('#signUpPasswordTip').addClass('sessionFormCustom')
+            $('#signUpEmailExistTip').addClass('sessionFormCustom')
+            $('#signUpBirthdayTip').addClass('sessionFormCustom')
+            $('#signUpFirstNameTip').addClass('sessionFormCustom')
+            $('#signUpGenderSelector').addClass('signUpGenderSelectorCustom')
+            $('#pronounSelectBox').addClass('touchedYear2')
+            $('#signUpGenderSelecterI').addClass('touched')
+            $('#pronounSelectBox').addClass('touchedYear')
+            $('#signUpGenderSelecterI').addClass('iconTouch')
+            $('#pronounSelectBox').addClass('needTip')
+            this.makeInvalid()
+            return
+        }
+
+        if ($('#signUpCustom').is(':checked') && $('#pronounSelectBox').val() === null) {
+            $('#sessionForm2').addClass('sessionFormCustom')
+            $('#signUpMobileEmailTip').addClass('sessionFormCustom')
+            $('#signUpPasswordTip').addClass('sessionFormCustom')
+            $('#signUpBirthdayTip').addClass('sessionFormCustom')
+            $('#signUpFirstNameTip').addClass('sessionFormCustom')
+            $('#signUpEmailExistTip').addClass('sessionFormCustom')
+            $('#signUpGenderSelector').addClass('signUpGenderSelectorCustom')
+            $('#pronounSelectBox').addClass('touchedYear2')
+            $('#signUpGenderSelecterI').addClass('touched')
+            $('#pronounSelectBox').addClass('touchedYear')
+            $('#signUpGenderSelecterI').addClass('iconTouch')
+            $('#pronounSelectBox').addClass('needTip')
+            this.makeInvalid()
+            return
+        }
+
+        this.state.birthday = $('#month').val() + ' ' + $('#day').val()  + ' ' + $('#year').val()
         const user = Object.assign({}, this.state);
         this.props.processForm(user);
+        
     }
 
     getDemoEmail(email, input) {
@@ -44,7 +102,7 @@ export default class SessionForm extends React.Component {
         let getDemoPassword = this.getDemoPassword.bind(this)
         let usernameInput = document.getElementById('username')
         let passwordInput = document.getElementById('password')
-        let username = 'alex@gmail.com'
+        let username = 'ciminilloa@findlay.edu'
         let password = 'Password1!'
         setTimeout(function fillInput() {
             if (usernameInput.value !== username) { 
@@ -64,14 +122,21 @@ export default class SessionForm extends React.Component {
     }
 
     renderErrors() {
-        if (this.props.errors.session.length === 0) {
-            return null
+        console.log(this.props.errors.session)
+        if (!this.props.modal) {
+            if (this.props.errors.session.length === 0) {
+                return null
+            }
+            return this.props.errors.session.map((error, idx) => {
+                return <p key={idx} >{error}</p>
+            })
         }
-        return this.props.errors.session.map((error) => {
-            return <p>{error}</p>
-        })
-        
+        if (this.props.errors.session.includes('Username has already been taken')) {
+            $('#signUpEmailExistTip').addClass('signUpShowTips')
+        }
     }
+
+    
 
     update(field) {
         return (e) => {
@@ -86,6 +151,7 @@ export default class SessionForm extends React.Component {
     }
 
     createAccount() {
+        
         return this.props.formType === "signup" ? 
         null : 
         <button className='createAccount' onClick={this.showModal} >Create new account</button>
@@ -99,8 +165,13 @@ export default class SessionForm extends React.Component {
 
     hideModal() {
         return this.props.formType === "signup" ?
-        <button onClick={() => this.props.hideModal()} >Hide</button> :
+        <button onClick={this.hideModalAction} >Hide</button> :
         null
+    }
+
+    hideModalAction() {
+        this.props.errors.session = []
+        this.props.hideModal()
     }
 
     firstLastName() {
@@ -126,36 +197,98 @@ export default class SessionForm extends React.Component {
         null
     }
 
+
+    checkErrors() {
+        if (this.props.errors.session.includes('Password is invalid')) {
+            $('#signUpPasswordi').addClass('iconTouch')
+            $('#signUpPassword').addClass('needTip')
+            this.setState({
+                password: ""
+            })
+        }
+    }
+
+
     makeInvalid(e) {
         if (!$('#firstName').is(":focus") && $('#firstName').hasClass('touched')) {
             $('#firstNamei').addClass('iconTouch')
+            $('#firstName').addClass('needTip')
+            $('#signUpFirstNameTip').removeClass('signUpShowTips')
+            if (!$('#firstName').is(":invalid")) {
+                $('#firstNamei').removeClass('iconTouch')
+            }
         } else if ($('#firstName').is(":focus")) {
             $('#firstNamei').removeClass('iconTouch')
             $('#firstName').addClass('touched')
             $('#firstNamei').addClass('touched')
+            if ($('#firstName').hasClass('needTip')) {
+                $('#signUpFirstNameTip').addClass('signUpShowTips')
+            }
+            if (!$('#firstName').is(":invalid")) {
+                $('#signUpFirstNameTip').removeClass('signUpShowTips')
+            }
         }
+
+
         if (!$('#lastName').is(":focus") && $('#lastName').hasClass('touched')) {
             $('#lastNamei').addClass('iconTouch')
+            $('#lastName').addClass('needTip')
+            $('#signUpLastNameTip').removeClass('signUpShowTips')
+            if (!$('#lastName').is(":invalid")) {
+                $('#lastNamei').removeClass('iconTouch')
+            }
         } else if ($('#lastName').is(":focus")) {
             $('#lastNamei').removeClass('iconTouch')
             $('#lastName').addClass('touched')
             $('#lastNamei').addClass('touched')
+            if ($('#lastName').hasClass('needTip')) {
+                $('#signUpLastNameTip').addClass('signUpShowTips')
+            }
+            if (!$('#lastName').is(":invalid")) {
+                $('#signUpLastNameTip').removeClass('signUpShowTips')
+            }
         }
         if (!$('#emailMobile').is(":focus") && $('#emailMobile').hasClass('touched')) {
             $('#emailMobilei').addClass('iconTouch')
+            $('#emailMobile').addClass('needTip')
+            $('#signUpMobileEmailTip').removeClass('signUpShowTips')
+            if (!$('#emailMobile').is(":invalid")) {
+                $('#emailMobilei').removeClass('iconTouch')
+            }
         } else if ($('#emailMobile').is(":focus")) {
             $('#emailMobilei').removeClass('iconTouch')
             $('#emailMobile').addClass('touched')
             $('#emailMobilei').addClass('touched')
+            if ($('#emailMobile').hasClass('needTip')) {
+                $('#signUpMobileEmailTip').addClass('signUpShowTips')
+            }
+            if (!$('#emailMobile').is(":invalid")) {
+                $('#signUpMobileEmailTip').removeClass('signUpShowTips')
+            }
+
         }
 
         if (!$('#signUpPassword').is(":focus") && $('#signUpPassword').hasClass('touched')) {
             $('#signUpPasswordi').addClass('iconTouch')
+            $('#signUpPassword').addClass('needTip')
+            $('#signUpPasswordTip').removeClass('signUpShowTips')
+            if (!$('#signUpPassword').is(":invalid")) {
+                $('#signUpPasswordi').removeClass('iconTouch')
+            }
         } else if ($('#signUpPassword').is(":focus")) {
             $('#signUpPasswordi').removeClass('iconTouch')
             $('#signUpPassword').addClass('touched')
             $('#signUpPasswordi').addClass('touched')
+            if ($('#signUpPassword').hasClass('needTip')) {
+                $('#signUpPasswordTip').addClass('signUpShowTips')
+            }
+            if (!$('#signUpPassword').is(":invalid")) {
+                $('#signUpPasswordTip').removeClass('signUpShowTips')
+            }
         }
+
+
+        
 
         if ($('#month').is(":focus") || $('#day').is(":focus") || $('#year').is(":focus")) {
             $('#birthdayI').removeClass('iconTouch')
@@ -166,23 +299,72 @@ export default class SessionForm extends React.Component {
             $('#day').addClass('touchedYear2')
             $('#year').addClass('touchedYear2')
             $('#birthdayI').addClass('touched')
+            if ($('#month').hasClass('needTip')) {
+                $('#signUpBirthdayTip').addClass('signUpShowTips')
+            }
+            if ($('#day').hasClass('needTip')) {
+                $('#signUpBirthdayTip').addClass('signUpShowTips')
+            }
+            if ($('#year').hasClass('needTip')) {
+                $('#signUpBirthdayTip').addClass('signUpShowTips')
+            }
         } else if (!$('#month').is(":focus") && $('#month').hasClass('touchedYear2') || !$('#day').is(":focus") && $('#day').hasClass('touchedYear2')  || !$('#year').is(":focus") && $('#year').hasClass('touchedYear2')) {
-            console.log($('#year').val())
             if (parseInt($('#year').val()) > 2017) {
                 $('#month').addClass('touchedYear')
                 $('#day').addClass('touchedYear')
                 $('#year').addClass('touchedYear')
                 $('#birthdayI').addClass('iconTouch')
+                $('#month').addClass('needTip')
+                $('#day').addClass('needTip')
+                $('#year').addClass('needTip')
             }
+            $('#signUpBirthdayTip').removeClass('signUpShowTips')
         } 
 
+        if ($('#signUpCustom').is(':checked')) {
+            $('#sessionForm2').addClass('sessionFormCustom')
+            $('#signUpMobileEmailTip').addClass('sessionFormCustom')
+            $('#signUpPasswordTip').addClass('sessionFormCustom')
+            $('#signUpBirthdayTip').addClass('sessionFormCustom')
+            $('#signUpFirstNameTip').addClass('sessionFormCustom')
+            $('#signUpEmailExistTip').addClass('sessionFormCustom')
+            $('#signUpGenderSelector').addClass('signUpGenderSelectorCustom')
+        } else if ($('#signUpMale').is(':checked') || $('#signUpFemale').is(':checked') ) {
+            $('#sessionForm2').removeClass('sessionFormCustom')
+            $('#signUpMobileEmailTip').removeClass('sessionFormCustom')
+            $('#signUpPasswordTip').removeClass('sessionFormCustom')
+            $('#signUpBirthdayTip').removeClass('sessionFormCustom')
+            $('#signUpFirstNameTip').removeClass('sessionFormCustom')
+            $('#signUpEmailExistTip').removeClass('sessionFormCustom')
+            $('#signUpGenderSelector').removeClass('signUpGenderSelectorCustom')
+        }
 
+        if ($('#pronounSelectBox').is(":focus")) {
+            $('#signUpGenderSelecterI').removeClass('iconTouch')
+            $('#pronounSelectBox').removeClass('touchedYear')
+            $('#pronounSelectBox').addClass('touchedYear2')
+            $('#signUpGenderSelecterI').addClass('touched')
+            if ($('#pronounSelectBox').hasClass('needTip') && !this.hideGenderTips ) {
+                 $('#signUpGenderTip').addClass('signUpShowTips')
+            }
+        } else if (!$('#pronounSelectBox').is(":focus") && $('#pronounSelectBox').hasClass('touchedYear2')) {
+            if ($('#pronounSelectBox').val() === null) {
+                $('#pronounSelectBox').addClass('touchedYear')
+                $('#signUpGenderSelecterI').addClass('iconTouch')
+                $('#pronounSelectBox').addClass('needTip')
+                $('#signUpGenderTip').removeClass('signUpShowTips')
+            }
+        }
 
+        if (!$('#signUpCustom').is(':checked')) {
+            $('#signUpGenderSelecterI').removeClass('iconTouch')
+        }
+
+        
         
     }
 
     optionClick() {
-        console.log("hi")
         if (parseInt($('#year').val()) > 2017) {
             $('#month').addClass('touchedYear')
             $('#day').addClass('touchedYear')
@@ -192,7 +374,11 @@ export default class SessionForm extends React.Component {
             $('#day').blur()
             $('#year').blur()
         }
-    
+        $('#signUpBirthdayTip').removeClass('signUpShowTips')
+    }
+    optionClick2() {
+        $('#signUpGenderTip').removeClass('signUpShowTips')
+        this.hideGenderTips = true;
     }
 
 
@@ -203,11 +389,11 @@ export default class SessionForm extends React.Component {
             <div className='sessionForm' >
                 {this.hideModal()}
                 <form onSubmit={this.handleSubmit}>
-                    {this.renderErrors()}
+                     {this.renderErrors()}
                     <div>
                         {this.firstLastName()}
                             <div className='outerInputBox' >
-                            <input id='username' className='emailAndPassword' placeholder='Email or phone number' 
+                            <input required id='username' className='emailAndPassword' placeholder='Email or phone number' 
                                 type="text"
                                 value={this.state.username}
                                 onChange={this.update('username')}
@@ -215,7 +401,7 @@ export default class SessionForm extends React.Component {
                             </div>
                         <br/>
                             <div className='outerInputBox' >
-                            <input id='password' className='emailAndPassword' placeholder='Password' 
+                            <input required id='password' className='emailAndPassword' placeholder='Password' 
                                 type="password"
                                 value={this.state.password}
                                 onChange={this.update('password')}
@@ -233,7 +419,51 @@ export default class SessionForm extends React.Component {
             </div>
             :
             <div className='backgroundFade' onClick={this.makeInvalid} >
-                <div className='sessionForm2' >
+                {this.checkErrors()}
+                <div id='signUpMobileEmailTip' className='signUpMobileEmailTip' >
+                    <div>
+                        You'll use this when you log in and if you ever need to reset your password.
+                    </div>
+                    <i></i>
+                </div>
+                <div id='signUpPasswordTip' className='signUpPasswordTip' >
+                    <div>
+                        Enter a combination of at least six numbers, letters and punctuation marks (like ! and &amp;).
+                    </div>
+                    <i></i>
+                </div>
+                <div id='signUpBirthdayTip' className='signUpBirthdayTip' >
+                    <div>
+                        It looks like you entered the wrong info. Please be sure to use your real birthday.
+                    </div>
+                    <i></i>
+                </div>
+                <div id='signUpGenderTip' className='signUpGenderTip' >
+                    <div>
+                        Please select your pronoun.
+                    </div>
+                    <i></i>
+                </div>
+                <div id='signUpFirstNameTip' className='whatsYourName1' >
+                    <div>
+                        What's your name?
+                    </div>
+                    <i></i>
+                </div>
+                <div id='signUpEmailExistTip' className='signUpEmailExistTip' >
+                    <div>
+                        An account already exists with that email or phone number. Please log in instead or try signing up with a new one.
+                    </div>
+                    <i></i>
+                </div>
+
+                <div id='sessionForm2' className='sessionForm2' >
+                <div id='signUpLastNameTip' className='whatsYourName2' >
+                    <div>
+                        What's your name?
+                    </div>
+                    <i></i>
+                </div>
                     <div className='signUpTop' >
                         <div className='signUpTitle' >
                             <div>
@@ -244,7 +474,7 @@ export default class SessionForm extends React.Component {
                             </div>
                         </div>
                         <div className='signUpExit' >
-                            <img onClick={() => this.props.hideModal()}  className="signUpExitButton" src="https://static.xx.fbcdn.net/rsrc.php/v3/y2/r/__geKiQnSG-.png" alt="" width="24" height="24" id="u_1d_9_lO"/>
+                            <img onClick={this.hideModalAction}  className="signUpExitButton" src="https://static.xx.fbcdn.net/rsrc.php/v3/y2/r/__geKiQnSG-.png" alt="" width="24" height="24" id="u_1d_9_lO"/>
                         </div>
                         
                     </div>
@@ -293,28 +523,51 @@ export default class SessionForm extends React.Component {
                                 <span  data-type="radio" data-name="gender_wrapper" id="u_1_o_Op">
                                     <span >
                                         <label htmlFor="signUpFemale" >Female</label>
-                                        <input type="radio"  name="sex" value="1" id="signUpFemale"/>
+                                        <input type="radio"  name="sex" value="female" id="signUpFemale"/>
                                     </span>
                                     <span  >
                                         <label htmlFor="signUpMale"  >Male</label>
-                                        <input type="radio"  name="sex" value="2" id="signUpMale"/>
+                                        <input type="radio"  name="sex" value="male" id="signUpMale"/>
                                     </span>
                                     <span  >
                                         <label htmlFor="signUpCustom" >Custom</label>
-                                        <input type="radio"  name="sex" value="-1" id="signUpCustom"/>
+                                        <input type="radio"  name="sex" value="custom" id="signUpCustom"/>
                                     </span>
                                 </span>
                             </div>
                         </div>
+
+                        <div id='signUpGenderSelector' className='signUpGenderSelector'>
+                            <div data-type="selectors" data-name="preferred_pronoun" >
+                                <select onChange={this.optionClick2} defaultValue="default" id='pronounSelectBox' aria-label="Select your pronoun" name="preferred_pronoun" >
+                                    <option value="default" disabled="disabled">Select your pronoun</option>
+                                    <option value="female">She: "Wish her a happy birthday!"</option>
+                                    <option value="male">He: "Wish him a happy birthday!"</option>
+                                    <option value="they">They: "Wish them a happy birthday!"</option>
+                                </select>
+                                <i id='signUpGenderSelecterI' ></i>
+                            </div>
+                            <div>
+                                <div>Your pronoun is visible to everyone.</div>
+                            </div>
+                            <div>
+                                <div>
+                                    <input id='customGenderOptional' type="text" data-type="text" name="custom_gender" placeholder="Gender (optional)"/>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+
+
                         <div className='signUpPolicy' >
                             <div>By clicking Sign Up, you agree to our <span>Terms</span>, <span>Data Policy</span> and <span>Cookies Policy</span>. You may receive SMS Notifications from us and can opt out any time.</div>
                         </div>
-                        <div className='signUpButton' >
-                            <div>
+                        <div className='signUpButton'  >
+                            <button type='submit' >
                                 <div>
                                     Sign Up
                                 </div>
-                            </div>
+                            </button>
                         </div>
                     </form>
                 </div>

@@ -6,7 +6,7 @@ import { AuthRoute, ProtectedRoute } from "../util/route_util";
 import ModalContainer from './modal/modal_container'
 import NavBarContainer from "./navbar/navbar_container";
 import NewMessageContainer from './new_message/new_message_container'
-
+import NotFound from './not_found/not_found'
 
 const App = () => {
 
@@ -18,9 +18,11 @@ const App = () => {
             <Switch>
                 <ProtectedRoute path="/users/:id" component={ProfileContainer} />
                 <Route exact path="/" component={GreetingContainer} />
+                <Route component={NotFound} />
             </Switch>
             <ProtectedRoute component={NavBarContainer} />
             <ProtectedRoute component={NewMessageContainer} />
+            
         </div>
     )
   
