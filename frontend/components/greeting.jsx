@@ -9,7 +9,7 @@ export default class Greeting extends React.Component {
         
     }
 
-    componentDidMount() {
+    componentDidUpdate() {
         this.props.hideModal()
     }
     

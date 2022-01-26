@@ -205,8 +205,8 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   }
 
   _createClass(Greeting, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
       this.props.hideModal();
     }
   }, {
