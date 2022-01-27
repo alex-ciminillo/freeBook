@@ -93,5 +93,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
   
 
+   # config/environments/production.rb
+   config.active_storage.service = :amazon_prod
 
 end

@@ -100,6 +100,38 @@ var receiveErrors = function receiveErrors(errors) {
 
 /***/ }),
 
+/***/ "./frontend/actions/user_actions.js":
+/*!******************************************!*\
+  !*** ./frontend/actions/user_actions.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "RECEIVE_CURRENT_USER": () => (/* binding */ RECEIVE_CURRENT_USER),
+/* harmony export */   "receiveCurrentUser": () => (/* binding */ receiveCurrentUser),
+/* harmony export */   "addFileToUser": () => (/* binding */ addFileToUser)
+/* harmony export */ });
+/* harmony import */ var _util_user_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../util/user_api_util */ "./frontend/util/user_api_util.js");
+
+var RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER';
+var receiveCurrentUser = function receiveCurrentUser(currentUser) {
+  return {
+    type: RECEIVE_CURRENT_USER,
+    currentUser: currentUser
+  };
+};
+var addFileToUser = function addFileToUser(formData) {
+  return function (dispatch) {
+    return _util_user_api_util__WEBPACK_IMPORTED_MODULE_0__.addFileToUser(formData).then(function (user) {
+      return dispatch(receiveCurrentUser(user));
+    });
+  };
+};
+
+/***/ }),
+
 /***/ "./frontend/components/app.jsx":
 /*!*************************************!*\
   !*** ./frontend/components/app.jsx ***!
@@ -974,21 +1006,63 @@ var Profile = /*#__PURE__*/function (_React$Component) {
   var _super = _createSuper(Profile);
 
   function Profile(props) {
+    var _this;
+
     _classCallCheck(this, Profile);
 
-    return _super.call(this, props);
+    _this = _super.call(this, props);
+    _this.state = {
+      photoUrl: null
+    };
+    return _this;
   }
 
   _createClass(Profile, [{
+    key: "handleFile",
+    value: function handleFile(e) {
+      this.setState({
+        photoUrl: e.target.files[0]
+      }); // const fileReader = new FileReader();
+      // fileReader.onloadend = () => {
+      //   setPhotoURL(fileReader.result)
+      //   setFile(file);
+      // }
+      // if (file) {
+      //   fileReader.readAsDataURL(file);
+      // }
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      console.log(this.props);
+      e.preventDefault();
+      if (!this.state.photoUrl) return;
+      var formData = new FormData();
+      formData.append('user[profpic]', this.state.photoUrl);
+      var data = {
+        data: formData,
+        id: this.props.currentUser.id
+      };
+      this.props.addFileToUser(data);
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this = this;
+      var _this2 = this;
 
+      console.log(this.props);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_profile_pics_profile_pics_container__WEBPACK_IMPORTED_MODULE_1__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Posts"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         onClick: function onClick() {
-          return _this.props.logout();
+          return _this2.props.logout();
         }
-      }, "Logout"));
+      }, "Logout"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        accept: "image/*,image/heif,image/heic",
+        onChange: this.handleFile.bind(this),
+        className: "profilePicUploadInput",
+        type: "file"
+      }), "Custom Upload"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: this.handleSubmit.bind(this)
+      }, "Submit")));
     }
   }]);
 
@@ -1013,11 +1087,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../actions/session_actions */ "./frontend/actions/session_actions.js");
 /* harmony import */ var _profile__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./profile */ "./frontend/components/profile/profile.jsx");
+/* harmony import */ var _actions_user_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../actions/user_actions */ "./frontend/actions/user_actions.js");
+
 
 
 
 
 var mapStateToProps = function mapStateToProps(state) {
+  // if (typeof state.entities.users[state.session.id].photoUrl !== 'string') {
+  //   state.entities.users[state.session.id].photoUrl = ''
+  // }
   return {
     currentUser: state.entities.users[state.session.id]
   };
@@ -1027,6 +1106,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     logout: function logout() {
       return dispatch((0,_actions_session_actions__WEBPACK_IMPORTED_MODULE_1__.logout)());
+    },
+    addFileToUser: function addFileToUser(formData) {
+      return dispatch((0,_actions_user_actions__WEBPACK_IMPORTED_MODULE_3__.addFileToUser)(formData));
     }
   };
 };
@@ -2897,6 +2979,29 @@ var logout = function logout() {
   return $.ajax({
     method: 'DELETE',
     url: '/api/session'
+  });
+};
+
+/***/ }),
+
+/***/ "./frontend/util/user_api_util.js":
+/*!****************************************!*\
+  !*** ./frontend/util/user_api_util.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "addFileToUser": () => (/* binding */ addFileToUser)
+/* harmony export */ });
+var addFileToUser = function addFileToUser(formData) {
+  return $.ajax({
+    method: 'PATCH',
+    url: "/api/users/".concat(formData.id),
+    data: formData.data,
+    contentType: false,
+    processData: false
   });
 };
 
