@@ -425,15 +425,7 @@
     font-size: 14.5px;
 }
 
-.addStoryButton:hover {
-    background-color: #176ace;
-}
 
-.addStoryIcon {
-    margin-bottom: 11px;
-    margin-right: 5px;
-    filter: invert(1);
-}
 
 .editProfileButton {
     cursor: pointer;
@@ -459,7 +451,15 @@
     margin-right: 5px;
 }
 
+.addStoryButton:hover {
+    background-color: #176ace;
+}
 
+.addStoryIcon {
+    margin-bottom: 11px;
+    margin-right: 5px;
+    filter: invert(1);
+}
 
 .grayLine {
     position: absolute;
