@@ -38,26 +38,7 @@
 
 }
 
-.writePostWithPic {
-    height: 655px;
-}
 
-.writePostTop {
-    align-self: center;
-    width: 94%;
-    height: 60px;
-    
-    display: flex;
-    flex-direction: row;
-    justify-content: right;
-}
-
-.writePostTop > div:first-child {
-    height: 100%;
-    width: 100%;
-    justify-content: center;
-    display: flex;
-}
 
 .writePostTop > div:first-child > div {
     align-self: center;
@@ -86,6 +67,27 @@
 .writePostTop > div:last-child > i {
     align-self: center;
     filter: invert(0.39);
+}
+
+.writePostWithPic {
+    height: 655px;
+}
+
+.writePostTop {
+    align-self: center;
+    width: 94%;
+    height: 60px;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+.writePostTop > div:first-child {
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    display: flex;
 }
 
 .writePostGrayLine {
