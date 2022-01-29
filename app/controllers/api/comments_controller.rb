@@ -37,7 +37,7 @@ class Api::CommentsController < ApplicationController
             @comment.destroy
             render json: ["Comment destroyed!"]
         else
-            render json: ["You can only delete your comments!"], status: 422
+            render json: ["You can only delete YOUR comments!"], status: 422
         end
     end
 
