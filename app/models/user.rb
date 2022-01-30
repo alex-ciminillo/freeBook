@@ -7,9 +7,7 @@ class User < ApplicationRecord
         # (?=.*[A-Z]) # At least one uppercase character
         # (?=.*[[:^alnum:]]) #At least one symbol
     /x
-
     # EMAIL_REQUIREMENTS = /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
-
     validates :username, :password_digest, :session_token, :first_name, :last_name, presence: true
     validates :username, uniqueness: true
     validates :password, format: PASSWORD_REQUIREMENTS, allow_nil: true
