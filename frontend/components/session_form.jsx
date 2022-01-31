@@ -169,7 +169,7 @@ export default class SessionForm extends React.Component {
     }
 
     showModal() {
-        this.props.showModal("signup")
+        this.props.showModal({modal:'signup'})
     }
 
     createAccount() {

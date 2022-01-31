@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Modal from './modal';
 
 const mapStateToProps = ({ ui }) => {
-    return { modal: ui.modal }
+    return { info: ui.modal }
 };
 
 const mapDispatchToProps = (dispatch) => {

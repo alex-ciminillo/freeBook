@@ -8,6 +8,109 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.11); 
 }
 
+.backgroundPicChoiceBar {
+    display: flex;
+    margin-top: 55px;
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 20;
+    display: none;
+}
+
+.backgroundPicChoiceBarShow {
+    display: flex;
+}
+
+.backgroundPicChoiceBar > div:nth-child(1) {
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+    z-index: 21;
+    height: 60px;
+}
+
+.backgroundPicChoiceBar > div:nth-child(1) > i {
+    align-self: center;
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/y0/r/oqvemG7hyqx.png);
+    background-position: 0px -348px;
+    background-size: auto;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    z-index: 22;
+    filter: invert(1);
+    margin-left: 15px;
+}
+
+.backgroundPicChoiceBar > div:nth-child(1) > div {
+    align-self: center;
+    color: white;
+    z-index: 23;
+    font-family: Tahoma;
+    font-size: 15px;
+    padding-left: 10px;
+}
+
+.backgroundPicChoiceBar > div:nth-child(2) {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    z-index: 21;
+    height: 60px;
+}
+
+.backgroundPicChoiceBar > div:nth-child(2) > div:nth-child(1) {
+    cursor: pointer;
+    border-radius: 6px;
+    width: 115px;
+    align-self: center;
+    z-index: 21;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.backgroundPicChoiceBar > div:nth-child(2) > div:nth-child(1):hover {
+    background-color: rgba(255, 255, 255, 0.205);
+}
+
+.backgroundPicChoiceBar > div:nth-child(2) > div:nth-child(1) > div {
+    align-self: center;
+    color: #e4e6eb;
+    font-family: Tahoma;
+    font-size: 15px;
+}
+
+.backgroundPicChoiceBar > div:nth-child(2) > div:nth-child(2) {
+    cursor: pointer;
+    border-radius: 6px;
+    width: 171px;
+    align-self: center;
+    z-index: 21;
+    height: 36px;
+    background-color: #2374e1;
+    display: flex;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.backgroundPicChoiceBar > div:nth-child(2) > div:nth-child(2):hover {
+    background-color: #478ae2;
+}
+
+.backgroundPicChoiceBar > div:nth-child(2) > div:nth-child(2) > div {
+    align-self: center;
+    color: white;
+    font-family: Tahoma;
+    font-size: 15px;
+}
+
+
 .backgroundPicDiv {
     position: absolute;
     top: 0px;
@@ -26,7 +129,7 @@
     height: auto;
     background-color: #cccccc; 
     background-attachment: fixed;
-    object-position: 50% 15%;
+    object-position: 40% 15%;
     background-repeat: no-repeat; 
     background-size: cover; 
     border-radius: 10px;
@@ -115,6 +218,28 @@
     justify-content: center;
 }
 
+.profilePicMaxHeight2 {
+    width: 100%;
+    position: absolute;   
+    top: 0;
+    height: calc(30vw + 10vh + 75px);
+    max-height: 412px  + 75px;
+    min-height: 250px  + 70px;
+    display: flex;
+    justify-content: center;
+}
+
+.profilePicMaxHeight3 {
+    width: 100%;
+    position: absolute;   
+    top: 0;
+    height: calc(30vw + 10vh + 75px);
+    max-height: 412px  + 75px;
+    min-height: 250px  + 70px;
+    display: flex;
+    justify-content: center;
+}
+
 
 .profilePicDiv {
     align-self: flex-end;
@@ -133,7 +258,35 @@
     border-radius: 50%;
     margin-left: 4px;
     margin-top: 4px;
+    overflow: hidden;
+    
 }
+
+.profilePic > div {
+    position: relative;
+    height: 162px;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.profilePicStylingTest {
+    width: 500px;
+    height: 500px;
+    z-index: 9999999999999999999;
+    position: absolute;
+    background-color: black;
+
+}
+
+
+.profilePicStylingTest > img {
+    position: relative;
+    max-width: 100%;
+    max-height: 100%;
+}
+
 
 .profilePicCameraButtonDiv {
     cursor: pointer;
@@ -155,6 +308,7 @@
 
 
 .profilePicCameraButton {
+    cursor: pointer;
     background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/aYQE7nau90m.png); 
     background-position: 0px -461px; 
     background-size: auto; 
@@ -318,12 +472,161 @@
     display: none;
 }
 
+@media only screen and (min-width: 501px) {
+
+    .addStoryAndEditButtonsDiv {
+        width: 265px;
+        height: 36px;
+        align-self: flex-end;
+        z-index: 8;
+        background-color: #ffffff;
+        margin-bottom: -174px;
+        display: flex;
+        border-radius: 6px;
+    }
+
+}
+
+@media only screen and (min-width: 900px) {
+
+    .totalContainer {
+        width: 100%;
+        background-color: white;
+        height: calc(30vw + 10vh + 205px);
+        min-height: 560px;
+        max-height: 618px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.11); 
+        display: flex;
+        justify-content: center;
+    }
+    
+    .profilePicMaxHeight {
+        width: 100%;
+        position: absolute;   
+        top: 0;
+        height: calc(30vw + 10vh + 75px);
+        max-height: 412px  + 75px;
+        min-height: 250px  + 70px;
+        display: flex;
+        justify-content: flex-start;
+        max-width: 952px;
+    }
+
+    .profilePicDiv {
+        margin-bottom: -55px;
+        margin-left: 20px;
+        align-self: flex-end;
+        width: 170px;
+        height: 170px;
+        position: absolute;
+        z-index: 1;
+        overflow: hidden;
+        border-radius: 50%;
+        background-color: white;
+    }
+
+    .profilePicCameraButtonDiv {
+        cursor: pointer;
+        position: relative;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: #E4E6EB;
+        z-index: 5;
+        align-self: flex-end;
+        margin-bottom: -45px;
+        margin-left: 140px;
+    }
+
+    .name {
+        align-self: flex-end;
+        z-index: 6;
+        font-size: 30px;
+        color: #050505;
+        font-family: 'TAHOMABD';
+        margin-bottom: 25px;
+        margin-left: 200px;
+    }
+
+    .friendsNumber {
+        align-self: flex-end;
+        z-index: 6;
+        font-size: 18px;
+        color: #65676B;
+        font-family: 'SFPRODISPLAYREGULAR';
+        margin-bottom: 0px;
+        margin-left: 200px;
+    }
+
+    .friendsImages {
+        width: 240px;
+        height: 36px;
+        align-self: flex-end;
+        z-index: 7;
+        background-color: #ffffff;
+        margin-bottom: -40px;
+        margin-left: 200px;
+        display: flex;
+        -webkit-flex-direction: row-reverse; 
+        flex-direction: row-reverse;
+    }
+
+    .profilePicMaxHeight2 {
+        width: 100%;
+        position: absolute;   
+        top: 0;
+        height: calc(30vw + 10vh + 75px);
+        max-height: 412px  + 75px;
+        min-height: 250px  + 70px;
+        display: flex;
+        justify-content: flex-end;
+        max-width: 952px;
+    }
+
+    .addStoryAndEditButtonsDiv {
+        width: 265px;
+        height: 36px;
+        align-self: flex-end;
+        z-index: 8;
+        background-color: #ffffff;
+        margin-bottom: -40px;
+        display: flex;
+        border-radius: 6px;
+        margin-right: 25px;
+    }
+
+    .profilePicMaxHeight3 {
+        width: 100%;
+        position: absolute;   
+        top: 0;
+        height: calc(30vw + 10vh + 75px);
+        max-height: 412px  + 75px;
+        min-height: 250px  + 70px;
+        display: flex;
+        justify-content: center;
+        max-width: 952px;
+    }
+
+    .grayLine {
+        position: absolute;
+        z-index: 9;
+        background-color: #CCCED2;
+        width: 90%;
+        height: 1px;
+        align-self: flex-end;
+        margin-bottom: -70px;
+        width: 94%;
+    }
+  
+}
+
 
 @media only screen and (min-width: 952px) {
     .totalContainer {
-        box-shadow: inset 0 350px 200px -200px rgba(0, 0, 0, 0.918);
+        box-shadow: inset 0 350px 200px -200px rgba(0, 0, 0, 0.918), 0 1px 2px rgba(0, 0, 0, 0.11);
     }
-  }
+  
+}
 
 
 

@@ -21,7 +21,7 @@ export default class Greeting extends React.Component {
                 <h2>Hello, {this.props.currentUser.username}!</h2>
                 <button onClick={() => this.props.logout()} >Log Out</button>
                 <br/>
-                <Link to={`/users/${this.props.currentUser.id}`} >Profile</Link>
+                <Link onClick={this.props.changeProfileNavbar.bind(this, 'posts')} to={`/users/${this.props.currentUser.id}`} >Profile</Link>
             </div>
         ) : (
             <div className='greetingPageContainer' >

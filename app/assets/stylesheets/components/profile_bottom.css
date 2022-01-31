@@ -1,0 +1,611 @@
+
+.profileBottomFullContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+}
+
+.profileBottomInnerContainer {
+    padding-top: 15px;
+    height: 100%;
+    width: 900px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 10px;
+}
+
+.profileBottomLeftSide {
+    height: 100%;
+    width: 372.5px;
+    border-radius: inherit;
+}
+
+.profileBottomRightSide {
+    height: 100%;
+    width: 512.5px;
+    border-radius: inherit;
+}
+
+.profileBottomIntroContainer {
+    background-color: rgb(255, 255, 255);
+    height: 290px;
+    width: 100%;
+    border-radius: inherit;
+    display:flex;
+    justify-content: center;
+    box-shadow: 0 1px 2px #00000033;
+}
+
+.profileBottomIntroMiddle {
+    width: 91%;
+    height: 90%;
+    align-self: center;
+}
+
+.profileBottomIntroTitle {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #050505;
+    line-height: 0px;
+    margin-top: 10px;
+}
+
+.profileBottomIntroButton {
+    width: 100%;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    background-color: #e4e6eb;
+    border-radius: 7px;
+    margin-top: 25px;
+}
+
+.profileBottomIntroButton:hover {
+    background-color: #bcbdc2;
+}
+
+.profileBottomIntroButton > div {
+    align-self: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    font-size: .8375rem;
+    color: #050505;
+}
+
+.profileBottomPhotosContainer {
+    margin-top: 15px;
+    background-color: rgb(255, 255, 255);
+    height: 400px;
+    width: 100%;
+    border-radius: inherit;
+    box-shadow: 0 1px 2px #00000033;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.profileBottomPhotosTop {
+    margin: 0 auto;
+    width: 92%;
+    height: 14%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.profileBottomPhotosTop > div:first-child {
+    align-self: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #050505;
+}
+
+.profileBottomPhotosTop > div:last-child {
+    cursor: pointer;
+    width: 115px;
+    height: 40px;
+    align-self: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:  0.9625rem;
+    color: #216fdb;
+    display:flex;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.profileBottomPhotosTop > div:last-child > div {
+    align-self: center;
+}
+
+.profileBottomPhotosTop > div:last-child:hover {
+    background-color: rgba(0, 0, 0, 0.11);
+}
+
+.profileBottomPhotosBottom {
+    align-self: flex-start;
+    margin: 0 auto;
+    width: 92%;
+    height: 82%;
+    border-radius: 7px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.profileBottomPhotosBottomRow {
+    width: 100%;
+    height: 32.5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.profileBottomPhotosBottomRow > div {
+    width: 32.5%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+
+.profileBottomPhotosContainer > div:last-child {
+    width: 92%;
+    height: 4%;
+}
+
+.profileBottomFriendsContainer {
+    margin-top: 15px;
+    background-color: rgb(255, 255, 255);
+    height: 550px;
+    width: 100%;
+    border-radius: inherit;
+    box-shadow: 0 1px 2px #00000033;
+    display: flex;
+    flex-direction: column;
+}
+
+.profileBottomFriendsTop {
+    margin: 0 auto;
+    width: 92%;
+    height: 7%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.profileBottomFriendsTop > div:first-child {
+    align-self: flex-end;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #050505;
+    line-height: 1;
+}
+
+.profileBottomFriendsTop > div:last-child {
+    cursor: pointer;
+    width: 115px;
+    height: 25px;
+    align-self: flex-end;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:  0.9625rem;
+    color: #216fdb;
+    display:flex;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.profileBottomFriendsTop > div:last-child > div {
+    align-self: center;
+}
+
+.profileBottomFriendsTop > div:last-child:hover {
+    background-color: rgba(0, 0, 0, 0.11);
+}
+
+
+.profileBottomFriendsMiddle {
+    margin: 0 auto;
+    width: 92%;
+    height: 4.5%;
+}
+
+.profileBottomFriendsMiddle {
+    align-self: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9625rem;
+    color: #65676b;
+    display: flex;
+    line-height: 1;
+}
+
+.profileBottomFriendsMiddle > div {
+    align-self: flex-end;
+    
+}
+
+.profileBottomFriendsPicsContainer {
+    margin: 0 auto;
+    width: 92%;
+    height: 88.5%;
+    display: flex;
+}
+
+
+.profileBottomFriendsPics {
+    align-self: center;
+    height: 90%;
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.profileBottomFriendsPicsRow {
+    border-radius: inherit;
+    width: 100%;
+    height: 35.3%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.profileBottomFriends {
+    border-radius: inherit;
+    width: 31%;
+    height: 100%;
+}
+
+.profileBottomFriends > div:first-child {
+    border-radius: inherit;
+    width: 100%;
+    height: 70%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.profileBottomFriends > div:last-child {
+    font-size: .8125rem;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #050505;
+    margin-top: 5px;
+}
+
+
+.profileBottomLifeContainer {
+    margin-top: 15px;
+    background-color: rgb(255, 255, 255);
+    height: 320px;
+    width: 100%;
+    border-radius: inherit;
+    box-shadow: 0 1px 2px #00000033;
+}
+
+.profileBottomLifeTop {
+    margin: 0 auto;
+    height: 12%;
+    width: 92%;
+    background-color: pink;
+}
+
+.profileBottomLifeBottom {
+    margin: 0 auto;
+    height: 88%;
+    width: 92%;
+    background-color: lawngreen;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.profileBottomCopyrightContainer {
+    margin-top: 15px;
+    height: 35px;
+    width: 100%;
+    border-radius: inherit;
+    margin-bottom: 15px;
+}
+
+.profileBottomMakePostContainer {
+    height: 125px;
+    width: 100%;
+    border-radius: inherit;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 1px 2px #00000033;
+    display: flex;
+    justify-content: center;
+}
+
+.profileBottomMakePostInner {
+    align-self: center;
+    width: 92%;
+    height: 80%;
+}
+
+.profileBottomMakePostTop {
+    height:50%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.profileBottomMakePostTopPic {
+    height: 40px;
+    width:40px;
+    background-color: black;
+    border-radius: 100%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.profileBottomMakePostTopButton {
+    height: 40px;
+    width: 420px;
+    background-color: #f0f2f5;
+    border-radius: 20px;
+}
+
+.profileBottomMakePostTopButton:hover {
+    background-color: #cfd2d6;
+}
+
+.profileBottomMakePostTopButton > div {
+    padding-top: 10px;
+    padding-left: 15px;
+    font-size: .9625rem;
+    color: #65676b;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.profileBottomMakePostGrayLine {
+    border-bottom: 1px solid #e4e6eb;
+    width: 100%;
+}
+
+.profileBottomMakePostButtons {
+    height:50%;
+    width: 100%;
+    display: flex;
+}
+
+.profileBottomMakePostButtonsInner {
+    align-self: flex-end;
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.profileBottomMakePostButton {
+    border-radius: 7px;
+    height: 100%;
+    width: 33.3%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.profileBottomMakePostButton:hover {
+    background-color: rgba(0, 0, 0, 0.089);
+}
+
+.profileBottomMakePostButton > div {
+    font-family: Arial, Helvetica, sans-serif;
+    align-self: center;
+    font-size: .9875rem;
+    color: #65676b;
+    font-weight: normal;
+}
+
+.profileBottomMakePostButton > svg {
+    align-self: center;
+    margin-right: 5px;
+    margin-bottom: 1px;
+}
+.profileBottomMakePostButton > i {
+    align-self: center;
+    margin-right: 5px;
+    margin-bottom: 2px;
+}
+
+.profileBottomPostsHeaderContainer {
+    margin-top: 15px;
+    height: 95px;
+    width: 100%;
+    border-radius: inherit;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 1px 2px #00000033;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profileBottomPostsHeaderTop {
+    margin: 0 auto;
+    width: 92%;
+    height: 57%;
+    display: flex;
+    flex-direction: row;
+}
+
+.profileBottomPostsHeaderTopTitle {
+    width: 50%;
+    height: 100%;
+    display: flex;
+}
+.profileBottomPostsHeaderTopTitle > div {
+    align-self: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #050505;
+}
+
+.profileBottomPostsHeaderTopButtons {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.profileBottomPostsHeaderTopFilter {
+    align-self: center;
+    height: 36px;
+    width: 87px;
+    background-color: #e4e6eb;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.profileBottomPostsHeaderTopFilter:hover {
+    background-color: #ced1d6;
+}
+
+.profileBottomPostsHeaderTopFilter > i {
+    align-self: center;
+    margin-right: 5px;
+    margin-bottom: 2px;
+}
+
+.profileBottomPostsHeaderTopFilter > div {
+    align-self: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    font-size: .8375rem;
+    color: #050505;
+}
+
+.profileBottomPostsHeaderTopManage {
+    height: 36px;
+    width: 141px;
+    background-color: #e4e6eb;
+    border-radius: 5px;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+}
+
+.profileBottomPostsHeaderTopManage:hover {
+    background-color: #ced1d6;
+}
+
+.profileBottomPostsHeaderTopManage > i {
+    align-self: center;
+    margin-right: 5px;
+    margin-bottom: 2px;
+}
+
+.profileBottomPostsHeaderTopManage > div {
+    align-self: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    font-size: .8375rem;
+    color: #050505;
+}
+
+.profileBottomPostsHeaderGrayLine {
+    border-bottom: 1px solid #e4e6eb;
+    width: 100%;
+}
+
+.profileBottomPostsHeaderBottom {
+    margin: 0 auto;
+    width: 92%;
+    height: 43%;
+    display: flex;
+    justify-content: center;
+}
+
+.profileBottomPostsHeaderBottomButton {
+    width: 50%;
+    height: 90%;
+    align-self: flex-end;
+    display: flex;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.profileBottomPostsHeaderBottomButton:hover {
+    background-color: rgba(0, 0, 0, 0.096);
+}
+
+.profileBottomPostsHeaderBottomButton > div {
+    font-family: Arial, Helvetica, sans-serif;
+    align-self: center;
+    font-size: .9875rem;
+    color: #65676b;
+    font-weight: normal;  
+    padding-bottom: 5px;
+    
+}
+
+.profileBottomPostsHeaderBottomButton > i {
+    filter: invert(0.39);
+    margin-right: 5px;
+    margin-top: 6px;
+}
+
+.profileBottomPostsHeaderAccent:hover {
+    background-color: white;
+}
+
+.profileBottomPostsHeaderAccent > div {
+    color: #1876f2;
+}
+
+.profileBottomPostsHeaderAccent {
+    border-bottom: 4px solid #1876f2;
+    border-radius: 0px;
+}
+
+.profileBottomPostsHeaderAccent > i {
+    filter: invert(54%) sepia(75%) saturate(6610%) hue-rotate(200deg) brightness(97%) contrast(92%);
+}
+
+.profileBottomPostsContainer {
+    margin-top: 15px;
+    height: 100%;
+    width: 100%;
+    border-radius: inherit;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 1px 2px #00000033;
+}
+

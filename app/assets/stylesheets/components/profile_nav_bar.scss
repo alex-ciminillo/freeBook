@@ -1,28 +1,31 @@
 
 
-.navBarTotalContainer {
-    width: 100%;
-    position: absolute;   
-    top: 0;
-    height: calc(30vw + 10vh + 75px);
-    max-height: 412px  + 75px;
-    min-height: 250px  + 70px;
-    display: flex;
-    justify-content: center;
-    border-radius: 7px;
-}
-
-
 .profileNavBar {
-    border-radius: inherit;
-    position: absolute;
+    border-radius: 7px;
     z-index: 9;
-    background-color: #ffffff;
     width: 94%;
     height: 55px;
+    margin-bottom: -252px;
     align-self: flex-end;
-    margin-bottom: -253px;
     display: flex;
+    justify-content: space-between;
+
+}
+
+.profileNavBar > div:first-child {
+    border-radius: 7px;
+    align-self: flex-end;
+    display: flex;
+    justify-content: flex-start;
+    height: 55px;
+}
+
+.profileNavBar > div:nth-child(2) {
+    border-radius: 7px;
+    align-self: flex-end;
+    display: flex;
+    justify-content: flex-end;
+    height: 55px;
 }
 
 .profileNavButtons {
@@ -32,22 +35,33 @@
     background-color: rgb(255, 255, 255);
     display: flex;
     justify-content: center;
+    color: #6f7175;
+}
+
+.profileNavButtons2 {
+    width: 79px;
+    border-radius: inherit;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    color: #6f7175;
 }
 
 .profileNavButtons:hover {
     background-color: rgb(241, 241, 241);
 }
 
-.profileNavButtons:last-child:hover {
+.profileNavButtons2:hover {
     background-color: rgb(255, 255, 255);
 }
 
 .profileNavButtonsWord {
     font-size: 15px;
-    font-family: 'Tahoma';
+    font-family: 'Arial';
+    font-weight: bold;
     background-color: inherit;
     align-self: center;
-    color: #6f7175;
+    color: inherit;
 }
 
 .profileNavBarMoreIcon {
@@ -79,7 +93,30 @@
     color: #050505;
 }
 
+.highlightProfileNavButtons {
+    border-radius: 0px;
+    color: #1876f2;
+    border-bottom: 4px solid #1876f2;
+}
+
+.highlightProfileNavButtons:hover {
+    background-color: rgb(255, 255, 255);
+}
 
 
+@media only screen and (min-width: 900px) {
+
+    .profileNavBar {
+        border-radius: 7px;
+        z-index: 9;
+        background-color: #ffffff;
+        width: 94%;
+        height: 55px;
+        margin-bottom: -128px;
+        align-self: flex-end;
+        display: flex;
+    }
+
+}
 
 

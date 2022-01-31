@@ -19,7 +19,7 @@ class User < ApplicationRecord
     after_initialize :ensure_session_token
 
     has_one_attached :profpic
-    has_one_attached :cover_photo
+    has_one_attached :coverpic
 
 
     def self.find_by_credentials(username, password)

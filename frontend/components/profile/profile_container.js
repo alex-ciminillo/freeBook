@@ -1,22 +1,21 @@
 import { connect } from 'react-redux';
 import { logout } from '../../actions/session_actions';
 import Profile from './profile';
-import { addFileToUser } from './../../actions/user_actions'
+import { fetchOtherUser } from './../../actions/user_actions'
 
 
-const mapStateToProps = (state) => {
-  // if (typeof state.entities.users[state.session.id].photoUrl !== 'string') {
-  //   state.entities.users[state.session.id].photoUrl = ''
-  // }
+const mapStateToProps = (state, ownProps) => {
   return {
-    currentUser: state.entities.users[state.session.id]
+    currentUser: state.entities.users[state.session.id],
+    users: state.entities.users,
+    ownProps
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return { 
     logout: () => dispatch(logout()),
-    addFileToUser: (formData) => dispatch(addFileToUser(formData))
+    fetchOtherUser: (id)=>dispatch(fetchOtherUser(id))
    }
 };
 

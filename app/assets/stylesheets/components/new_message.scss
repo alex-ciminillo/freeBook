@@ -8,12 +8,13 @@
     cursor: pointer;
     width: 48px;
     height: 48px;
-    position: absolute;
+    position: fixed;
     bottom: 16px;
     right: 16px;
     background-color: rgb(254, 254, 254);
     border-radius: 50%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15), 0 12px 28px rgba(0, 0, 0, 0.1);
+    z-index: 999999999999999;
 }
 .newMessageDiv:hover {
     background-color: #F0F2F5;

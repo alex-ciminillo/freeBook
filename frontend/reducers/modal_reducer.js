@@ -4,7 +4,8 @@ const modalReducer = (state = null, action) => {
 
     switch (action.type) {
         case SHOW_MODAL:
-            return action.modal;
+            console.log(action)
+            return { modal: action.modal, file: action.file };
         case HIDE_MODAL:
             return null;
         default:
