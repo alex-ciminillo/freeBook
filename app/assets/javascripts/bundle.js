@@ -477,6 +477,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _signup_form_container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../signup_form_container */ "./frontend/components/signup_form_container.jsx");
 /* harmony import */ var _profile_choose_pics_choose_pics_container__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../profile/choose_pics/choose_pics_container */ "./frontend/components/profile/choose_pics/choose_pics_container.js");
+/* harmony import */ var _write_post_write_post__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../write_post/write_post */ "./frontend/components/write_post/write_post.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -498,6 +499,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -526,6 +528,13 @@ var Modal = /*#__PURE__*/function (_React$Component) {
         case "profilePic":
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_profile_choose_pics_choose_pics_container__WEBPACK_IMPORTED_MODULE_2__["default"], {
             info: this.props.info
+          });
+
+        case "writePost":
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_write_post_write_post__WEBPACK_IMPORTED_MODULE_3__["default"], {
+            hideModal: this.props.hideModal,
+            info: this.props.info,
+            currentUser: this.props.currentUser
           });
 
         default:
@@ -564,10 +573,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var mapStateToProps = function mapStateToProps(_ref) {
-  var ui = _ref.ui;
+var mapStateToProps = function mapStateToProps(_ref, ownProps) {
+  var ui = _ref.ui,
+      entities = _ref.entities,
+      session = _ref.session;
   return {
-    info: ui.modal
+    info: ui.modal,
+    currentUser: entities.users[session.id]
   };
 };
 
@@ -1285,6 +1297,13 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "writePostModal",
+    value: function writePostModal() {
+      this.props.showModal({
+        modal: 'writePost'
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       console.log(this.props);
@@ -1297,8 +1316,13 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomInnerContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "profileBottomLeftSide2",
+        className: "profileBottomLeftSide2 hideLeftSide"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "profileBottomLeftSide",
         className: "profileBottomLeftSide"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "profileBottomIntroContainer",
         className: "profileBottomIntroContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomIntroMiddle"
@@ -1313,6 +1337,7 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Add Hobbies")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomIntroButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Add Featured")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "profileBottomPhotosContainer",
         className: "profileBottomPhotosContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomPhotosTop"
@@ -1361,6 +1386,7 @@ var Profile = /*#__PURE__*/function (_React$Component) {
           backgroundImage: "url(".concat(window.profileBackgroundURL, ")")
         }
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "profileBottomFriendsContainer",
         className: "profileBottomFriendsContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFriendsTop"
@@ -1431,14 +1457,78 @@ var Profile = /*#__PURE__*/function (_React$Component) {
           backgroundImage: "url(".concat(window.profileBackgroundURL, ")")
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Claire Dahlke")))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "profileBottomLifeContainer",
         className: "profileBottomLifeContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomLifeTop"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Life events"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "See All"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomLifeBottom"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLifeEvents"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLifeEvent"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLifeEventTop"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(window.profileBackgroundURL, ")")
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(window.friend6URL, ")")
+        }
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLifeEventIcon"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        height: "20",
+        width: "20",
+        alt: "",
+        referrerPolicy: "origin-when-cross-origin",
+        src: "https://static.xx.fbcdn.net/rsrc.php/v3/yn/r/0sFQdwD-_Tc.png"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLifeEventText"
+      }, "Claire CIminillo and Alexzander Ciminillo Got Married"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLifeEventDate"
+      }, "May 20, 2017")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLifeEvent"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLifeEventTop"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(window.friend8URL, ")")
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(window.friend5URL, ")")
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLifeEventIcon"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        height: "20",
+        width: "20",
+        alt: "",
+        referrerPolicy: "origin-when-cross-origin",
+        src: "https://static.xx.fbcdn.net/rsrc.php/v3/yy/r/kLvKfX8XA_K.png"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLifeEventText"
+      }, "Got Engaged to Claire Ciminillo"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLifeEventDate"
+      }, "November 5th, 2016"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "profileBottomCopyrightContainer",
         className: "profileBottomCopyrightContainer"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Privacy"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, " \xB7 "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Terms"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, " \xB7 "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Advertising"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, " \xB7 "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Ad Choices ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        "data-visualcompletion": "css-img",
+        className: "hu5pjgll m6k467ps",
+        style: {
+          backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/ya/r/RZkmtYdsqev.png)',
+          backgroundPosition: '-162px -109px',
+          backgroundSize: 'auto',
+          width: '12px',
+          height: '12px',
+          backgroundRepeat: 'no-repeat',
+          display: 'inline-block'
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, " \xB7 "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Cookies"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, " \xB7 "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "More"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, " \xB7 ")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Mata \xA9 2022"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomRightSide"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomMakePostContainer"
@@ -1447,6 +1537,7 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomMakePostTop"
       }, this.getProfilePhoto(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: this.writePostModal.bind(this),
         className: "profileBottomMakePostTopButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "What's on your mind?"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomMakePostGrayLine"
@@ -1598,6 +1689,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../actions/session_actions */ "./frontend/actions/session_actions.js");
 /* harmony import */ var _profile__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./profile */ "./frontend/components/profile/profile.jsx");
 /* harmony import */ var _actions_user_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../actions/user_actions */ "./frontend/actions/user_actions.js");
+/* harmony import */ var _actions_modal_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../actions/modal_actions */ "./frontend/actions/modal_actions.js");
+
 
 
 
@@ -1618,6 +1711,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     fetchOtherUser: function fetchOtherUser(id) {
       return dispatch((0,_actions_user_actions__WEBPACK_IMPORTED_MODULE_3__.fetchOtherUser)(id));
+    },
+    showModal: function showModal(type) {
+      return dispatch((0,_actions_modal_actions__WEBPACK_IMPORTED_MODULE_4__.showModal)(type));
     }
   };
 };
@@ -1987,6 +2083,7 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
       this.userId = this.props.ownProps.match.params.id;
       this.user = this.props.users[this.userId];
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "profilePicsContainerTopOfPage",
         className: "totalContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "backgroundPicChoiceBar",
@@ -3275,6 +3372,146 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
 
 /***/ }),
 
+/***/ "./frontend/components/write_post/write_post.jsx":
+/*!*******************************************************!*\
+  !*** ./frontend/components/write_post/write_post.jsx ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ WritePost)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var WritePost = /*#__PURE__*/function (_React$Component) {
+  _inherits(WritePost, _React$Component);
+
+  var _super = _createSuper(WritePost);
+
+  function WritePost(props) {
+    _classCallCheck(this, WritePost);
+
+    return _super.call(this, props);
+  }
+
+  _createClass(WritePost, [{
+    key: "render",
+    value: function render() {
+      console.log(this.props);
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostBackgroundFade"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostContainer"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostTop"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Create Post")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: this.props.hideModal.bind(this)
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        "data-visualcompletion": "css-img",
+        className: "hu5pjgll m6k467ps",
+        style: {
+          backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/ya/r/RZkmtYdsqev.png)',
+          backgroundPosition: '-84px -67px',
+          backgroundSize: 'auto',
+          width: '20px',
+          height: '20px',
+          backgroundRepeat: 'no-repeat',
+          display: 'inline-block'
+        }
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostGrayLine"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostMiddle"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostPicAndName"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostProfilePicDiv"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(this.props.currentUser.photoUrl, ")")
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostNameAndStatus"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.currentUser.firstName, " ", this.props.currentUser.lastName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "hu5pjgll lzf7d6o1",
+        src: "https://static.xx.fbcdn.net/rsrc.php/v3/yQ/r/axobuTi734a.png",
+        alt: "Public",
+        height: "12",
+        width: "12"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Public")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostTextBox"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("textarea", {
+        placeholder: "What's on your mind?"
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostBottom"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostAdd"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostAddContent"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Add to your post")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostAddContentIcons"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        "data-visualcompletion": "css-img",
+        className: "hu5pjgll bixrwtb6",
+        style: {
+          height: '24px',
+          width: '24px',
+          backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/yS/r/PKsg-wPC0IX.png)',
+          backgroundPosition: '0px -307px',
+          backgroundSize: 'auto',
+          backgroundRepeat: 'no-repeat',
+          display: 'inline-block'
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        "data-visualcompletion": "css-img",
+        className: "hu5pjgll bixrwtb6",
+        style: {
+          height: '24px',
+          width: '24px',
+          backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/yS/r/PKsg-wPC0IX.png)',
+          backgroundPosition: '0px -282px',
+          backgroundSize: 'auto',
+          backgroundRepeat: 'no-repeat',
+          display: 'inline-block'
+        }
+      }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostButton"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Post")))));
+    }
+  }]);
+
+  return WritePost;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+
+
+
+/***/ }),
+
 /***/ "./frontend/reducers/entities_reducer.js":
 /*!***********************************************!*\
   !*** ./frontend/reducers/entities_reducer.js ***!
@@ -3336,6 +3573,7 @@ __webpack_require__.r(__webpack_exports__);
 var modalReducer = function modalReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
   var action = arguments.length > 1 ? arguments[1] : undefined;
+  console.log(action);
 
   switch (action.type) {
     case _actions_modal_actions__WEBPACK_IMPORTED_MODULE_0__.SHOW_MODAL:
@@ -41257,6 +41495,27 @@ document.addEventListener('DOMContentLoaded', function () {
   react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_root__WEBPACK_IMPORTED_MODULE_2__["default"], {
     store: store
   }), root);
+});
+$(window).scroll(function (event) {
+  var scrollHeight = $(window).scrollTop();
+  var profilePicsHeight = $('#profilePicsContainerTopOfPage').height();
+  var copyrightHeight = $('#profileBottomCopyrightContainer').height();
+  var lifeHeight = $('#profileBottomLifeContainer').height();
+  var friendsHeight = $('#profileBottomFriendsContainer').height();
+  var photosHeight = $('#profileBottomPhotosContainer').height();
+  var introHeight = $('#profileBottomLeftSide').height();
+  var windowHeight = $(window).height();
+
+  if (scrollHeight + windowHeight > introHeight + photosHeight + friendsHeight + lifeHeight + copyrightHeight + 40) {
+    $('#profileBottomLeftSide').addClass('fixLeftSide');
+    $('#profileBottomLeftSide2').removeClass('hideLeftSide');
+    $('#profileBottomLeftSide').css('top', "-".concat(profilePicsHeight + copyrightHeight + 40, "px"));
+  }
+
+  if (scrollHeight + windowHeight < introHeight + photosHeight + friendsHeight + lifeHeight + copyrightHeight - 40 - profilePicsHeight - copyrightHeight) {
+    $('#profileBottomLeftSide').removeClass('fixLeftSide');
+    $('#profileBottomLeftSide2').addClass('hideLeftSide');
+  }
 });
 })();
 

@@ -19,9 +19,20 @@
 }
 
 .profileBottomLeftSide {
-    height: 100%;
     width: 372.5px;
     border-radius: inherit;
+}
+.profileBottomLeftSide2 {
+    width: 372.5px;
+    border-radius: inherit;
+}
+
+.hideLeftSide {
+    display: none;
+}
+
+.fixLeftSide {
+    position: fixed;
 }
 
 .profileBottomRightSide {
@@ -31,6 +42,7 @@
 }
 
 .profileBottomIntroContainer {
+    
     background-color: rgb(255, 255, 255);
     height: 290px;
     width: 100%;
@@ -295,49 +307,152 @@
     margin: 0 auto;
     height: 12%;
     width: 92%;
-    background-color: pink;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.profileBottomLifeTop > div:first-child {
+    align-self: flex-end;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #050505;
+    line-height: 1;
+}
+
+.profileBottomLifeTop > div:last-child {
+    cursor: pointer;
+    width: 70px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    border-radius: 5px;
+    font-size: 0.9625rem;
+}
+
+.profileBottomLifeTop > div:last-child:hover {
+    background-color: rgba(0, 0, 0, 0.096);
+}
+
+.profileBottomLifeTop > div:last-child > div {
+    align-self: center;
+    color: #216fdb;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .profileBottomLifeBottom {
     margin: 0 auto;
     height: 88%;
     width: 92%;
-    background-color: lawngreen;
+    display: flex;
 }
 
+.profileBottomLifeEvents {
+    overflow: hidden;
+    border-radius: 7px;
+    width: 100%;
+    height: 87%;
+    margin-bottom: 10px;
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 
+.profileBottomLifeEvent {
+    width: 49.2%;
+    height: 100%;
+    border: 1px solid #E5E5E5;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
 
+.profileBottomLifeEventTop {
+    height: 35%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
 
+.profileBottomLifeEventTop > div {
+    height: 100%;
+    width: 50%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
 
+.profileBottomLifeEventIcon {
+    align-self: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    background-color: #1876f2;
+    margin-top: -20px;
+    display: flex;
+    justify-content: center;
+}
 
+.profileBottomLifeEventIcon > img {
+    align-self: center;
+    width: 20px;
+    height: 20px;
+}
 
+.profileBottomLifeEventText {
+    width: 100%;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #050505;
+    font-size: 1.0375rem;
+    margin-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.profileBottomLifeEventDate {
+    width: 100%;
+    text-align: center;
+    font-size: .8125rem;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #65676b;
+}
 
 
 .profileBottomCopyrightContainer {
-    margin-top: 15px;
-    height: 35px;
+    height: 60px;
     width: 100%;
-    border-radius: inherit;
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
+
+.profileBottomCopyrightContainer > div {
+    color: #65676b;
+    font-size: .8125rem;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.profileBottomCopyrightContainer > div > span:nth-child(odd):hover {
+    text-decoration: underline;
+}
+
+
+.profileBottomCopyrightContainer > div > span {
+    color: #65676b;
+    font-size: .8125rem;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 2;
+}
+
+.profileBottomCopyrightContainer > div > span > i {
+    filter: invert(0.39);
+    margin-bottom: -2px;
+}
+
 
 .profileBottomMakePostContainer {
     height: 125px;
@@ -602,10 +717,15 @@
 
 .profileBottomPostsContainer {
     margin-top: 15px;
-    height: 100%;
+    height: 5000px;
     width: 100%;
     border-radius: inherit;
     background-color: rgb(255, 255, 255);
     box-shadow: 0 1px 2px #00000033;
 }
 
+.fixed {
+    position: fixed;
+    top: 10000px;
+    z-index: 999999999999999999;
+}

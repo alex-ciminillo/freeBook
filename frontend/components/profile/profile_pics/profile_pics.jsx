@@ -93,7 +93,7 @@ export default class ProfilePics extends React.Component {
         this.userId = this.props.ownProps.match.params.id
         this.user = this.props.users[this.userId]
         return (
-            <div className='totalContainer' >
+            <div id='profilePicsContainerTopOfPage' className='totalContainer' >
                 <div id='backgroundPicChoiceBar' className='backgroundPicChoiceBar' >
                     <div>
                         <i></i>

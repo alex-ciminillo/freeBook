@@ -22,6 +22,11 @@ export default class Profile extends React.Component {
         : <div className='profileBottomMakePostTopPic' style={{backgroundImage: `url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)`}}  ></div>
     }
 
+    writePostModal() {
+        this.props.showModal({modal: 'writePost'})
+    }
+
+
     render() {
         console.log(this.props)
         this.userId = this.props.match.params.id
@@ -31,8 +36,11 @@ export default class Profile extends React.Component {
                 <ProfilePicsContainer ownProps={this.props.ownProps} />
                 <div className='profileBottomFullContainer' >
                     <div className='profileBottomInnerContainer'>
-                        <div className='profileBottomLeftSide' >
-                            <div className='profileBottomIntroContainer' >
+                        <div id='profileBottomLeftSide2' className='profileBottomLeftSide2 hideLeftSide' >
+
+                        </div>
+                        <div id='profileBottomLeftSide' className='profileBottomLeftSide' >
+                            <div id='profileBottomIntroContainer' className='profileBottomIntroContainer' >
                                 <div className='profileBottomIntroMiddle' >
                                     <div className='profileBottomIntroTitle' >
                                         Intro
@@ -59,7 +67,7 @@ export default class Profile extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className='profileBottomPhotosContainer' >
+                            <div id='profileBottomPhotosContainer' className='profileBottomPhotosContainer' >
                                 <div className='profileBottomPhotosTop' >
                                     <div>Photos</div>
                                     <div><div>See all photos</div></div>
@@ -84,7 +92,7 @@ export default class Profile extends React.Component {
                                 </div>
                                 <div></div>
                             </div>
-                            <div className='profileBottomFriendsContainer' >
+                            <div id='profileBottomFriendsContainer' className='profileBottomFriendsContainer' >
                                 <div className='profileBottomFriendsTop' >
                                     <div>Friends</div>
                                     <div>
@@ -141,7 +149,7 @@ export default class Profile extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className='profileBottomLifeContainer' >
+                            <div id='profileBottomLifeContainer' className='profileBottomLifeContainer' >
                                 <div className='profileBottomLifeTop' >
                                     <div>Life events</div>
                                     <div>
@@ -149,11 +157,36 @@ export default class Profile extends React.Component {
                                     </div>
                                 </div>
                                 <div className='profileBottomLifeBottom' >
-
+                                    <div className='profileBottomLifeEvents' >
+                                        <div className='profileBottomLifeEvent' >
+                                            <div className='profileBottomLifeEventTop' >
+                                                <div style={{backgroundImage: `url(${window.profileBackgroundURL})`}} ></div>
+                                                <div style={{backgroundImage: `url(${window.friend6URL})`}} ></div>
+                                            </div>
+                                            <div className='profileBottomLifeEventIcon' >
+                                                <img height="20" width="20" alt="" referrerPolicy="origin-when-cross-origin" src="https://static.xx.fbcdn.net/rsrc.php/v3/yn/r/0sFQdwD-_Tc.png"/>
+                                            </div>
+                                            <div className='profileBottomLifeEventText' >Claire CIminillo and Alexzander Ciminillo Got Married</div>
+                                            <div className='profileBottomLifeEventDate' >May 20, 2017</div>
+                                        
+                                        </div>
+                                        <div className='profileBottomLifeEvent' >
+                                            <div className='profileBottomLifeEventTop' >
+                                                <div style={{backgroundImage: `url(${window.friend8URL})`}} ></div>
+                                                <div style={{backgroundImage: `url(${window.friend5URL})`}} ></div>
+                                            </div>
+                                            <div className='profileBottomLifeEventIcon' >
+                                                <img height="20" width="20" alt="" referrerPolicy="origin-when-cross-origin" src="https://static.xx.fbcdn.net/rsrc.php/v3/yy/r/kLvKfX8XA_K.png"/>
+                                            </div>
+                                            <div className='profileBottomLifeEventText' >Got Engaged to Claire Ciminillo</div>
+                                            <div className='profileBottomLifeEventDate' >November 5th, 2016</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className='profileBottomCopyrightContainer' >
-
+                            <div id='profileBottomCopyrightContainer' className='profileBottomCopyrightContainer' >
+                                <div><span>Privacy</span><span> &middot; </span><span>Terms</span><span> &middot; </span><span>Advertising</span><span> &middot; </span><span>Ad Choices <i data-visualcompletion="css-img" className="hu5pjgll m6k467ps" style={{backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/ya/r/RZkmtYdsqev.png)', backgroundPosition: '-162px -109px', backgroundSize: 'auto', width: '12px', height: '12px', backgroundRepeat: 'no-repeat', display: 'inline-block'}}></i></span><span> &middot; </span><span>Cookies</span><span> &middot; </span><span>More</span><span> &middot; </span></div>    
+                                <div>Mata © 2022</div>
                             </div>
                         </div>
                         <div className='profileBottomRightSide' >
@@ -161,7 +194,7 @@ export default class Profile extends React.Component {
                                 <div className='profileBottomMakePostInner' >
                                     <div className='profileBottomMakePostTop' >
                                         {this.getProfilePhoto()}
-                                        <div className='profileBottomMakePostTopButton' >
+                                        <div onClick={this.writePostModal.bind(this)} className='profileBottomMakePostTopButton' >
                                             <div>
                                                 What's on your mind?
                                             </div>

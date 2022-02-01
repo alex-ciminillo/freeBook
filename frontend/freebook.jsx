@@ -33,3 +33,22 @@ document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(<Root store={ store } />, root);
 });
 
+$(window).scroll(function (event) {
+  let scrollHeight = $(window).scrollTop();
+  let profilePicsHeight = $('#profilePicsContainerTopOfPage').height();
+  let copyrightHeight = $('#profileBottomCopyrightContainer').height();
+  let lifeHeight = $('#profileBottomLifeContainer').height();
+  let friendsHeight = $('#profileBottomFriendsContainer').height();
+  let photosHeight = $('#profileBottomPhotosContainer').height();
+  let introHeight = $('#profileBottomLeftSide').height();
+  let windowHeight = $(window).height();
+  if (scrollHeight  + windowHeight > introHeight + photosHeight + friendsHeight + lifeHeight + copyrightHeight  + 40) {
+    $('#profileBottomLeftSide').addClass('fixLeftSide');
+    $('#profileBottomLeftSide2').removeClass('hideLeftSide');
+    $('#profileBottomLeftSide').css('top', `-${profilePicsHeight + copyrightHeight + 40}px`);
+   } 
+  if (scrollHeight  + windowHeight < introHeight + photosHeight + friendsHeight + lifeHeight + copyrightHeight  - 40 - profilePicsHeight - copyrightHeight) {
+    $('#profileBottomLeftSide').removeClass('fixLeftSide');
+    $('#profileBottomLeftSide2').addClass('hideLeftSide');
+  }
+})
