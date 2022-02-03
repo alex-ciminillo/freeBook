@@ -3,7 +3,6 @@ import { logout } from '../../actions/session_actions';
 import WritePost from './write_post';
 import { hideModal } from '../../actions/modal_actions'
 
-
 const mapStateToProps = (state, ownProps) => {
   return {
     currentUser: state.entities.users[state.session.id],

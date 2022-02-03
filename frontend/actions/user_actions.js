@@ -4,7 +4,12 @@ import * as APIUtil from './../util/user_api_util';
 export const RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER';
 export const RECEIVE_OTHER_USER = 'RECEIVE_OTHER_USER';
 export const RECEIVE_OTHER_USER_ERRORS = 'RECEIVE_OTHER_USER_ERRORS';
+export const RECEIVE_ALL_USERS = 'RECEIVE_ALL_USERS';
 
+export const receiveAllUsers = (users) => ({
+    type: RECEIVE_ALL_USERS,
+    users
+});
 
 export const receiveErrors = (errors) => {
     return { type: RECEIVE_OTHER_USER_ERRORS, errors }
@@ -24,7 +29,6 @@ export const addFileToUser = (formData) => (dispatch) => (
 )
 
 export const fetchOtherUser = (id) => (dispatch) => {
-    console.log(id)
     return APIUtil.fetchOtherUser(id).then((otherUser) => {
         return dispatch(receiveOtherUser(otherUser))
     }, err => {
@@ -32,7 +36,10 @@ export const fetchOtherUser = (id) => (dispatch) => {
     })
 };
 
-
+export const fetchUsers = () => dispatch => (
+    APIUtil.fetchUsers()
+        .then((users) => dispatch(receiveAllUsers(users)))
+)
 
 
 

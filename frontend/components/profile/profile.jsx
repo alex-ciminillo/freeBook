@@ -7,11 +7,16 @@ export default class Profile extends React.Component {
 
     constructor(props) {
         super(props)
-        
+        this.state = {
+            body: "",
+        }
     }
 
     componentDidMount() {
-        this.props.fetchOtherUser(this.props.match.params.id)
+        this.props.fetchUsers();
+        this.props.fetchComments();
+        this.props.fetchPosts();
+        this.props.getLikes();
     }
 
     getProfilePhoto() {
@@ -26,6 +31,166 @@ export default class Profile extends React.Component {
         this.props.showModal({modal: 'writePost'})
     }
 
+    update(field) {
+        return e => { this.setState({ [field]: e.currentTarget.value }) }
+    }
+
+    getPostsPic(key) {
+
+        if (this.props.posts[key].photoUrl) {
+            return  <div className='profileBottomPostsMiddleHeight' >
+                        <div style={{backgroundImage: `url(${this.props.posts[key].photoUrl})`}} ></div>
+                    </div>
+        } else {
+            return  <div className='profileBottomPostsMiddleNoHeight' >
+                        <div style={{backgroundImage: `url(${this.props.posts[key].photoUrl})`}} ></div>
+                    </div>
+        }
+    }
+
+    handleComments(e) {
+        e.preventDefault()
+        const formData = new FormData();
+        formData.append('comment[author_id]', this.props.currentUser.id);
+        formData.append('comment[body]', this.state.body);
+        formData.append('comment[post_id]', e.currentTarget.id);
+        
+        this.props.createComment(formData);
+        e.currentTarget.children[0].value = ''
+    }
+
+    checkComments(key) {
+        this.hasComments = false;
+        Object.keys(this.props.comments).map((ckey)=> {
+            if (this.props.comments[ckey].postId == key) {
+                this.hasComments = true;
+            }
+        })
+        if (this.hasComments === false) {
+            return null
+        } else {
+            return <div className='profileBottomPostsCommentsContainer' >
+                        {this.getComments(key)}
+                    </div>
+        }
+    }
+
+    getComments(key) {
+        return Object.keys(this.props.comments).map((ckey)=> {
+            if (this.props.comments[ckey].postId == key) {
+                return <div key={ckey} className='profileBottomPostsComment' >
+                        <div>
+                            <div style={{backgroundImage: `url(${this.props.users[this.props.comments[ckey].authorId].photoUrl})` }} ></div>
+                        </div>
+                        <div>
+                            <div>{this.props.users[this.props.comments[ckey].authorId].firstName} {this.props.users[this.props.comments[ckey].authorId].lastName}</div>
+                            <div>{this.props.comments[ckey].body}</div>
+                        </div>
+                    </div>
+            }
+        })
+    }
+
+    getNumberOfLikes(postId) {
+        if (this.props.users[this.props.currentUser.id].likes) {
+            this.props.users[this.props.currentUser.id].likes.map((key) => {
+            if (key.postId == postId) {
+                $(`#likes${postId}`).addClass('filterLike')
+                return
+            }
+        })
+        }
+        
+        let counter = 0
+        Object.keys(this.props.likes).map((key) => {
+            if (this.props.likes[key].postId == postId) {
+                counter += 1;
+            }
+        })
+        return counter > 0 ? 
+            <div className='postsNumberOfLikes' >
+                <div>
+                    <img className="j1lvzwm4" height="18" role="presentation" src="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 16 16'%3e%3cdefs%3e%3clinearGradient id='a' x1='50%25' x2='50%25' y1='0%25' y2='100%25'%3e%3cstop offset='0%25' stop-color='%2318AFFF'/%3e%3cstop offset='100%25' stop-color='%230062DF'/%3e%3c/linearGradient%3e%3cfilter id='c' width='118.8%25' height='118.8%25' x='-9.4%25' y='-9.4%25' filterUnits='objectBoundingBox'%3e%3cfeGaussianBlur in='SourceAlpha' result='shadowBlurInner1' stdDeviation='1'/%3e%3cfeOffset dy='-1' in='shadowBlurInner1' result='shadowOffsetInner1'/%3e%3cfeComposite in='shadowOffsetInner1' in2='SourceAlpha' k2='-1' k3='1' operator='arithmetic' result='shadowInnerInner1'/%3e%3cfeColorMatrix in='shadowInnerInner1' values='0 0 0 0 0 0 0 0 0 0.299356041 0 0 0 0 0.681187726 0 0 0 0.3495684 0'/%3e%3c/filter%3e%3cpath id='b' d='M8 0a8 8 0 00-8 8 8 8 0 1016 0 8 8 0 00-8-8z'/%3e%3c/defs%3e%3cg fill='none'%3e%3cuse fill='url(%23a)' xlink:href='%23b'/%3e%3cuse fill='black' filter='url(%23c)' xlink:href='%23b'/%3e%3cpath fill='white' d='M12.162 7.338c.176.123.338.245.338.674 0 .43-.229.604-.474.725a.73.73 0 01.089.546c-.077.344-.392.611-.672.69.121.194.159.385.015.62-.185.295-.346.407-1.058.407H7.5c-.988 0-1.5-.546-1.5-1V7.665c0-1.23 1.467-2.275 1.467-3.13L7.361 3.47c-.005-.065.008-.224.058-.27.08-.079.301-.2.635-.2.218 0 .363.041.534.123.581.277.732.978.732 1.542 0 .271-.414 1.083-.47 1.364 0 0 .867-.192 1.879-.199 1.061-.006 1.749.19 1.749.842 0 .261-.219.523-.316.666zM3.6 7h.8a.6.6 0 01.6.6v3.8a.6.6 0 01-.6.6h-.8a.6.6 0 01-.6-.6V7.6a.6.6 0 01.6-.6z'/%3e%3c/g%3e%3c/svg%3e" width="18"></img>
+                    <div>{counter}</div>
+                </div>
+            </div> : null
+    }
+
+    createLike(postId) {
+        let liked = false;
+        this.props.users[this.props.currentUser.id].likes.map((key) => {
+            if (key.postId == postId) {
+                $(`#likes${postId}`).removeClass('filterLike')
+                this.props.deleteLike(key.id)
+                liked = true;
+                return
+            }
+        })
+        if (liked === true) { return }
+        $(`#likes${postId}`).addClass('filterLike')
+        this.props.addLike({
+            like: {
+                user_id: this.props.currentUser.id,
+                post_id: postId
+            }
+        })
+    }
+
+    getAllPosts() {
+        if (Object.keys(this.props.posts).length < 1) return 
+        let orderPosts = [];
+        Object.keys(this.props.posts).map((key) => {
+            if (this.props.posts[key].authorId == this.userId) {
+                orderPosts.unshift(this.props.posts[key].id)
+            }
+        })
+
+        return orderPosts.map((key)=> {
+            if (this.props.posts[key].authorId == this.userId) {
+                return <div key={key} className='profileBottomPostsContainer' >
+                    <div className='profileBottomPostsTop' >
+                        <div className='profileBottomPostsTopLeft' >
+                            <div className='profileBottomPostsTopPicDiv' >
+                                <div style={{backgroundImage: `url(${this.props.users[this.props.posts[key].authorId].photoUrl})`}} ></div>
+                            </div>
+                            <div className='profileBottomPostsTopNameAndDate' >
+                                <div>{this.props.users[this.props.posts[key].authorId].firstName} {this.props.users[this.props.posts[key].authorId].lastName}</div>
+                                <div>{this.props.posts[key].createdAt}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='profileBottomPostsMiddle' >
+                        <div>{this.props.posts[key].body}</div>
+                        {this.getPostsPic(key)}
+                    </div>
+                    {this.getNumberOfLikes(key)}
+                    <div className='profileBottomPostsOptions' >
+                        <div>
+                            <div id={`likes${key}`} onClick={()=>this.createLike(key)} >
+                                <i data-visualcompletion="css-img" className="hu5pjgll m6k467ps" style={{backgroundImage: 'url(https://www.facebook.com/rsrc.php/v3/yV/r/YgkGk8qdJDo.png)', backgroundPosition: '0px -243px', backgroundSize: 'auto', width: '18px', height: '18px', backgroundRepeat: 'no-repeat', display: 'inline-block'}}></i>
+                                <div>Like</div>
+                            </div>
+                            <div>
+                            <i data-visualcompletion="css-img" className="hu5pjgll m6k467ps" style={{backgroundImage: 'url(https://www.facebook.com/rsrc.php/v3/yV/r/YgkGk8qdJDo.png)', backgroundPosition: '0px -205px', backgroundSize: 'auto', width: '18px', height: '18px', backgroundRepeat: 'no-repeat', display: 'inline-block'}}></i>
+                                <div>Comment</div>
+                            </div>
+                        </div>
+                    </div>
+                    {this.checkComments(key)}
+                    <div className='profileBottomPostsBottom' >
+                        <div className='profileBottomPostsBottomDiv' >
+                            <div>
+                                <div style={{backgroundImage: `url(${this.props.currentUser.photoUrl})`}} ></div>
+                            </div>
+                            <form id={key} onSubmit={this.handleComments.bind(this)} >
+                                <input id={key} onChange={this.update('body')} type='text' placeholder='Write a comment...' />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        })
+    }
 
     render() {
         console.log(this.props)
@@ -247,14 +412,10 @@ export default class Profile extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className='profileBottomPostsContainer' >
-                               
-                            </div>
+                            {this.getAllPosts()}
                         </div>
                     </div>
                 </div>
-                {/* <div>Posts</div>
-                <div onClick={()=>this.props.logout()} >Logout</div> */}
             </div>
         )
     }

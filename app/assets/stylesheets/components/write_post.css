@@ -82,6 +82,8 @@
     height: 245px;
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
+    min-width: 200px;
 }
 
 .writePostPicAndName {
@@ -211,6 +213,23 @@
     flex-direction: row;
 }
 
+.writePostAddContentIcons > label {
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.writePostAddContentIcons > label > i {
+    align-self: center;
+}
+
+.writePostAddContentIcons > label:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
 .writePostAddContentIcons > div {
     width: 35px;
     height: 35px;
@@ -254,9 +273,19 @@
 
 
 
+.writePostPhotoDiv {
+    overflow: auto;
+    width: 500px;
+    height: 500px;
+}
 
-
-
+.writePostPhotoDiv > div {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
 
 
 

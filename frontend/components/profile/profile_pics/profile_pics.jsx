@@ -89,7 +89,6 @@ export default class ProfilePics extends React.Component {
     }
 
     render() {
-        console.log(this.props)
         this.userId = this.props.ownProps.match.params.id
         this.user = this.props.users[this.userId]
         return (

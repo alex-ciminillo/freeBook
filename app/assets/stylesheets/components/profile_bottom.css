@@ -717,15 +717,283 @@
 
 .profileBottomPostsContainer {
     margin-top: 15px;
-    height: 5000px;
     width: 100%;
     border-radius: inherit;
     background-color: rgb(255, 255, 255);
     box-shadow: 0 1px 2px #00000033;
+    overflow: hidden;
 }
 
 .fixed {
     position: fixed;
     top: 10000px;
     z-index: 999999999999999999;
+}
+
+.profileBottomPostsTop {
+    height: 55px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.profileBottomPostsTopLeft {
+    align-self: center;
+    width: 92%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding-top: 5px;
+}
+
+.profileBottomPostsTopPicDiv {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    overflow: hidden;
+}
+
+.profileBottomPostsTopPicDiv > div {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.profileBottomPostsTopNameAndDate {
+    padding-left: 10px;
+}
+
+.profileBottomPostsTopNameAndDate > div:first-child {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #050505;
+    font-size: .9rem;
+    font-weight: bold;
+}
+
+.profileBottomPostsTopNameAndDate > div:last-child {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #65676b;
+    font-size: .8125rem;
+}
+
+.profileBottomPostsMiddle {
+    padding-top: 5px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profileBottomPostsMiddle > :first-child {
+    width: 92%;
+    text-align: left;
+    align-self: center;
+    font-size: .9375rem;
+    color: #050505;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-bottom: 5px;
+}
+
+.profileBottomPostsMiddleHeight{
+    width: 100%;
+    height: 512.5px;
+    align-self: center;
+    padding-bottom: 10px;
+}
+
+.profileBottomPostsMiddleNoHeight{
+    width: 100%;
+    align-self: center;
+}
+
+
+
+.profileBottomPostsMiddle > :last-child > div {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.profileBottomPostsOptions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.profileBottomPostsOptions > div {
+    width: 92%;
+    height: 45px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.profileBottomPostsOptions > div > div {
+    width: 49%;
+    height: 99%;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+}
+
+.profileBottomPostsOptions > div > div > div {
+    align-self: center;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #65676b;
+    font-size: .9375rem;
+}
+
+.profileBottomPostsOptions > div > div > i {
+    align-self: center;
+    filter: invert(0.39);
+    margin-bottom: 2px;
+    margin-right: 5px;
+}
+
+.profileBottomPostsBottom {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.profileBottomPostsBottomDiv {
+    align-self: center;
+    width: 92%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.profileBottomPostsBottomDiv > div:first-child {
+    width: 32px;
+    height: 32px;
+    overflow: hidden;
+    border-radius: 100%;
+}
+
+.profileBottomPostsBottomDiv > div:first-child > div {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.profileBottomPostsBottomDiv > form:last-child {
+    width: 92%;
+}
+
+.profileBottomPostsBottomDiv > form:last-child > input {
+    width: 100%;
+    height: 32px;
+    border-radius: 20px;
+    background-color: #f0f2f5;
+    outline: 0px;
+    padding-left: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .9rem;
+    color: black;
+}
+
+.profileBottomPostsBottomDiv > form:last-child > input::placeholder {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .9rem;
+    color: rgba(0, 0, 0, 0.507);
+}
+
+.profileBottomPostsCommentsContainer {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.profileBottomPostsComment {
+    align-self: center;
+    width: 92%;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.profileBottomPostsComment > div:first-child {
+    width: 32px;
+    height: 32px;
+    overflow: hidden;
+    border-radius: 100%;
+}
+
+.profileBottomPostsComment > div:first-child > div {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.profileBottomPostsComment > div:last-child {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    background-color: #f0f2f5;
+    border-radius: 18px;
+    margin-left: 5px;
+}
+
+
+.profileBottomPostsComment > div:last-child > div:first-child {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .7rem;
+    color: black;
+    font-weight: bold;
+}
+
+.profileBottomPostsComment > div:last-child > div:last-child {
+    font-size: .9rem;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.postsNumberOfLikes {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-bottom: 5px;
+}
+
+.postsNumberOfLikes > div {
+    width: 92%;
+    display: flex;
+    flex-direction: row;
+}
+
+.postsNumberOfLikes > div > div:last-child{
+    align-self: center;
+    color: #65676b;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .8rem;
+    padding-left: 5px;
+}
+
+
+.filterLike > i {
+    filter: invert(54%) sepia(75%) saturate(6610%) hue-rotate(200deg) brightness(97%) contrast(92%) !important;
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yV/r/YgkGk8qdJDo.png) !important;
+    background-position: 0px -224px !important;
+    background-size: auto !important;
+}
+
+.filterLike > div {
+    color: #2078F4 !important;
 }

@@ -16,7 +16,7 @@ export default class Modal extends React.Component {
             case "profilePic":
                  return <ChoosePicsContainer info={this.props.info} />
             case "writePost":
-                return <WritePost hideModal={this.props.hideModal} info={this.props.info} currentUser={this.props.currentUser} />      
+                return <WritePost createPost={this.props.createPost} hideModal={this.props.hideModal} info={this.props.info} currentUser={this.props.currentUser} />      
             default:
                 return null;
         }
