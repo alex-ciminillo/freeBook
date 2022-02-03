@@ -17,6 +17,7 @@ export default class Profile extends React.Component {
         this.props.fetchComments();
         this.props.fetchPosts();
         this.props.getLikes();
+        this.props.fetchFriends();
     }
 
     getProfilePhoto() {
@@ -198,7 +199,7 @@ export default class Profile extends React.Component {
         this.user = this.props.users[this.userId]
         return (
             <div>
-                <ProfilePicsContainer ownProps={this.props.ownProps} />
+                <ProfilePicsContainer createFriend={this.props.createFriend} ownProps={this.props.ownProps} />
                 <div className='profileBottomFullContainer' >
                     <div className='profileBottomInnerContainer'>
                         <div id='profileBottomLeftSide2' className='profileBottomLeftSide2 hideLeftSide' >

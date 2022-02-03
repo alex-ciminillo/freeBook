@@ -6,6 +6,7 @@ import { showModal } from '../../actions/modal_actions';
 import { fetchPosts } from '../../actions/post_actions'
 import { fetchComments, createComment } from '../../actions/comment_actions';
 import { getLikes, addLike, deleteLike } from '../../actions/like_actions'
+import { fetchFriends, createFriend } from '../../actions/friend_actions'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -14,6 +15,7 @@ const mapStateToProps = (state, ownProps) => {
     posts: state.entities.posts,
     comments: state.entities.comments,
     likes: state.entities.likes,
+    friends: state.entities.friends,
     ownProps
   };
 };
@@ -28,7 +30,9 @@ const mapDispatchToProps = (dispatch) => {
     createComment: (comment) => dispatch(createComment(comment)),
     getLikes: ()=> dispatch(getLikes()),
     addLike: (like)=> dispatch(addLike(like)),
-    deleteLike: (id)=> dispatch(deleteLike(id))
+    deleteLike: (id)=> dispatch(deleteLike(id)),
+    fetchFriends: ()=> dispatch(fetchFriends()),
+    createFriend: (friend) => dispatch(createFriend(friend))
    }
 };
 

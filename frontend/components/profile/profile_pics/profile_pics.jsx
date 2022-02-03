@@ -88,7 +88,69 @@ export default class ProfilePics extends React.Component {
         : ''
     }
 
+    makeFriendship() {
+        let friendship = {friend: {user_id: this.props.currentUser.id, friend_id: this.userId, status: 'pending'}}
+        this.props.createFriend(friendship)
+    }
+
+    getFriendshipStatus() {
+        if (!this.props.currentUser.friendsRequested) { return }
+        let div
+        let requested = false;
+        div = this.props.currentUser.friendsRequested.map((request)=>{
+            if(request.friendId == this.userId) {
+                requested = true;
+                return <div className='addStoryButton' >
+                    <img className="addStoryIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/33EToHSZ94f.png" alt="" height="16" width="16"/>
+                    I sent request!
+                </div>
+            }
+        })
+        if (requested) { return div }
+        div = this.props.currentUser.friendRequests.map((request)=>{
+            if(request.userId == this.userId) {
+                requested = true;
+                return <div className='addStoryButton' >
+                    <img className="addStoryIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/33EToHSZ94f.png" alt="" height="16" width="16"/>
+                    They sent request!
+                </div>
+            }
+        })
+        if (requested) { return div }
+        return <div onClick={()=>this.makeFriendship()} className='addStoryButton' >
+            <img className="addStoryIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/33EToHSZ94f.png" alt="" height="16" width="16"/>
+                Add Friend
+        </div>
+    }
+
+    getAddStoryButtons() {
+        let value = `${this.userId}` === `${this.props.currentUser.id}`
+        return value ?
+            <div className='addStoryAndEditButtonsDiv'>
+                <div className='addStoryEditProfileDiv' >
+                    <div className='addStoryButton' >
+                    <img className="addStoryIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yp/r/bR3-u2s-xwG.png" alt="" height="16" width="16"/>
+                        Add to story
+                    </div>
+                    <div className='editProfileButton' >
+                    <img className="editProfileIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yW/r/OR6SzrfoMFg.png" alt="" height="16" width="16" /> 
+                        Edit profile
+                    </div>
+                </div>
+            </div> :
+            <div className='addStoryAndEditButtonsDiv'>
+                <div className='addStoryEditProfileDiv' >
+                    {this.getFriendshipStatus()}
+                    <div className='editProfileButton' >
+                    <img className="editProfileIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yI/r/YIxFfN5ecJG.png" alt="" height="16" width="16" /> 
+                        Message
+                    </div>
+                </div>
+            </div>
+    }
+
     render() {
+        console.log(this.props)
         this.userId = this.props.ownProps.match.params.id
         this.user = this.props.users[this.userId]
         return (
@@ -155,18 +217,7 @@ export default class ProfilePics extends React.Component {
                     </div>
                 </div>
                 <div className='profilePicMaxHeight2' >
-                    <div className='addStoryAndEditButtonsDiv'>
-                        <div className='addStoryEditProfileDiv' >
-                            <div className='addStoryButton' >
-                            <img className="addStoryIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yp/r/bR3-u2s-xwG.png" alt="" height="16" width="16"/>
-                                Add to story
-                            </div>
-                            <div className='editProfileButton' >
-                            <img className="editProfileIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yW/r/OR6SzrfoMFg.png" alt="" height="16" width="16" /> 
-                                Edit profile
-                            </div>
-                        </div>
-                    </div>
+                    {this.getAddStoryButtons()}
                 </div>
                 <div className='profilePicMaxHeight3' >
                     <div className='grayLine' ></div> 

@@ -21,6 +21,14 @@ class User < ApplicationRecord
     has_one_attached :profpic
     has_one_attached :coverpic
 
+    has_many :friends_requested,
+        primary_key: :id,
+        foreign_key: :user_id,
+        class_name: :Friend
+    has_many :friend_requests,
+        primary_key: :id,
+        foreign_key: :friend_id,
+        class_name: :Friend
     has_many :likes,
         dependent: :destroy
     has_many :comments,

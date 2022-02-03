@@ -92,6 +92,90 @@ var fetchComment = function fetchComment(commentId) {
 
 /***/ }),
 
+/***/ "./frontend/actions/friend_actions.js":
+/*!********************************************!*\
+  !*** ./frontend/actions/friend_actions.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ADD_FRIEND": () => (/* binding */ ADD_FRIEND),
+/* harmony export */   "REMOVE_FRIEND": () => (/* binding */ REMOVE_FRIEND),
+/* harmony export */   "RECEIVE_ALL_FRIENDS": () => (/* binding */ RECEIVE_ALL_FRIENDS),
+/* harmony export */   "RECEIVE_ALL_USERS": () => (/* binding */ RECEIVE_ALL_USERS),
+/* harmony export */   "receiveAllUsers": () => (/* binding */ receiveAllUsers),
+/* harmony export */   "addFriend": () => (/* binding */ addFriend),
+/* harmony export */   "removeFriend": () => (/* binding */ removeFriend),
+/* harmony export */   "receiveAllFriends": () => (/* binding */ receiveAllFriends),
+/* harmony export */   "createFriend": () => (/* binding */ createFriend),
+/* harmony export */   "deleteFriend": () => (/* binding */ deleteFriend),
+/* harmony export */   "updateFriend": () => (/* binding */ updateFriend),
+/* harmony export */   "fetchFriends": () => (/* binding */ fetchFriends)
+/* harmony export */ });
+/* harmony import */ var _util_friend_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/friend_api_util */ "./frontend/util/friend_api_util.js");
+
+var ADD_FRIEND = 'ADD_FRIEND';
+var REMOVE_FRIEND = 'REMOVE_FRIEND';
+var RECEIVE_ALL_FRIENDS = 'RECEIVE_ALL_FRIENDS';
+var RECEIVE_ALL_USERS = 'RECEIVE_ALL_USERS';
+var receiveAllUsers = function receiveAllUsers(users) {
+  return {
+    type: RECEIVE_ALL_USERS,
+    users: users
+  };
+};
+var addFriend = function addFriend(friend) {
+  return {
+    type: ADD_FRIEND,
+    friend: friend
+  };
+};
+var removeFriend = function removeFriend(friendId) {
+  return {
+    type: REMOVE_FRIEND,
+    friendId: friendId
+  };
+};
+var receiveAllFriends = function receiveAllFriends(friends) {
+  return {
+    type: RECEIVE_ALL_FRIENDS,
+    friends: friends
+  };
+};
+var createFriend = function createFriend(friend) {
+  return function (dispatch) {
+    console.log(friend);
+    return _util_friend_api_util__WEBPACK_IMPORTED_MODULE_0__.createFriend(friend).then(function (friend) {
+      return dispatch(receiveAllUsers(friend));
+    });
+  };
+};
+var deleteFriend = function deleteFriend(friendId) {
+  return function (dispatch) {
+    return _util_friend_api_util__WEBPACK_IMPORTED_MODULE_0__.deleteFriend(friendId).then(function () {
+      return dispatch(removeFriend(friendId));
+    });
+  };
+};
+var updateFriend = function updateFriend(friend) {
+  return function (dispatch) {
+    return _util_friend_api_util__WEBPACK_IMPORTED_MODULE_0__.updateFriend(friend).then(function (friend) {
+      return dispatch(addFriend(friend));
+    });
+  };
+};
+var fetchFriends = function fetchFriends() {
+  return function (dispatch) {
+    return _util_friend_api_util__WEBPACK_IMPORTED_MODULE_0__.fetchFriends().then(function (friends) {
+      return dispatch(receiveAllFriends(friends));
+    });
+  };
+};
+
+/***/ }),
+
 /***/ "./frontend/actions/like_actions.js":
 /*!******************************************!*\
   !*** ./frontend/actions/like_actions.js ***!
@@ -1555,6 +1639,7 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       this.props.fetchComments();
       this.props.fetchPosts();
       this.props.getLikes();
+      this.props.fetchFriends();
     }
   }, {
     key: "getProfilePhoto",
@@ -1810,6 +1895,7 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       this.userId = this.props.match.params.id;
       this.user = this.props.users[this.userId];
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_profile_pics_profile_pics_container__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        createFriend: this.props.createFriend,
         ownProps: this.props.ownProps
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFullContainer"
@@ -2191,6 +2277,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_post_actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../actions/post_actions */ "./frontend/actions/post_actions.js");
 /* harmony import */ var _actions_comment_actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../actions/comment_actions */ "./frontend/actions/comment_actions.js");
 /* harmony import */ var _actions_like_actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../actions/like_actions */ "./frontend/actions/like_actions.js");
+/* harmony import */ var _actions_friend_actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../actions/friend_actions */ "./frontend/actions/friend_actions.js");
+
 
 
 
@@ -2207,6 +2295,7 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
     posts: state.entities.posts,
     comments: state.entities.comments,
     likes: state.entities.likes,
+    friends: state.entities.friends,
     ownProps: ownProps
   };
 };
@@ -2239,6 +2328,12 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     deleteLike: function deleteLike(id) {
       return dispatch((0,_actions_like_actions__WEBPACK_IMPORTED_MODULE_7__.deleteLike)(id));
+    },
+    fetchFriends: function fetchFriends() {
+      return dispatch((0,_actions_friend_actions__WEBPACK_IMPORTED_MODULE_8__.fetchFriends)());
+    },
+    createFriend: function createFriend(friend) {
+      return dispatch((0,_actions_friend_actions__WEBPACK_IMPORTED_MODULE_8__.createFriend)(friend));
     }
   };
 };
@@ -2602,8 +2697,121 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
       return this.user ? "".concat(this.user.firstName, " ").concat(this.user.lastName) : '';
     }
   }, {
+    key: "makeFriendship",
+    value: function makeFriendship() {
+      var friendship = {
+        friend: {
+          user_id: this.props.currentUser.id,
+          friend_id: this.userId,
+          status: 'pending'
+        }
+      };
+      this.props.createFriend(friendship);
+    }
+  }, {
+    key: "getFriendshipStatus",
+    value: function getFriendshipStatus() {
+      var _this = this;
+
+      if (!this.props.currentUser.friendsRequested) {
+        return;
+      }
+
+      var div;
+      var requested = false;
+      div = this.props.currentUser.friendsRequested.map(function (request) {
+        if (request.friendId == _this.userId) {
+          requested = true;
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "addStoryButton"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+            className: "addStoryIcon",
+            src: "https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/33EToHSZ94f.png",
+            alt: "",
+            height: "16",
+            width: "16"
+          }), "I sent request!");
+        }
+      });
+
+      if (requested) {
+        return div;
+      }
+
+      div = this.props.currentUser.friendRequests.map(function (request) {
+        if (request.userId == _this.userId) {
+          requested = true;
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "addStoryButton"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+            className: "addStoryIcon",
+            src: "https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/33EToHSZ94f.png",
+            alt: "",
+            height: "16",
+            width: "16"
+          }), "They sent request!");
+        }
+      });
+
+      if (requested) {
+        return div;
+      }
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this.makeFriendship();
+        },
+        className: "addStoryButton"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "addStoryIcon",
+        src: "https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/33EToHSZ94f.png",
+        alt: "",
+        height: "16",
+        width: "16"
+      }), "Add Friend");
+    }
+  }, {
+    key: "getAddStoryButtons",
+    value: function getAddStoryButtons() {
+      var value = "".concat(this.userId) === "".concat(this.props.currentUser.id);
+      return value ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "addStoryAndEditButtonsDiv"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "addStoryEditProfileDiv"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "addStoryButton"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "addStoryIcon",
+        src: "https://static.xx.fbcdn.net/rsrc.php/v3/yp/r/bR3-u2s-xwG.png",
+        alt: "",
+        height: "16",
+        width: "16"
+      }), "Add to story"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "editProfileButton"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "editProfileIcon",
+        src: "https://static.xx.fbcdn.net/rsrc.php/v3/yW/r/OR6SzrfoMFg.png",
+        alt: "",
+        height: "16",
+        width: "16"
+      }), "Edit profile"))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "addStoryAndEditButtonsDiv"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "addStoryEditProfileDiv"
+      }, this.getFriendshipStatus(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "editProfileButton"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "editProfileIcon",
+        src: "https://static.xx.fbcdn.net/rsrc.php/v3/yI/r/YIxFfN5ecJG.png",
+        alt: "",
+        height: "16",
+        width: "16"
+      }), "Message")));
+    }
+  }, {
     key: "render",
     value: function render() {
+      console.log(this.props);
       this.userId = this.props.ownProps.match.params.id;
       this.user = this.props.users[this.userId];
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -2680,27 +2888,7 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
         className: "friendPic"
       })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profilePicMaxHeight2"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "addStoryAndEditButtonsDiv"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "addStoryEditProfileDiv"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "addStoryButton"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        className: "addStoryIcon",
-        src: "https://static.xx.fbcdn.net/rsrc.php/v3/yp/r/bR3-u2s-xwG.png",
-        alt: "",
-        height: "16",
-        width: "16"
-      }), "Add to story"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "editProfileButton"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        className: "editProfileIcon",
-        src: "https://static.xx.fbcdn.net/rsrc.php/v3/yW/r/OR6SzrfoMFg.png",
-        alt: "",
-        height: "16",
-        width: "16"
-      }), "Edit profile")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, this.getAddStoryButtons()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profilePicMaxHeight3"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "grayLine"
@@ -4166,21 +4354,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _users_reducer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./users_reducer */ "./frontend/reducers/users_reducer.js");
 /* harmony import */ var _posts_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./posts_reducer */ "./frontend/reducers/posts_reducer.js");
 /* harmony import */ var _comments_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./comments_reducer */ "./frontend/reducers/comments_reducer.js");
 /* harmony import */ var _likes_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./likes_reducer */ "./frontend/reducers/likes_reducer.js");
+/* harmony import */ var _friends_reducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./friends_reducer */ "./frontend/reducers/friends_reducer.js");
 
 
 
 
 
-var entitiesReducer = (0,redux__WEBPACK_IMPORTED_MODULE_4__.combineReducers)({
+
+var entitiesReducer = (0,redux__WEBPACK_IMPORTED_MODULE_5__.combineReducers)({
   users: _users_reducer__WEBPACK_IMPORTED_MODULE_0__["default"],
   posts: _posts_reducer__WEBPACK_IMPORTED_MODULE_1__["default"],
   comments: _comments_reducer__WEBPACK_IMPORTED_MODULE_2__["default"],
-  likes: _likes_reducer__WEBPACK_IMPORTED_MODULE_3__["default"]
+  likes: _likes_reducer__WEBPACK_IMPORTED_MODULE_3__["default"],
+  friends: _friends_reducer__WEBPACK_IMPORTED_MODULE_4__["default"]
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (entitiesReducer);
 
@@ -4205,6 +4396,47 @@ var errorsReducer = (0,redux__WEBPACK_IMPORTED_MODULE_1__.combineReducers)({
   session: _session_errors_reducer__WEBPACK_IMPORTED_MODULE_0__["default"]
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (errorsReducer);
+
+/***/ }),
+
+/***/ "./frontend/reducers/friends_reducer.js":
+/*!**********************************************!*\
+  !*** ./frontend/reducers/friends_reducer.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _actions_friend_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/friend_actions */ "./frontend/actions/friend_actions.js");
+
+
+var friendsReducer = function friendsReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  Object.freeze(state);
+  var nextState = Object.assign({}, state);
+
+  switch (action.type) {
+    case _actions_friend_actions__WEBPACK_IMPORTED_MODULE_0__.ADD_FRIEND:
+      nextState[action.friend.id] = action.friend;
+      return nextState;
+
+    case _actions_friend_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_ALL_FRIENDS:
+      return action.friends;
+
+    case _actions_friend_actions__WEBPACK_IMPORTED_MODULE_0__.REMOVE_FRIEND:
+      delete nextState[action.friendId];
+      return nextState;
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (friendsReducer);
 
 /***/ }),
 
@@ -4529,6 +4761,7 @@ var usersReducer = function usersReducer() {
       return Object.assign({}, state, _defineProperty({}, action.otherUser.id, action.otherUser));
 
     case _actions_user_actions__WEBPACK_IMPORTED_MODULE_1__.RECEIVE_ALL_USERS:
+      console.log("hello");
       return action.users;
 
     default:
@@ -4623,6 +4856,52 @@ var fetchComment = function fetchComment(id) {
   return $.ajax({
     method: 'GET',
     url: "/api/comments/".concat(id)
+  });
+};
+
+/***/ }),
+
+/***/ "./frontend/util/friend_api_util.js":
+/*!******************************************!*\
+  !*** ./frontend/util/friend_api_util.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "createFriend": () => (/* binding */ createFriend),
+/* harmony export */   "deleteFriend": () => (/* binding */ deleteFriend),
+/* harmony export */   "updateFriend": () => (/* binding */ updateFriend),
+/* harmony export */   "fetchFriends": () => (/* binding */ fetchFriends)
+/* harmony export */ });
+var createFriend = function createFriend(friend) {
+  console.log(friend);
+  return $.ajax({
+    method: 'POST',
+    url: "/api/friends",
+    data: friend
+  });
+};
+var deleteFriend = function deleteFriend(friendId) {
+  return $.ajax({
+    method: 'DELETE',
+    url: "/api/friends/".concat(friendId)
+  });
+};
+var updateFriend = function updateFriend(formData) {
+  return $.ajax({
+    method: 'PATCH',
+    url: "/api/friends/".concat(parseInt(formData.get('friend[id]'))),
+    data: formData,
+    contentType: false,
+    processData: false
+  });
+};
+var fetchFriends = function fetchFriends() {
+  return $.ajax({
+    method: 'GET',
+    url: '/api/friends'
   });
 };
 
