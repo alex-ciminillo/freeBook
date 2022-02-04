@@ -7,7 +7,7 @@
     height:100%;
     display: flex;
     justify-content: center;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 99999999999999;
@@ -21,8 +21,12 @@
     background-color: white;
     display:flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.2),0 2px 4px 0 rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.writePostWithPic {
+    height: 655px;
 }
 
 .writePostTop {
@@ -82,8 +86,11 @@
     height: 245px;
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
     min-width: 200px;
+}
+
+.writePostMiddleWithPic {
+    height: 470px;
 }
 
 .writePostPicAndName {
@@ -157,6 +164,10 @@
     height: 175px;
     width: 94%;
     align-self: center;
+}
+
+.writePostTextBoxWithPic { 
+    height: 100px;
 }
 
 .writePostTextBox > textarea { 
@@ -275,8 +286,10 @@
 
 .writePostPhotoDiv {
     overflow: auto;
-    width: 500px;
-    height: 500px;
+    width: 290px;
+    height: 290px;
+    margin-bottom: 10px;
+    align-self: center;
 }
 
 .writePostPhotoDiv > div {

@@ -6,10 +6,10 @@
     height: 55px;
     display: flex;
     position: fixed;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.062); 
+    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.062); 
     justify-content: space-between;
     top: 0;
-    z-index: 50;
+    z-index: 55;
 }
 
 
@@ -35,12 +35,112 @@
     padding-top: 12px;
     padding-left: 12px;
     height: 38px;
-    width: 38px;
+    width: 280px;
     background-color: #F0F2F5;
-    border-radius: 50%;
-    display: inline-block;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    z-index: 51;
 }
 
+.searchBarResultsDiv {
+    position: fixed;
+    width: 350px;
+    // height: 350px;
+    top: 55px;
+    left: 0;
+    background-color: white;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15); 
+    z-index: 51;
+}
+
+.searchResultDisplayUser {
+    cursor: pointer;
+    height: 52px;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 10px;
+    border-radius: 7px;
+    padding-left: 5px;
+    z-index: 51;
+}
+
+.searchResultDisplayUser:hover {
+    background-color: rgba(0, 0, 0, 0.103);
+}
+
+.searchResultDisplayUser > div:first-child {
+    height: 32px;
+    width: 32px;
+    border-radius: 100%;
+    overflow: hidden;
+    align-self: center;
+    z-index: 51;
+}
+
+.searchResultDisplayUser > div:first-child > div {
+    width: 32px;
+    height: 32px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+    z-index: 51;
+}
+
+.searchResultDisplayUser > div:last-child {
+    margin-left: 10px;
+    align-self: center;
+    z-index: 51;
+}
+
+.searchResultDisplayUser > div:last-child > div:first-child {
+    color: rgb(10, 10, 10);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: .85rem;
+    z-index: 51;
+}
+
+.searchResultDisplayUser > div:last-child > div:last-child {
+    color: #65676b;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .75rem;
+    z-index: 51;
+}
+
+
+
+.searchBarResultsDivSmallPiece {
+    position: fixed;
+    width: 5px;
+    height: 57px;
+    top: 0px;
+    left: 345px;
+    background-color: white;
+    box-shadow: 2px 0px 2px rgba(0, 0, 0, 0.15); 
+    z-index: 51;
+}
+
+.searchDiv > input {
+    padding-left: 25px;
+    margin-left: -100px;
+    margin-top: -10px;
+    outline: 0px;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .9rem;
+    z-index: 51;
+}
+
+.searchDiv > input::placeholder {
+    color: rgba(0, 0, 0, 0.61);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .9rem;
+    z-index: 51;
+}
 
 .fIcon {
     fill: white;
@@ -93,6 +193,11 @@
 
 .navBarGroupLeft {
     display: flex;
+    z-index: 51;
+}
+
+.navBarGroupMiddle {
+    display: flex;
 }
 
 .navBarGroupRight {
@@ -118,6 +223,69 @@
 .notification {
     margin-top: 9px;
     margin-left: 10px;
+}
+
+.goToProfileDiv {
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: 10px;
+    height: 36px;
+    background-color: #e7f3ff;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.goToProfileDiv:hover {
+    background-color: #c8d8e9;
+}
+
+.goToProfileDiv > div:first-child {
+    width: 28px;
+    height: 28px;
+    align-self: center;
+    border-radius: 100%;
+    overflow: hidden;
+    margin-left: 4px;
+}
+
+.navBarProfilePic {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.goToProfileDiv > div:last-child {
+    color: #1877f2;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .8rem;
+    align-self: center;
+    margin-left: 5px;
+    padding-right: 10px;
+    font-weight: bold;
+}
+
+.navBarGroupMiddleDiv {
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: 3px;
+    height: 48px;
+    width: 128px;
+    border-radius: 7px;
+    display: flex;
+    justify-content: center;
+}
+
+.navBarGroupMiddleDiv > svg {
+    fill: #65676b;
+    align-self: center;
+}
+
+.navBarGroupMiddleDiv:hover {
+    background-color: rgba(0, 0, 0, 0.103);
 }
 
 .messagingDiv {

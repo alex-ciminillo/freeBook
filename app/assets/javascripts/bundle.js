@@ -146,7 +146,6 @@ var receiveAllFriends = function receiveAllFriends(friends) {
 };
 var createFriend = function createFriend(friend) {
   return function (dispatch) {
-    console.log(friend);
     return _util_friend_api_util__WEBPACK_IMPORTED_MODULE_0__.createFriend(friend).then(function (friend) {
       return dispatch(receiveAllUsers(friend));
     });
@@ -154,15 +153,15 @@ var createFriend = function createFriend(friend) {
 };
 var deleteFriend = function deleteFriend(friendId) {
   return function (dispatch) {
-    return _util_friend_api_util__WEBPACK_IMPORTED_MODULE_0__.deleteFriend(friendId).then(function () {
-      return dispatch(removeFriend(friendId));
+    return _util_friend_api_util__WEBPACK_IMPORTED_MODULE_0__.deleteFriend(friendId).then(function (friends) {
+      return dispatch(receiveAllUsers(friends));
     });
   };
 };
 var updateFriend = function updateFriend(friend) {
   return function (dispatch) {
     return _util_friend_api_util__WEBPACK_IMPORTED_MODULE_0__.updateFriend(friend).then(function (friend) {
-      return dispatch(addFriend(friend));
+      return dispatch(receiveAllUsers(friend));
     });
   };
 };
@@ -476,13 +475,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "RECEIVE_OTHER_USER": () => (/* binding */ RECEIVE_OTHER_USER),
 /* harmony export */   "RECEIVE_OTHER_USER_ERRORS": () => (/* binding */ RECEIVE_OTHER_USER_ERRORS),
 /* harmony export */   "RECEIVE_ALL_USERS": () => (/* binding */ RECEIVE_ALL_USERS),
+/* harmony export */   "RECEIVE_SEARCHED_USERS": () => (/* binding */ RECEIVE_SEARCHED_USERS),
 /* harmony export */   "receiveAllUsers": () => (/* binding */ receiveAllUsers),
 /* harmony export */   "receiveErrors": () => (/* binding */ receiveErrors),
 /* harmony export */   "receiveCurrentUser": () => (/* binding */ receiveCurrentUser),
 /* harmony export */   "receiveOtherUser": () => (/* binding */ receiveOtherUser),
+/* harmony export */   "receiveSearchedUsers": () => (/* binding */ receiveSearchedUsers),
 /* harmony export */   "addFileToUser": () => (/* binding */ addFileToUser),
 /* harmony export */   "fetchOtherUser": () => (/* binding */ fetchOtherUser),
-/* harmony export */   "fetchUsers": () => (/* binding */ fetchUsers)
+/* harmony export */   "fetchUsers": () => (/* binding */ fetchUsers),
+/* harmony export */   "searchUsers": () => (/* binding */ searchUsers)
 /* harmony export */ });
 /* harmony import */ var _util_user_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../util/user_api_util */ "./frontend/util/user_api_util.js");
 
@@ -490,6 +492,7 @@ var RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER';
 var RECEIVE_OTHER_USER = 'RECEIVE_OTHER_USER';
 var RECEIVE_OTHER_USER_ERRORS = 'RECEIVE_OTHER_USER_ERRORS';
 var RECEIVE_ALL_USERS = 'RECEIVE_ALL_USERS';
+var RECEIVE_SEARCHED_USERS = 'RECEIVE_SEARCHED_USERS';
 var receiveAllUsers = function receiveAllUsers(users) {
   return {
     type: RECEIVE_ALL_USERS,
@@ -514,6 +517,12 @@ var receiveOtherUser = function receiveOtherUser(otherUser) {
     otherUser: otherUser
   };
 };
+var receiveSearchedUsers = function receiveSearchedUsers(users) {
+  return {
+    type: RECEIVE_SEARCHED_USERS,
+    users: users
+  };
+};
 var addFileToUser = function addFileToUser(formData) {
   return function (dispatch) {
     return _util_user_api_util__WEBPACK_IMPORTED_MODULE_0__.addFileToUser(formData).then(function (user) {
@@ -534,6 +543,13 @@ var fetchUsers = function fetchUsers() {
   return function (dispatch) {
     return _util_user_api_util__WEBPACK_IMPORTED_MODULE_0__.fetchUsers().then(function (users) {
       return dispatch(receiveAllUsers(users));
+    });
+  };
+};
+var searchUsers = function searchUsers(query) {
+  return function (dispatch) {
+    return _util_user_api_util__WEBPACK_IMPORTED_MODULE_0__.searchUsers(query).then(function (users) {
+      return dispatch(receiveSearchedUsers(users));
     });
   };
 };
@@ -605,9 +621,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ Greeting)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _login_form_container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./login_form_container */ "./frontend/components/login_form_container.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -639,29 +656,846 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   var _super = _createSuper(Greeting);
 
   function Greeting(props) {
+    var _this;
+
     _classCallCheck(this, Greeting);
 
-    return _super.call(this, props);
+    _this = _super.call(this, props);
+    _this.state = {
+      body: ""
+    };
+    return _this;
   }
 
   _createClass(Greeting, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.props.hideModal();
+      this.props.fetchUsers();
+      this.props.fetchComments();
+      this.props.fetchPosts();
+      this.props.getLikes();
+      this.props.fetchFriends();
+    }
+  }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate() {
-      this.props.hideModal();
+      this.countLikes();
+    }
+  }, {
+    key: "getProfilePhoto",
+    value: function getProfilePhoto() {
+      if (!this.props.users[this.userId]) return;
+      var tempPicNum = 0;
+
+      if (this.props.currentUser.id > 100) {
+        tempPicNum = this.props.currentUser.id - 100;
+      } else {
+        tempPicNum = this.props.currentUser.id;
+      }
+
+      if (this.props.currentUser.id < 195) {
+        return this.props.users[this.props.currentUser.id].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "profileBottomMakePostTopPic",
+          style: {
+            backgroundImage: "url(".concat(this.props.users[this.props.currentUser.id].photoUrl, ")")
+          }
+        }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "profileBottomMakePostTopPic",
+          style: {
+            backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
+          }
+        });
+      }
+
+      return this.props.users[this.userId] ? this.props.users[this.props.currentUser.id].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomMakePostTopPic",
+        style: {
+          backgroundImage: "url(".concat(this.props.users[this.props.currentUser.id].photoUrl, ")")
+        }
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomMakePostTopPic",
+        style: {
+          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+        }
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomMakePostTopPic",
+        style: {
+          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+        }
+      });
+    }
+  }, {
+    key: "writePostModal",
+    value: function writePostModal() {
+      this.props.showModal({
+        modal: 'writePost'
+      });
+    }
+  }, {
+    key: "update",
+    value: function update(field) {
+      var _this2 = this;
+
+      return function (e) {
+        _this2.setState(_defineProperty({}, field, e.currentTarget.value));
+      };
+    }
+  }, {
+    key: "getPostsPic",
+    value: function getPostsPic(key) {
+      if (this.props.posts[key].photoUrl) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "profileBottomPostsMiddleHeight"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.posts[key].photoUrl, ")")
+          }
+        }));
+      } else if (key < 954 && key % 4 == 0) {
+        var picNum = 0;
+
+        if (key > 800) {
+          picNum = (key - 800) / 4;
+        } else if (key > 400) {
+          picNum = (key - 400) / 4;
+        } else {
+          picNum = key / 4;
+        }
+
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "profileBottomPostsMiddleHeight"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.postImages[picNum], ")")
+          }
+        }));
+      } else {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "profileBottomPostsMiddleNoHeight"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.posts[key].photoUrl, ")")
+          }
+        }));
+      }
+    }
+  }, {
+    key: "handleComments",
+    value: function handleComments(e) {
+      e.preventDefault();
+      var formData = new FormData();
+      formData.append('comment[author_id]', this.props.currentUser.id);
+      formData.append('comment[body]', this.state.body);
+      formData.append('comment[post_id]', e.currentTarget.id);
+      this.props.createComment(formData);
+      e.currentTarget.children[0].value = '';
+    }
+  }, {
+    key: "checkComments",
+    value: function checkComments(key) {
+      var _this3 = this;
+
+      this.hasComments = false;
+      Object.keys(this.props.comments).map(function (ckey) {
+        if (_this3.props.comments[ckey].postId == key) {
+          _this3.hasComments = true;
+        }
+      });
+
+      if (this.hasComments === false) {
+        return null;
+      } else {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "profileBottomPostsCommentsContainer"
+        }, this.getComments(key));
+      }
+    }
+  }, {
+    key: "getCommentPic",
+    value: function getCommentPic(ckey) {
+      if (!this.props.comments) return;
+      if (!this.props.users[this.props.comments[ckey].authorId]) return;
+      var tempPicNum = 0;
+
+      if (this.props.comments[ckey].authorId > 100) {
+        tempPicNum = this.props.comments[ckey].authorId - 100;
+      } else {
+        tempPicNum = this.props.comments[ckey].authorId;
+      }
+
+      if (this.props.comments[ckey].authorId < 195) {
+        return this.props.users[this.props.comments[ckey].authorId].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.users[this.props.comments[ckey].authorId].photoUrl, ")")
+          }
+        }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
+          }
+        });
+      }
+
+      return this.props.users[this.props.comments[ckey].authorId].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(this.props.users[this.props.comments[ckey].authorId].photoUrl, ")")
+        }
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+        }
+      });
+    }
+  }, {
+    key: "checkCommentInfo",
+    value: function checkCommentInfo(ckey) {
+      var _this4 = this;
+
+      if (!this.props.users[this.props.comments[ckey].authorId]) return;
+      return this.props.users ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        key: ckey,
+        className: "profileBottomPostsComment"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getCommentPic(ckey)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this4.props.history.push("/users/".concat(_this4.props.comments[ckey].authorId));
+        }
+      }, this.props.users[this.props.comments[ckey].authorId].firstName, " ", this.props.users[this.props.comments[ckey].authorId].lastName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.comments[ckey].body))) : null;
+    }
+  }, {
+    key: "getComments",
+    value: function getComments(key) {
+      var _this5 = this;
+
+      return Object.keys(this.props.comments).map(function (ckey) {
+        if (_this5.props.comments[ckey].postId == key) {
+          return _this5.checkCommentInfo(ckey);
+        }
+      });
+    }
+  }, {
+    key: "countLikes",
+    value: function countLikes() {
+      var _this6 = this;
+
+      Object.keys(this.props.likes).map(function (key) {
+        if (_this6.props.likes[key].userId == _this6.props.currentUser.id) {
+          $("#likes".concat(_this6.props.likes[key].postId)).addClass('filterLike');
+        }
+      });
+    }
+  }, {
+    key: "getNumberOfLikes",
+    value: function getNumberOfLikes(postId) {
+      var _this7 = this;
+
+      var counter = 0;
+      Object.keys(this.props.likes).map(function (key) {
+        if (_this7.props.likes[key].postId == postId) {
+          counter += 1;
+        }
+      });
+      return counter > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "postsNumberOfLikes"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        className: "j1lvzwm4",
+        height: "18",
+        role: "presentation",
+        src: "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 16 16'%3e%3cdefs%3e%3clinearGradient id='a' x1='50%25' x2='50%25' y1='0%25' y2='100%25'%3e%3cstop offset='0%25' stop-color='%2318AFFF'/%3e%3cstop offset='100%25' stop-color='%230062DF'/%3e%3c/linearGradient%3e%3cfilter id='c' width='118.8%25' height='118.8%25' x='-9.4%25' y='-9.4%25' filterUnits='objectBoundingBox'%3e%3cfeGaussianBlur in='SourceAlpha' result='shadowBlurInner1' stdDeviation='1'/%3e%3cfeOffset dy='-1' in='shadowBlurInner1' result='shadowOffsetInner1'/%3e%3cfeComposite in='shadowOffsetInner1' in2='SourceAlpha' k2='-1' k3='1' operator='arithmetic' result='shadowInnerInner1'/%3e%3cfeColorMatrix in='shadowInnerInner1' values='0 0 0 0 0 0 0 0 0 0.299356041 0 0 0 0 0.681187726 0 0 0 0.3495684 0'/%3e%3c/filter%3e%3cpath id='b' d='M8 0a8 8 0 00-8 8 8 8 0 1016 0 8 8 0 00-8-8z'/%3e%3c/defs%3e%3cg fill='none'%3e%3cuse fill='url(%23a)' xlink:href='%23b'/%3e%3cuse fill='black' filter='url(%23c)' xlink:href='%23b'/%3e%3cpath fill='white' d='M12.162 7.338c.176.123.338.245.338.674 0 .43-.229.604-.474.725a.73.73 0 01.089.546c-.077.344-.392.611-.672.69.121.194.159.385.015.62-.185.295-.346.407-1.058.407H7.5c-.988 0-1.5-.546-1.5-1V7.665c0-1.23 1.467-2.275 1.467-3.13L7.361 3.47c-.005-.065.008-.224.058-.27.08-.079.301-.2.635-.2.218 0 .363.041.534.123.581.277.732.978.732 1.542 0 .271-.414 1.083-.47 1.364 0 0 .867-.192 1.879-.199 1.061-.006 1.749.19 1.749.842 0 .261-.219.523-.316.666zM3.6 7h.8a.6.6 0 01.6.6v3.8a.6.6 0 01-.6.6h-.8a.6.6 0 01-.6-.6V7.6a.6.6 0 01.6-.6z'/%3e%3c/g%3e%3c/svg%3e",
+        width: "18"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, counter))) : null;
+    }
+  }, {
+    key: "createLike",
+    value: function createLike(postId) {
+      var _this8 = this;
+
+      var liked = false;
+      Object.keys(this.props.likes).map(function (key) {
+        if (_this8.props.likes[key].postId == postId && _this8.props.likes[key].userId == _this8.props.currentUser.id) {
+          $("#likes".concat(postId)).removeClass('filterLike');
+
+          _this8.props.deleteLike(_this8.props.likes[key].id);
+
+          liked = true;
+          return;
+        }
+      });
+
+      if (liked === true) {
+        return;
+      }
+
+      $("#likes".concat(postId)).addClass('filterLike');
+      this.props.addLike({
+        like: {
+          user_id: this.props.currentUser.id,
+          post_id: postId
+        }
+      });
+    }
+  }, {
+    key: "getMakeCommentPic",
+    value: function getMakeCommentPic() {
+      if (!this.props.users[this.userId]) return;
+      var tempPicNum = 0;
+
+      if (this.props.currentUser.id > 100) {
+        tempPicNum = this.props.currentUser.id - 100;
+      } else {
+        tempPicNum = this.props.currentUser.id;
+      }
+
+      if (this.props.currentUser.id < 195) {
+        return this.props.currentUser.photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.currentUser.photoUrl, ")")
+          }
+        }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
+          }
+        });
+      }
+
+      return this.props.currentUser.photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(this.props.currentUser.photoUrl, ")")
+        }
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+        }
+      });
+    }
+  }, {
+    key: "checkProfilePhoto",
+    value: function checkProfilePhoto(key) {
+      if (!this.props.users[this.userId]) return;
+      if (!this.props.users[this.props.posts[key].authorId]) return;
+      var tempPicNum = 0;
+
+      if (this.props.posts[key].authorId > 100) {
+        tempPicNum = this.props.posts[key].authorId - 100;
+      } else {
+        tempPicNum = this.props.posts[key].authorId;
+      }
+
+      if (this.props.posts[key].authorId < 195) {
+        return this.props.users[this.props.posts[key].authorId].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.users[this.props.posts[key].authorId].photoUrl, ")")
+          }
+        }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
+          }
+        });
+      }
+
+      return this.props.users[this.userId] ? this.props.users[this.userId].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(this.props.users[this.props.posts[key].authorId].photoUrl, ")")
+        }
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+        }
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+        }
+      });
+    }
+  }, {
+    key: "getTime",
+    value: function getTime(date) {
+      var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'];
+      var dateArray = date.split('-');
+      var month = months[parseInt(dateArray[1], 10) - 1];
+      var day = parseInt(dateArray[2].slice(0, 2), 10);
+      var hour = parseInt(dateArray[2].slice(3, 5), 10);
+      var minute = parseInt(dateArray[2].slice(6, 8), 10);
+      var time = 'AM';
+      hour > 11 ? time = 'PM' : time = 'AM';
+      hour > 12 ? hour -= 12 : hour;
+      var fullTime = "".concat(month, " ").concat(day, " at ").concat(hour, ":").concat(minute, " ").concat(time);
+      return fullTime;
+    }
+  }, {
+    key: "getPostInfo",
+    value: function getPostInfo(key) {
+      var _this9 = this;
+
+      return this.props.users[this.props.posts[key].authorId] ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomPostsTopNameAndDate"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this9.props.history.push("/users/".concat(_this9.props.posts[key].authorId));
+        }
+      }, this.props.users[this.props.posts[key].authorId].firstName, " ", this.props.users[this.props.posts[key].authorId].lastName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getTime(this.props.posts[key].createdAt))) : null;
+    }
+  }, {
+    key: "getPhotosArray",
+    value: function getPhotosArray() {
+      var _this10 = this;
+
+      var photosArray = [];
+      Object.keys(this.props.posts).map(function (key) {
+        if (key < 954 && key % 4 == 0) {
+          var picNum = 0;
+
+          if (key > 800) {
+            picNum = (key - 800) / 4;
+          } else if (key > 400) {
+            picNum = (key - 400) / 4;
+          } else {
+            picNum = key / 4;
+          }
+
+          if (_this10.props.posts[key].authorId == _this10.userId) {
+            photosArray.push(picNum);
+            return;
+          }
+
+          _this10.props.posts[key].likes.map(function (like) {
+            if (like.userId == _this10.userId) {
+              photosArray.push(picNum);
+              return;
+            }
+          });
+        }
+      });
+      return photosArray;
+    }
+  }, {
+    key: "getMyPhotos",
+    value: function getMyPhotos(number) {
+      if (!this.props.posts) return;
+      var photosArray = this.getPhotosArray();
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(this.props.postImages[photosArray[number]], ")")
+        }
+      });
+    }
+  }, {
+    key: "getAllPosts",
+    value: function getAllPosts() {
+      var _this11 = this;
+
+      if (Object.keys(this.props.posts).length < 1) return;
+      var orderPosts = [];
+      Object.keys(this.props.posts).map(function (key) {
+        orderPosts.unshift(_this11.props.posts[key].id);
+      });
+      return orderPosts.map(function (key) {
+        var commented = false;
+        Object.keys(_this11.props.comments).map(function (commentkey) {
+          if (_this11.props.comments[commentkey].postId == key && _this11.props.comments[commentkey].authorId == _this11.userId) {
+            commented = true;
+          }
+        });
+        var liked = false;
+
+        if (_this11.props.posts[key].likes) {
+          _this11.props.posts[key].likes.map(function (likekey) {
+            if (likekey.userId == _this11.userId) {
+              liked = true;
+            }
+          });
+        }
+
+        if (_this11.props.posts[key].authorId == _this11.userId) {
+          return;
+        } else {
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            key: key,
+            className: "profileBottomPostsContainer"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "profileBottomPostsTop"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "profileBottomPostsTopLeft"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "profileBottomPostsTopPicDiv"
+          }, _this11.checkProfilePhoto(key)), _this11.getPostInfo(key))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "profileBottomPostsMiddle"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this11.props.posts[key].body), _this11.getPostsPic(key)), _this11.getNumberOfLikes(key), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "profileBottomPostsOptions"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            id: "likes".concat(key),
+            onClick: function onClick() {
+              return _this11.createLike(key);
+            }
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+            "data-visualcompletion": "css-img",
+            className: "hu5pjgll m6k467ps",
+            style: {
+              backgroundImage: 'url(https://www.facebook.com/rsrc.php/v3/yV/r/YgkGk8qdJDo.png)',
+              backgroundPosition: '0px -243px',
+              backgroundSize: 'auto',
+              width: '18px',
+              height: '18px',
+              backgroundRepeat: 'no-repeat',
+              display: 'inline-block'
+            }
+          }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Like")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+            "data-visualcompletion": "css-img",
+            className: "hu5pjgll m6k467ps",
+            style: {
+              backgroundImage: 'url(https://www.facebook.com/rsrc.php/v3/yV/r/YgkGk8qdJDo.png)',
+              backgroundPosition: '0px -205px',
+              backgroundSize: 'auto',
+              width: '18px',
+              height: '18px',
+              backgroundRepeat: 'no-repeat',
+              display: 'inline-block'
+            }
+          }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Comment")))), _this11.checkComments(key), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "profileBottomPostsBottom"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "profileBottomPostsBottomDiv"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this11.getMakeCommentPic()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
+            id: key,
+            onSubmit: _this11.handleComments.bind(_this11)
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+            id: key,
+            onChange: _this11.update('body'),
+            type: "text",
+            placeholder: "Write a comment..."
+          })))));
+        }
+      });
+    }
+  }, {
+    key: "profilePostText",
+    value: function profilePostText() {
+      if (!this.props.users[this.userId]) return;
+      var value = "".concat(this.userId) === "".concat(this.props.currentUser.id);
+      return value ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "What's on your mind?") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Write something to ", this.props.users[this.userId].firstName, "...");
+    }
+  }, {
+    key: "getFriends",
+    value: function getFriends() {
+      if (!this.props.users[this.userId]) return;
+      if (!this.props.users[this.userId].friendsRequested) return;
+      var friendArray = [];
+      this.props.users[this.userId].friendsRequested.map(function (request) {
+        if (request.status === "accepted") {
+          friendArray.push(request.friendId);
+        }
+      });
+      this.props.users[this.userId].friendRequests.map(function (request) {
+        if (request.status === "accepted") {
+          friendArray.push(request.userId);
+        }
+      });
+      return friendArray;
+    }
+  }, {
+    key: "getFriendPic",
+    value: function getFriendPic(number) {
+      var _this12 = this;
+
+      if (!this.props.users[this.userId]) return;
+      if (!this.props.users[this.userId].friendsRequested) return;
+      var friendArray = this.getFriends();
+      var tempPicNum = 0;
+
+      if (friendArray[number] > 100) {
+        tempPicNum = friendArray[number] - 100;
+      } else {
+        tempPicNum = friendArray[number];
+      }
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this12.props.history.push("/users/".concat(friendArray[number]));
+        },
+        className: "profileBottomFriends"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.users[friendArray[number]].firstName, " ", this.props.users[friendArray[number]].lastName));
+    }
+  }, {
+    key: "getFriendRequestName",
+    value: function getFriendRequestName() {
+      if (!this.props.currentUser.friendRequests) return;
+      if (this.props.currentUser.friendRequests.length < 1) return;
+      console.log(this.props.users[this.props.currentUser.friendRequests[0].userId].firstName);
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.users[this.props.currentUser.friendRequests[0].userId].firstName, " ", this.props.users[this.props.currentUser.friendRequests[0].userId].lastName);
+    }
+  }, {
+    key: "getFriendRequestPic",
+    value: function getFriendRequestPic() {
+      if (!this.props.currentUser.friendRequests) return;
+      var tempProfPic = 0;
+      if (this.props.currentUser.friendRequests.length < 1) return;
+
+      if (this.props.currentUser.friendRequests[0].userId > 100) {
+        tempProfPic = this.props.currentUser.friendRequests[0].userId - 100;
+      } else {
+        tempProfPic = this.props.currentUser.friendRequests[0].userId;
+      }
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(this.props.profImages[tempProfPic], ")")
+        }
+      });
+    }
+  }, {
+    key: "getNumberOfFriends",
+    value: function getNumberOfFriends() {
+      if (!this.props.users[this.userId]) return;
+      if (!this.props.users[this.userId].friendsRequested) return;
+      var count = 0;
+      this.props.users[this.userId].friendsRequested.map(function (request) {
+        if (request.status === "accepted") {
+          count += 1;
+        }
+      });
+      this.props.users[this.userId].friendRequests.map(function (request) {
+        if (request.status === "accepted") {
+          count += 1;
+        }
+      });
+      return "".concat(count, " Friends");
+    }
+  }, {
+    key: "clearSearchBar",
+    value: function clearSearchBar() {
+      $('#searchForUsersInput').val('');
+      this.props.searchUsers({
+        query: ''
+      });
     }
   }, {
     key: "render",
     value: function render() {
-      var _this = this;
+      var _this13 = this;
 
-      return this.props.currentUser ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, "Hello, ", this.props.currentUser.username, "!"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
+      this.userId = this.props.currentUser.id;
+      this.user = this.props.currentUser;
+      console.log(this.props);
+      return this.props.currentUser ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "greetingMiddlePostsContainerTop",
         onClick: function onClick() {
-          return _this.props.logout();
+          return _this13.clearSearchBar();
         }
-      }, "Log Out"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
-        onClick: this.props.changeProfileNavbar.bind(this, 'posts'),
-        to: "/users/".concat(this.props.currentUser.id)
-      }, "Profile")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomFullContainer3"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLeftSideOptionsContainer"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLeftSideOptions"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getProfilePhoto()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Alexzander Ciminillo"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLeftSideOptions"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://static.xx.fbcdn.net/rsrc.php/v3/yx/r/-XF4FQcre_i.png)"
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Friends"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLeftSideOptions"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://static.xx.fbcdn.net/rsrc.php/v3/yD/r/mk4dH3FK0jT.png)"
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Groups"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLeftSideOptions"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(\thttps://static.xx.fbcdn.net/rsrc.php/v3/ys/r/9BDqQflVfXI.png)"
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Marketplace"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLeftSideOptions"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://static.xx.fbcdn.net/rsrc.php/v3/y7/r/AYj2837MmgX.png)"
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Memories"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLeftSideOptions"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://static.xx.fbcdn.net/rsrc.php/v3/yk/r/WreZVYrGEZH.png)"
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Community Help"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLeftSideOptions"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://static.xx.fbcdn.net/rsrc.php/v3/yD/r/tKwWVioirmj.png)"
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Climate Science Center"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLeftSideOptions"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://static.xx.fbcdn.net/rsrc.php/v3/yR/r/tInzwsw2pVX.png)"
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "COVID-19 Information Center"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLeftSideOptions"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(\thttps://static.xx.fbcdn.net/rsrc.php/v3/yA/r/A2tHTy6ibgT.png)"
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Fundraisers"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLeftSideOptionsLine"
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomFullContainer2"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomInnerContainer2"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomRightSide2"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomMakePostContainer"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomMakePostInner"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomMakePostTop"
+      }, this.getProfilePhoto(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: this.writePostModal.bind(this),
+        className: "profileBottomMakePostTopButton"
+      }, this.profilePostText())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomMakePostGrayLine"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomMakePostButtons"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomMakePostButtonsInner"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomMakePostButton"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        viewBox: "0 0 24 24",
+        width: "1.5em",
+        height: "1.5em",
+        style: {
+          fill: '#f3425f'
+        },
+        className: "a8c37x1j ms05siws hwsy1cff b7h9ocf4 i2fa72qc rgmg9uty b73ngqbp"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
+        fillRule: "evenodd",
+        transform: "translate(-444 -156)"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        d: "M113.029 2.514c-.363-.088-.746.014-1.048.234l-2.57 1.88a.999.999 0 0 0-.411.807v8.13a1 1 0 0 0 .41.808l2.602 1.901c.219.16.477.242.737.242.253 0 .508-.077.732-.235.34-.239.519-.65.519-1.065V3.735a1.25 1.25 0 0 0-.971-1.22m-20.15 6.563c.1-.146 2.475-3.578 5.87-3.578 3.396 0 5.771 3.432 5.87 3.578a.749.749 0 0 1 0 .844c-.099.146-2.474 3.578-5.87 3.578-3.395 0-5.77-3.432-5.87-3.578a.749.749 0 0 1 0-.844zM103.75 19a3.754 3.754 0 0 0 3.75-3.75V3.75A3.754 3.754 0 0 0 103.75 0h-10A3.754 3.754 0 0 0 90 3.75v11.5A3.754 3.754 0 0 0 93.75 19h10z",
+        transform: "translate(354 158.5)"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        d: "M98.75 12c1.379 0 2.5-1.121 2.5-2.5S100.129 7 98.75 7a2.503 2.503 0 0 0-2.5 2.5c0 1.379 1.121 2.5 2.5 2.5",
+        transform: "translate(354 158.5)"
+      })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Live video")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: this.writePostModal.bind(this),
+        className: "profileBottomMakePostButton"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        viewBox: "0 0 24 24",
+        width: "1.5em",
+        height: "1.5em",
+        style: {
+          fill: '#45bd62'
+        },
+        className: "a8c37x1j ms05siws hwsy1cff b7h9ocf4 n90h9ftp rgmg9uty b73ngqbp"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
+        fillRule: "evenodd",
+        transform: "translate(-444 -156)"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        d: "m96.968 22.425-.648.057a2.692 2.692 0 0 1-1.978-.625 2.69 2.69 0 0 1-.96-1.84L92.01 4.32a2.702 2.702 0 0 1 .79-2.156c.47-.472 1.111-.731 1.774-.79l2.58-.225a.498.498 0 0 1 .507.675 4.189 4.189 0 0 0-.251 1.11L96.017 18.85a4.206 4.206 0 0 0 .977 3.091s.459.364-.026.485m8.524-16.327a1.75 1.75 0 1 1-3.485.305 1.75 1.75 0 0 1 3.485-.305m5.85 3.011a.797.797 0 0 0-1.129-.093l-3.733 3.195a.545.545 0 0 0-.062.765l.837.993a.75.75 0 1 1-1.147.966l-2.502-2.981a.797.797 0 0 0-1.096-.12L99 14.5l-.5 4.25c-.06.674.326 2.19 1 2.25l11.916 1.166c.325.026 1-.039 1.25-.25.252-.21.89-.842.917-1.166l.833-8.084-3.073-3.557z",
+        transform: "translate(352 156.5)"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        fillRule: "nonzero",
+        d: "m111.61 22.963-11.604-1.015a2.77 2.77 0 0 1-2.512-2.995L98.88 3.09A2.77 2.77 0 0 1 101.876.58l11.603 1.015a2.77 2.77 0 0 1 2.513 2.994l-1.388 15.862a2.77 2.77 0 0 1-2.994 2.513zm.13-1.494.082.004a1.27 1.27 0 0 0 1.287-1.154l1.388-15.862a1.27 1.27 0 0 0-1.148-1.37l-11.604-1.014a1.27 1.27 0 0 0-1.37 1.15l-1.387 15.86a1.27 1.27 0 0 0 1.149 1.37l11.603 1.016z",
+        transform: "translate(352 156.5)"
+      })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Photo/video")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: this.writePostModal.bind(this),
+        className: "profileBottomMakePostButton"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        "data-visualcompletion": "css-img",
+        style: {
+          backgroundImage: 'url(https://www.facebook.com/rsrc.php/v3/yV/r/B4oMAjseW-y.png)',
+          backgroundPosition: '-26px -238px',
+          backgroundSize: '50px 500px',
+          width: '20px',
+          height: '20px',
+          backgroundRepeat: 'no-repeat',
+          display: 'inline-block'
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Life event")))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomPostsHeaderContainer"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomPostsHeaderTop"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomPostsHeaderTopTitle"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Posts")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomPostsHeaderTopButtons"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomPostsHeaderTopFilter"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        "data-visualcompletion": "css-img",
+        style: {
+          backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/ys/r/kiNqeI4QFAQ.png)',
+          backgroundPosition: '0px -165px',
+          backgroundSize: 'auto',
+          width: '16px',
+          height: '16px',
+          backgroundRepeat: 'no-repeat',
+          display: 'inline-block'
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Filters")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomPostsHeaderTopManage"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        "data-visualcompletion": "css-img",
+        style: {
+          backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/ys/r/kiNqeI4QFAQ.png)',
+          backgroundPosition: '0px -369px',
+          backgroundSize: 'auto',
+          width: '16px',
+          height: '16px',
+          backgroundRepeat: 'no-repeat',
+          display: 'inline-block'
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Manage Posts")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomPostsHeaderGrayLine"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomPostsHeaderBottom"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomPostsHeaderBottomButton profileBottomPostsHeaderAccent"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        "data-visualcompletion": "css-img",
+        style: {
+          backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/ys/r/kiNqeI4QFAQ.png)',
+          backgroundPosition: '0px -318px',
+          backgroundSize: 'auto',
+          width: '16px',
+          height: '16px',
+          backgroundRepeat: 'no-repeat',
+          display: 'inline-block'
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "List view")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomPostsHeaderBottomButton"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        "data-visualcompletion": "css-img",
+        style: {
+          backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/ys/r/kiNqeI4QFAQ.png)',
+          backgroundPosition: '0px -216px',
+          backgroundSize: 'auto',
+          width: '16px',
+          height: '16px',
+          backgroundRepeat: 'no-repeat',
+          display: 'inline-block'
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Grid view")))), this.getAllPosts()))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomFullContainer4"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomRightSideOptionsContainer"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "friendRequestsContainer"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/yk/r/851ZgTnFYJI.png)'
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Friend requests")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "friendRequestsFriendPic"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getFriendRequestPic()), this.getFriendRequestName()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "friendRequestsConfirmButtons"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Confirm")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Delete")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLeftSideOptionsLine2"
+      })))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "greetingPageContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "greetingContainer"
@@ -735,17 +1569,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../actions/session_actions */ "./frontend/actions/session_actions.js");
 /* harmony import */ var _greeting__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./greeting */ "./frontend/components/greeting.jsx");
-/* harmony import */ var _actions_modal_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../actions/modal_actions */ "./frontend/actions/modal_actions.js");
+/* harmony import */ var _actions_modal_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../actions/modal_actions */ "./frontend/actions/modal_actions.js");
 /* harmony import */ var _actions_profile_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../actions/profile_actions */ "./frontend/actions/profile_actions.js");
+/* harmony import */ var _actions_user_actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../actions/user_actions */ "./frontend/actions/user_actions.js");
+/* harmony import */ var _actions_post_actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../actions/post_actions */ "./frontend/actions/post_actions.js");
+/* harmony import */ var _actions_comment_actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../actions/comment_actions */ "./frontend/actions/comment_actions.js");
+/* harmony import */ var _actions_like_actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../actions/like_actions */ "./frontend/actions/like_actions.js");
+/* harmony import */ var _actions_friend_actions__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../actions/friend_actions */ "./frontend/actions/friend_actions.js");
+/* harmony import */ var _util_image_util__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../util/image_util */ "./frontend/util/image_util.js");
 
 
 
 
 
 
-var mapStateToProps = function mapStateToProps(state) {
+
+
+
+
+
+
+
+
+var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
-    currentUser: state.entities.users[state.session.id]
+    currentUser: state.entities.users[state.session.id],
+    users: state.entities.users,
+    posts: state.entities.posts,
+    comments: state.entities.comments,
+    likes: state.entities.likes,
+    friends: state.entities.friends,
+    ownProps: ownProps,
+    profImages: _util_image_util__WEBPACK_IMPORTED_MODULE_10__.profImages,
+    backImages: _util_image_util__WEBPACK_IMPORTED_MODULE_10__.backImages,
+    postImages: _util_image_util__WEBPACK_IMPORTED_MODULE_10__.postImages
   };
 };
 
@@ -759,6 +1616,45 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     changeProfileNavbar: function changeProfileNavbar(button) {
       return dispatch((0,_actions_profile_actions__WEBPACK_IMPORTED_MODULE_4__.changeProfileNavbar)(button));
+    },
+    fetchUsers: function fetchUsers() {
+      return dispatch((0,_actions_user_actions__WEBPACK_IMPORTED_MODULE_5__.fetchUsers)());
+    },
+    showModal: function showModal(type) {
+      return dispatch((0,_actions_modal_actions__WEBPACK_IMPORTED_MODULE_3__.showModal)(type));
+    },
+    fetchPosts: function fetchPosts() {
+      return dispatch((0,_actions_post_actions__WEBPACK_IMPORTED_MODULE_6__.fetchPosts)());
+    },
+    fetchComments: function fetchComments() {
+      return dispatch((0,_actions_comment_actions__WEBPACK_IMPORTED_MODULE_7__.fetchComments)());
+    },
+    createComment: function createComment(comment) {
+      return dispatch((0,_actions_comment_actions__WEBPACK_IMPORTED_MODULE_7__.createComment)(comment));
+    },
+    getLikes: function getLikes() {
+      return dispatch((0,_actions_like_actions__WEBPACK_IMPORTED_MODULE_8__.getLikes)());
+    },
+    addLike: function addLike(like) {
+      return dispatch((0,_actions_like_actions__WEBPACK_IMPORTED_MODULE_8__.addLike)(like));
+    },
+    deleteLike: function deleteLike(id) {
+      return dispatch((0,_actions_like_actions__WEBPACK_IMPORTED_MODULE_8__.deleteLike)(id));
+    },
+    fetchFriends: function fetchFriends() {
+      return dispatch((0,_actions_friend_actions__WEBPACK_IMPORTED_MODULE_9__.fetchFriends)());
+    },
+    createFriend: function createFriend(friend) {
+      return dispatch((0,_actions_friend_actions__WEBPACK_IMPORTED_MODULE_9__.createFriend)(friend));
+    },
+    deleteFriend: function deleteFriend(id) {
+      return dispatch((0,_actions_friend_actions__WEBPACK_IMPORTED_MODULE_9__.deleteFriend)(id));
+    },
+    updateFriend: function updateFriend(friend) {
+      return dispatch((0,_actions_friend_actions__WEBPACK_IMPORTED_MODULE_9__.updateFriend)(friend));
+    },
+    searchUsers: function searchUsers(query) {
+      return dispatch((0,_actions_user_actions__WEBPACK_IMPORTED_MODULE_5__.searchUsers)(query));
     }
   };
 };
@@ -996,13 +1892,180 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
   }
 
   _createClass(NavBar, [{
+    key: "getProfilePhoto",
+    value: function getProfilePhoto() {
+      var tempPicNum = 0;
+
+      if (this.props.currentUser.id > 100) {
+        tempPicNum = this.props.currentUser.id - 100;
+      } else {
+        tempPicNum = this.props.currentUser.id;
+      }
+
+      if (this.props.currentUser.id < 195) {
+        return this.props.users[this.props.currentUser.id].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "navBarProfilePic",
+          style: {
+            backgroundImage: "url(".concat(this.props.users[this.props.currentUser.id].photoUrl, ")")
+          }
+        }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "navBarProfilePic",
+          style: {
+            backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
+          }
+        });
+      }
+
+      return this.props.users[this.props.currentUser.id] ? this.props.users[this.props.currentUser.id].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "navBarProfilePic",
+        style: {
+          backgroundImage: "url(".concat(this.props.users[this.props.currentUser.id].photoUrl, ")")
+        }
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "navBarProfilePic",
+        style: {
+          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+        }
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "navBarProfilePic",
+        style: {
+          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+        }
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {}
+  }, {
+    key: "searchForPeeps",
+    value: function searchForPeeps() {
+      var _this = this;
+
+      return function (e) {
+        _this.props.searchUsers({
+          query: "".concat(e.currentTarget.value)
+        });
+      };
+    }
+  }, {
+    key: "getFriendStatus",
+    value: function getFriendStatus(key) {
+      var _this2 = this;
+
+      if (!this.props.currentUser.friendRequests) return;
+
+      if (key == this.props.currentUser.id) {
+        return "You";
+      }
+
+      var friend = false;
+      this.props.currentUser.friendRequests.map(function (request) {
+        if (request.userId == _this2.props.search[key].id && request.status === 'accepted') {
+          friend = true;
+        }
+      });
+      this.props.currentUser.friendsRequested.map(function (request) {
+        if (request.friendId == _this2.props.search[key].id && request.status === 'accepted') {
+          friend = true;
+        }
+      });
+
+      if (friend === true) {
+        return "Friend";
+      }
+    }
+  }, {
+    key: "clearSearchBar",
+    value: function clearSearchBar() {
+      $('#searchForUsersInput').val('');
+      this.props.searchUsers({
+        query: ''
+      });
+    }
+  }, {
+    key: "getSearchProfileImage",
+    value: function getSearchProfileImage(key) {
+      if (!this.props.search[key]) return;
+      var tempPicNum = 0;
+
+      if (this.props.search[key].photoUrl) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.search[key].photoUrl, ")")
+          }
+        });
+      }
+
+      if (key > 100) {
+        tempPicNum = key - 100;
+      } else {
+        tempPicNum = key;
+      }
+
+      if (key < 196) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
+          }
+        });
+      }
+    }
+  }, {
+    key: "goToSearchedUser",
+    value: function goToSearchedUser(key) {
+      this.props.history.push("/users/".concat(key));
+      $('#searchForUsersInput').val('');
+    }
+  }, {
+    key: "getEachUserInSearch",
+    value: function getEachUserInSearch() {
+      var _this3 = this;
+
+      var count = 0;
+      return Object.keys(this.props.search).map(function (key) {
+        if (count < 9) {
+          count += 1;
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            key: key,
+            onClick: function onClick() {
+              return _this3.goToSearchedUser(key);
+            },
+            className: "searchResultDisplayUser"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this3.getSearchProfileImage(key)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this3.props.search[key].firstName, " ", _this3.props.search[key].lastName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this3.getFriendStatus(key))));
+        }
+      });
+    }
+  }, {
+    key: "searchResultsBar",
+    value: function searchResultsBar() {
+      return $('#searchForUsersInput').val() ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "searchBarResultsDiv"
+      }, this.getEachUserInSearch()) : null;
+    }
+  }, {
+    key: "searchResultsBar2",
+    value: function searchResultsBar2() {
+      return $('#searchForUsersInput').val() ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "searchBarResultsDivSmallPiece"
+      }) : null;
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this4 = this;
+
+      console.log(this.props);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this4.clearSearchBar();
+        },
         className: "outerNavBar"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "navBarGroupLeft"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this4.props.history.push('/');
+        },
         className: "ficonDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         height: "40",
@@ -1023,7 +2086,7 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
         className: "fIcon",
         d: "M25 23l.8-5H21v-3.5c0-1.4.5-2.5 2.7-2.5H26V7.4c-1.3-.2-2.7-.4-4-.4-4.1 0-7 2.5-7 7v4h-4.5v5H15v12.7c1 .2 2 .3 3 .3s2-.1 3-.3V23h4z"
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }))), this.searchResultsBar(), this.searchResultsBar2(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "searchDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         width: "100",
@@ -1049,7 +2112,12 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
         fill: "#65676B",
         d: "m13.463 15.142-.04-.044-3.574-4.192c-.599-.703.355-1.656 1.058-1.057l4.191 3.574.044.04c.058.059.122.137.182.24.249.425.249.96-.154 1.41l-.057.057c-.45.403-.986.403-1.411.154a1.182 1.182 0 0 1-.24-.182zm.617-.616.444-.444a.31.31 0 0 0-.063-.052c-.093-.055-.263-.055-.35.024l.208.232.207-.206.006.007-.22.257-.026-.024.033-.034.025.027-.257.22-.007-.007zm-.027-.415c-.078.088-.078.257-.023.35a.31.31 0 0 0 .051.063l.205-.204-.233-.209z",
         transform: "translate(448 544)"
-      }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
+        id: "searchForUsersInput",
+        type: "text",
+        onChange: this.searchForPeeps(),
+        placeholder: "Search Freebook"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "sandwichMenuDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
         className: "sandwichMenu"
@@ -1060,8 +2128,42 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
         fill: "#65676B",
         d: "M23.5 4a1.5 1.5 0 110 3h-19a1.5 1.5 0 110-3h19zm0 18a1.5 1.5 0 110 3h-19a1.5 1.5 0 110-3h19zm0-9a1.5 1.5 0 110 3h-19a1.5 1.5 0 110-3h19z"
       }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "navBarGroupMiddle"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "navBarGroupMiddleDiv"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        viewBox: "0 0 28 28",
+        "class": "a8c37x1j ms05siws hwsy1cff b7h9ocf4 em6zcovv",
+        height: "28",
+        width: "28"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        d: "M17.5 23.979 21.25 23.979C21.386 23.979 21.5 23.864 21.5 23.729L21.5 13.979C21.5 13.427 21.949 12.979 22.5 12.979L24.33 12.979 14.017 4.046 3.672 12.979 5.5 12.979C6.052 12.979 6.5 13.427 6.5 13.979L6.5 23.729C6.5 23.864 6.615 23.979 6.75 23.979L10.5 23.979 10.5 17.729C10.5 17.04 11.061 16.479 11.75 16.479L16.25 16.479C16.939 16.479 17.5 17.04 17.5 17.729L17.5 23.979ZM21.25 25.479 17 25.479C16.448 25.479 16 25.031 16 24.479L16 18.327C16 18.135 15.844 17.979 15.652 17.979L12.348 17.979C12.156 17.979 12 18.135 12 18.327L12 24.479C12 25.031 11.552 25.479 11 25.479L6.75 25.479C5.784 25.479 5 24.695 5 23.729L5 14.479 3.069 14.479C2.567 14.479 2.079 14.215 1.868 13.759 1.63 13.245 1.757 12.658 2.175 12.29L13.001 2.912C13.248 2.675 13.608 2.527 13.989 2.521 14.392 2.527 14.753 2.675 15.027 2.937L25.821 12.286C25.823 12.288 25.824 12.289 25.825 12.29 26.244 12.658 26.371 13.245 26.133 13.759 25.921 14.215 25.434 14.479 24.931 14.479L23 14.479 23 23.729C23 24.695 22.217 25.479 21.25 25.479Z"
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "navBarGroupMiddleDiv"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        viewBox: "0 0 28 28",
+        "class": "a8c37x1j ms05siws hwsy1cff b7h9ocf4 em6zcovv",
+        height: "28",
+        width: "28"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        d: "M17.5 23.75 21.75 23.75C22.164 23.75 22.5 23.414 22.5 23L22.5 14 22.531 14C22.364 13.917 22.206 13.815 22.061 13.694L21.66 13.359C21.567 13.283 21.433 13.283 21.34 13.36L21.176 13.497C20.591 13.983 19.855 14.25 19.095 14.25L18.869 14.25C18.114 14.25 17.382 13.987 16.8 13.506L16.616 13.354C16.523 13.278 16.39 13.278 16.298 13.354L16.113 13.507C15.53 13.987 14.798 14.25 14.044 14.25L13.907 14.25C13.162 14.25 12.439 13.994 11.861 13.525L11.645 13.35C11.552 13.275 11.419 13.276 11.328 13.352L11.155 13.497C10.57 13.984 9.834 14.25 9.074 14.25L8.896 14.25C8.143 14.25 7.414 13.989 6.832 13.511L6.638 13.351C6.545 13.275 6.413 13.275 6.32 13.351L5.849 13.739C5.726 13.84 5.592 13.928 5.452 14L5.5 14 5.5 23C5.5 23.414 5.836 23.75 6.25 23.75L10.5 23.75 10.5 17.5C10.5 16.81 11.06 16.25 11.75 16.25L16.25 16.25C16.94 16.25 17.5 16.81 17.5 17.5L17.5 23.75ZM3.673 8.75 24.327 8.75C24.3 8.66 24.271 8.571 24.238 8.483L23.087 5.355C22.823 4.688 22.178 4.25 21.461 4.25L6.54 4.25C5.822 4.25 5.177 4.688 4.919 5.338L3.762 8.483C3.729 8.571 3.7 8.66 3.673 8.75ZM24.5 10.25 3.5 10.25 3.5 12C3.5 12.414 3.836 12.75 4.25 12.75L4.421 12.75C4.595 12.75 4.763 12.69 4.897 12.58L5.368 12.193C6.013 11.662 6.945 11.662 7.59 12.193L7.784 12.352C8.097 12.609 8.49 12.75 8.896 12.75L9.074 12.75C9.483 12.75 9.88 12.607 10.194 12.345L10.368 12.2C11.01 11.665 11.941 11.659 12.589 12.185L12.805 12.359C13.117 12.612 13.506 12.75 13.907 12.75L14.044 12.75C14.45 12.75 14.844 12.608 15.158 12.35L15.343 12.197C15.989 11.663 16.924 11.663 17.571 12.197L17.755 12.35C18.068 12.608 18.462 12.75 18.869 12.75L19.095 12.75C19.504 12.75 19.901 12.606 20.216 12.344L20.38 12.208C21.028 11.666 21.972 11.666 22.62 12.207L23.022 12.542C23.183 12.676 23.387 12.75 23.598 12.75 24.097 12.75 24.5 12.347 24.5 11.85L24.5 10.25ZM24 14.217 24 23C24 24.243 22.993 25.25 21.75 25.25L6.25 25.25C5.007 25.25 4 24.243 4 23L4 14.236C2.875 14.112 2 13.158 2 12L2 9.951C2 9.272 2.12 8.6 2.354 7.964L3.518 4.802C4.01 3.563 5.207 2.75 6.54 2.75L21.461 2.75C22.793 2.75 23.99 3.563 24.488 4.819L25.646 7.964C25.88 8.6 26 9.272 26 9.951L26 11.85C26 13.039 25.135 14.026 24 14.217ZM16 23.75 16 17.75 12 17.75 12 23.75 16 23.75Z"
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "navBarGroupMiddleDiv"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        viewBox: "0 0 28 28",
+        "class": "a8c37x1j ms05siws hwsy1cff b7h9ocf4 em6zcovv",
+        height: "28",
+        width: "28"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        d: "M25.5 14C25.5 7.649 20.351 2.5 14 2.5 7.649 2.5 2.5 7.649 2.5 14 2.5 20.351 7.649 25.5 14 25.5 20.351 25.5 25.5 20.351 25.5 14ZM27 14C27 21.18 21.18 27 14 27 6.82 27 1 21.18 1 14 1 6.82 6.82 1 14 1 21.18 1 27 6.82 27 14ZM7.479 14 7.631 14C7.933 14 8.102 14.338 7.934 14.591 7.334 15.491 6.983 16.568 6.983 17.724L6.983 18.221C6.983 18.342 6.99 18.461 7.004 18.578 7.03 18.802 6.862 19 6.637 19L6.123 19C5.228 19 4.5 18.25 4.5 17.327 4.5 15.492 5.727 14 7.479 14ZM20.521 14C22.274 14 23.5 15.492 23.5 17.327 23.5 18.25 22.772 19 21.878 19L21.364 19C21.139 19 20.97 18.802 20.997 18.578 21.01 18.461 21.017 18.342 21.017 18.221L21.017 17.724C21.017 16.568 20.667 15.491 20.067 14.591 19.899 14.338 20.067 14 20.369 14L20.521 14ZM8.25 13C7.147 13 6.25 11.991 6.25 10.75 6.25 9.384 7.035 8.5 8.25 8.5 9.465 8.5 10.25 9.384 10.25 10.75 10.25 11.991 9.353 13 8.25 13ZM19.75 13C18.647 13 17.75 11.991 17.75 10.75 17.75 9.384 18.535 8.5 19.75 8.5 20.965 8.5 21.75 9.384 21.75 10.75 21.75 11.991 20.853 13 19.75 13ZM15.172 13.5C17.558 13.5 19.5 15.395 19.5 17.724L19.5 18.221C19.5 19.202 18.683 20 17.677 20L10.323 20C9.317 20 8.5 19.202 8.5 18.221L8.5 17.724C8.5 15.395 10.441 13.5 12.828 13.5L15.172 13.5ZM16.75 9C16.75 10.655 15.517 12 14 12 12.484 12 11.25 10.655 11.25 9 11.25 7.15 12.304 6 14 6 15.697 6 16.75 7.15 16.75 9Z"
+      })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "navBarGroupLeft"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "goToProfileDiv",
+        onClick: function onClick() {
+          _this4.props.history.push("/users/".concat(_this4.props.currentUser.id));
+        }
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getProfilePhoto()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.currentUser.firstName))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "createDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         className: "create",
@@ -1132,13 +2234,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../actions/session_actions */ "./frontend/actions/session_actions.js");
 /* harmony import */ var _navbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./navbar */ "./frontend/components/navbar/navbar.jsx");
+/* harmony import */ var _util_image_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../util/image_util */ "./frontend/util/image_util.js");
+/* harmony import */ var _actions_user_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../actions/user_actions */ "./frontend/actions/user_actions.js");
+
+
 
 
 
 
 var mapStateToProps = function mapStateToProps(state) {
+  console.log(state);
   return {
-    currentUser: state.entities.users[state.session.id]
+    currentUser: state.entities.users[state.session.id],
+    users: state.entities.users,
+    search: state.entities.search,
+    profImages: _util_image_util__WEBPACK_IMPORTED_MODULE_3__.profImages
   };
 };
 
@@ -1146,6 +2256,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     logout: function logout() {
       return dispatch((0,_actions_session_actions__WEBPACK_IMPORTED_MODULE_1__.logout)());
+    },
+    searchUsers: function searchUsers(query) {
+      return dispatch((0,_actions_user_actions__WEBPACK_IMPORTED_MODULE_4__.searchUsers)(query));
     }
   };
 };
@@ -1587,7 +2700,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ Profile)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _profile_pics_profile_pics_container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./profile_pics/profile_pics_container */ "./frontend/components/profile/profile_pics/profile_pics_container.js");
+/* harmony import */ var _util_image_util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../util/image_util */ "./frontend/util/image_util.js");
+/* harmony import */ var _profile_pics_profile_pics_container__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./profile_pics/profile_pics_container */ "./frontend/components/profile/profile_pics/profile_pics_container.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -1611,6 +2725,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -1642,12 +2757,40 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       this.props.fetchFriends();
     }
   }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      this.countLikes();
+    }
+  }, {
     key: "getProfilePhoto",
     value: function getProfilePhoto() {
-      return this.props.users[this.userId] ? this.props.users[this.userId].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      if (!this.props.users[this.userId]) return;
+      var tempPicNum = 0;
+
+      if (this.props.currentUser.id > 100) {
+        tempPicNum = this.props.currentUser.id - 100;
+      } else {
+        tempPicNum = this.props.currentUser.id;
+      }
+
+      if (this.props.currentUser.id < 195) {
+        return this.props.users[this.props.currentUser.id].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "profileBottomMakePostTopPic",
+          style: {
+            backgroundImage: "url(".concat(this.props.users[this.props.currentUser.id].photoUrl, ")")
+          }
+        }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "profileBottomMakePostTopPic",
+          style: {
+            backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
+          }
+        });
+      }
+
+      return this.props.users[this.userId] ? this.props.users[this.props.currentUser.id].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomMakePostTopPic",
         style: {
-          backgroundImage: "url(".concat(this.props.users[this.userId].photoUrl, ")")
+          backgroundImage: "url(".concat(this.props.users[this.props.currentUser.id].photoUrl, ")")
         }
       }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomMakePostTopPic",
@@ -1686,6 +2829,24 @@ var Profile = /*#__PURE__*/function (_React$Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
           style: {
             backgroundImage: "url(".concat(this.props.posts[key].photoUrl, ")")
+          }
+        }));
+      } else if (key < 954 && key % 4 == 0) {
+        var picNum = 0;
+
+        if (key > 800) {
+          picNum = (key - 800) / 4;
+        } else if (key > 400) {
+          picNum = (key - 400) / 4;
+        } else {
+          picNum = key / 4;
+        }
+
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "profileBottomPostsMiddleHeight"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.postImages[picNum], ")")
           }
         }));
       } else {
@@ -1730,40 +2891,85 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       }
     }
   }, {
-    key: "getComments",
-    value: function getComments(key) {
+    key: "getCommentPic",
+    value: function getCommentPic(ckey) {
+      if (!this.props.comments) return;
+      if (!this.props.users[this.props.comments[ckey].authorId]) return;
+      var tempPicNum = 0;
+
+      if (this.props.comments[ckey].authorId > 100) {
+        tempPicNum = this.props.comments[ckey].authorId - 100;
+      } else {
+        tempPicNum = this.props.comments[ckey].authorId;
+      }
+
+      if (this.props.comments[ckey].authorId < 195) {
+        return this.props.users[this.props.comments[ckey].authorId].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.users[this.props.comments[ckey].authorId].photoUrl, ")")
+          }
+        }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
+          }
+        });
+      }
+
+      return this.props.users[this.props.comments[ckey].authorId].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(this.props.users[this.props.comments[ckey].authorId].photoUrl, ")")
+        }
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+        }
+      });
+    }
+  }, {
+    key: "checkCommentInfo",
+    value: function checkCommentInfo(ckey) {
       var _this4 = this;
 
+      if (!this.props.users[this.props.comments[ckey].authorId]) return;
+      return this.props.users ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        key: ckey,
+        className: "profileBottomPostsComment"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getCommentPic(ckey)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this4.props.history.push("/users/".concat(_this4.props.comments[ckey].authorId));
+        }
+      }, this.props.users[this.props.comments[ckey].authorId].firstName, " ", this.props.users[this.props.comments[ckey].authorId].lastName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.comments[ckey].body))) : null;
+    }
+  }, {
+    key: "getComments",
+    value: function getComments(key) {
+      var _this5 = this;
+
       return Object.keys(this.props.comments).map(function (ckey) {
-        if (_this4.props.comments[ckey].postId == key) {
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-            key: ckey,
-            className: "profileBottomPostsComment"
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-            style: {
-              backgroundImage: "url(".concat(_this4.props.users[_this4.props.comments[ckey].authorId].photoUrl, ")")
-            }
-          })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this4.props.users[_this4.props.comments[ckey].authorId].firstName, " ", _this4.props.users[_this4.props.comments[ckey].authorId].lastName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this4.props.comments[ckey].body)));
+        if (_this5.props.comments[ckey].postId == key) {
+          return _this5.checkCommentInfo(ckey);
+        }
+      });
+    }
+  }, {
+    key: "countLikes",
+    value: function countLikes() {
+      var _this6 = this;
+
+      Object.keys(this.props.likes).map(function (key) {
+        if (_this6.props.likes[key].userId == _this6.props.currentUser.id) {
+          $("#likes".concat(_this6.props.likes[key].postId)).addClass('filterLike');
         }
       });
     }
   }, {
     key: "getNumberOfLikes",
     value: function getNumberOfLikes(postId) {
-      var _this5 = this;
-
-      if (this.props.users[this.props.currentUser.id].likes) {
-        this.props.users[this.props.currentUser.id].likes.map(function (key) {
-          if (key.postId == postId) {
-            $("#likes".concat(postId)).addClass('filterLike');
-            return;
-          }
-        });
-      }
+      var _this7 = this;
 
       var counter = 0;
       Object.keys(this.props.likes).map(function (key) {
-        if (_this5.props.likes[key].postId == postId) {
+        if (_this7.props.likes[key].postId == postId) {
           counter += 1;
         }
       });
@@ -1780,14 +2986,14 @@ var Profile = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "createLike",
     value: function createLike(postId) {
-      var _this6 = this;
+      var _this8 = this;
 
       var liked = false;
-      this.props.users[this.props.currentUser.id].likes.map(function (key) {
-        if (key.postId == postId) {
+      Object.keys(this.props.likes).map(function (key) {
+        if (_this8.props.likes[key].postId == postId && _this8.props.likes[key].userId == _this8.props.currentUser.id) {
           $("#likes".concat(postId)).removeClass('filterLike');
 
-          _this6.props.deleteLike(key.id);
+          _this8.props.deleteLike(_this8.props.likes[key].id);
 
           liked = true;
           return;
@@ -1807,19 +3013,178 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "getMakeCommentPic",
+    value: function getMakeCommentPic() {
+      if (!this.props.users[this.userId]) return;
+      var tempPicNum = 0;
+
+      if (this.props.currentUser.id > 100) {
+        tempPicNum = this.props.currentUser.id - 100;
+      } else {
+        tempPicNum = this.props.currentUser.id;
+      }
+
+      if (this.props.currentUser.id < 195) {
+        return this.props.currentUser.photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.currentUser.photoUrl, ")")
+          }
+        }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
+          }
+        });
+      }
+
+      return this.props.currentUser.photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(this.props.currentUser.photoUrl, ")")
+        }
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+        }
+      });
+    }
+  }, {
+    key: "checkProfilePhoto",
+    value: function checkProfilePhoto(key) {
+      if (!this.props.users[this.userId]) return;
+      if (!this.props.users[this.props.posts[key].authorId]) return;
+      var tempPicNum = 0;
+
+      if (this.props.posts[key].authorId > 100) {
+        tempPicNum = this.props.posts[key].authorId - 100;
+      } else {
+        tempPicNum = this.props.posts[key].authorId;
+      }
+
+      if (this.props.posts[key].authorId < 195) {
+        return this.props.users[this.props.posts[key].authorId].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.users[this.props.posts[key].authorId].photoUrl, ")")
+          }
+        }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          style: {
+            backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
+          }
+        });
+      }
+
+      return this.props.users[this.userId] ? this.props.users[this.userId].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(this.props.users[this.props.posts[key].authorId].photoUrl, ")")
+        }
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+        }
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+        }
+      });
+    }
+  }, {
+    key: "getTime",
+    value: function getTime(date) {
+      var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'];
+      var dateArray = date.split('-');
+      var month = months[parseInt(dateArray[1], 10) - 1];
+      var day = parseInt(dateArray[2].slice(0, 2), 10);
+      var hour = parseInt(dateArray[2].slice(3, 5), 10);
+      var minute = parseInt(dateArray[2].slice(6, 8), 10);
+      var time = 'AM';
+      hour > 11 ? time = 'PM' : time = 'AM';
+      hour > 12 ? hour -= 12 : hour;
+      var fullTime = "".concat(month, " ").concat(day, " at ").concat(hour, ":").concat(minute, " ").concat(time);
+      return fullTime;
+    }
+  }, {
+    key: "getPostInfo",
+    value: function getPostInfo(key) {
+      var _this9 = this;
+
+      return this.props.users[this.props.posts[key].authorId] ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomPostsTopNameAndDate"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this9.props.history.push("/users/".concat(_this9.props.posts[key].authorId));
+        }
+      }, this.props.users[this.props.posts[key].authorId].firstName, " ", this.props.users[this.props.posts[key].authorId].lastName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getTime(this.props.posts[key].createdAt))) : null;
+    }
+  }, {
+    key: "getPhotosArray",
+    value: function getPhotosArray() {
+      var _this10 = this;
+
+      var photosArray = [];
+      Object.keys(this.props.posts).map(function (key) {
+        if (key < 954 && key % 4 == 0) {
+          var picNum = 0;
+
+          if (key > 800) {
+            picNum = (key - 800) / 4;
+          } else if (key > 400) {
+            picNum = (key - 400) / 4;
+          } else {
+            picNum = key / 4;
+          }
+
+          if (_this10.props.posts[key].authorId == _this10.userId) {
+            photosArray.push(picNum);
+            return;
+          }
+
+          _this10.props.posts[key].likes.map(function (like) {
+            if (like.userId == _this10.userId) {
+              photosArray.push(picNum);
+              return;
+            }
+          });
+        }
+      });
+      return photosArray;
+    }
+  }, {
+    key: "getMyPhotos",
+    value: function getMyPhotos(number) {
+      if (!this.props.posts) return;
+      var photosArray = this.getPhotosArray();
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(this.props.postImages[photosArray[number]], ")")
+        }
+      });
+    }
+  }, {
     key: "getAllPosts",
     value: function getAllPosts() {
-      var _this7 = this;
+      var _this11 = this;
 
       if (Object.keys(this.props.posts).length < 1) return;
       var orderPosts = [];
       Object.keys(this.props.posts).map(function (key) {
-        if (_this7.props.posts[key].authorId == _this7.userId) {
-          orderPosts.unshift(_this7.props.posts[key].id);
-        }
+        orderPosts.unshift(_this11.props.posts[key].id);
       });
       return orderPosts.map(function (key) {
-        if (_this7.props.posts[key].authorId == _this7.userId) {
+        var commented = false;
+        Object.keys(_this11.props.comments).map(function (commentkey) {
+          if (_this11.props.comments[commentkey].postId == key && _this11.props.comments[commentkey].authorId == _this11.userId) {
+            commented = true;
+          }
+        });
+        var liked = false;
+
+        if (_this11.props.posts[key].likes) {
+          _this11.props.posts[key].likes.map(function (likekey) {
+            if (likekey.userId == _this11.userId) {
+              liked = true;
+            }
+          });
+        }
+
+        if (_this11.props.posts[key].authorId == _this11.userId || commented === true || liked === true) {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             key: key,
             className: "profileBottomPostsContainer"
@@ -1829,20 +3194,14 @@ var Profile = /*#__PURE__*/function (_React$Component) {
             className: "profileBottomPostsTopLeft"
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             className: "profileBottomPostsTopPicDiv"
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-            style: {
-              backgroundImage: "url(".concat(_this7.props.users[_this7.props.posts[key].authorId].photoUrl, ")")
-            }
-          })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-            className: "profileBottomPostsTopNameAndDate"
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this7.props.users[_this7.props.posts[key].authorId].firstName, " ", _this7.props.users[_this7.props.posts[key].authorId].lastName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this7.props.posts[key].createdAt)))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          }, _this11.checkProfilePhoto(key)), _this11.getPostInfo(key))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             className: "profileBottomPostsMiddle"
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this7.props.posts[key].body), _this7.getPostsPic(key)), _this7.getNumberOfLikes(key), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this11.props.posts[key].body), _this11.getPostsPic(key)), _this11.getNumberOfLikes(key), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             className: "profileBottomPostsOptions"
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             id: "likes".concat(key),
             onClick: function onClick() {
-              return _this7.createLike(key);
+              return _this11.createLike(key);
             }
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
             "data-visualcompletion": "css-img",
@@ -1868,20 +3227,16 @@ var Profile = /*#__PURE__*/function (_React$Component) {
               backgroundRepeat: 'no-repeat',
               display: 'inline-block'
             }
-          }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Comment")))), _this7.checkComments(key), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Comment")))), _this11.checkComments(key), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             className: "profileBottomPostsBottom"
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             className: "profileBottomPostsBottomDiv"
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-            style: {
-              backgroundImage: "url(".concat(_this7.props.currentUser.photoUrl, ")")
-            }
-          })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this11.getMakeCommentPic()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
             id: key,
-            onSubmit: _this7.handleComments.bind(_this7)
+            onSubmit: _this11.handleComments.bind(_this11)
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
             id: key,
-            onChange: _this7.update('body'),
+            onChange: _this11.update('body'),
             type: "text",
             placeholder: "Write a comment..."
           })))));
@@ -1889,12 +3244,100 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "profilePostText",
+    value: function profilePostText() {
+      if (!this.props.users[this.userId]) return;
+      var value = "".concat(this.userId) === "".concat(this.props.currentUser.id);
+      return value ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "What's on your mind?") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Write something to ", this.props.users[this.userId].firstName, "...");
+    }
+  }, {
+    key: "getFriends",
+    value: function getFriends() {
+      if (!this.props.users[this.userId]) return;
+      if (!this.props.users[this.userId].friendsRequested) return;
+      var friendArray = [];
+      this.props.users[this.userId].friendsRequested.map(function (request) {
+        if (request.status === "accepted") {
+          friendArray.push(request.friendId);
+        }
+      });
+      this.props.users[this.userId].friendRequests.map(function (request) {
+        if (request.status === "accepted") {
+          friendArray.push(request.userId);
+        }
+      });
+      return friendArray;
+    }
+  }, {
+    key: "getFriendPic",
+    value: function getFriendPic(number) {
+      var _this12 = this;
+
+      if (!this.props.users[this.userId]) return;
+      if (!this.props.users[this.userId].friendsRequested) return;
+      var friendArray = this.getFriends();
+      var tempPicNum = 0;
+
+      if (friendArray[number] > 100) {
+        tempPicNum = friendArray[number] - 100;
+      } else {
+        tempPicNum = friendArray[number];
+      }
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this12.props.history.push("/users/".concat(friendArray[number]));
+        },
+        className: "profileBottomFriends"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        style: {
+          backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
+        }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.users[friendArray[number]].firstName, " ", this.props.users[friendArray[number]].lastName));
+    }
+  }, {
+    key: "getNumberOfFriends",
+    value: function getNumberOfFriends() {
+      if (!this.props.users[this.userId]) return;
+      if (!this.props.users[this.userId].friendsRequested) return;
+      var count = 0;
+      this.props.users[this.userId].friendsRequested.map(function (request) {
+        if (request.status === "accepted") {
+          count += 1;
+        }
+      });
+      this.props.users[this.userId].friendRequests.map(function (request) {
+        if (request.status === "accepted") {
+          count += 1;
+        }
+      });
+      return "".concat(count, " Friends");
+    }
+  }, {
+    key: "clearSearchBar",
+    value: function clearSearchBar() {
+      $('#searchForUsersInput').val('');
+      this.props.searchUsers({
+        query: ''
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this13 = this;
+
       console.log(this.props);
       this.userId = this.props.match.params.id;
       this.user = this.props.users[this.userId];
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_profile_pics_profile_pics_container__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this13.clearSearchBar();
+        }
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_profile_pics_profile_pics_container__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        profImages: _util_image_util__WEBPACK_IMPORTED_MODULE_1__.profImages,
+        backImages: _util_image_util__WEBPACK_IMPORTED_MODULE_1__.backImages,
+        updateFriend: this.props.updateFriend,
+        deleteFriend: this.props.deleteFriend,
         createFriend: this.props.createFriend,
         ownProps: this.props.ownProps
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -1915,14 +3358,88 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomIntroTitle"
       }, "Intro"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return window.open('https://github.com/alex-ciminillo', '_blank');
+        },
         className: "profileBottomIntroButton"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Add Bio")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        height: "20",
+        "aria-hidden": "true",
+        viewBox: "0 0 16 16",
+        version: "1.1",
+        width: "20",
+        "data-view-component": "true",
+        className: "octicon octicon-mark-github v-align-middle"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        fillRule: "evenodd",
+        d: "M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "GitHub")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return window.open('https://www.linkedin.com/in/alexzander-ciminillo', '_blank');
+        },
         className: "profileBottomIntroButton"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Edit details")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        id: "introLinkedIn",
+        xmlns: "http://www.w3.org/2000/svg",
+        xmlnsXlink: "http://www.w3.org/1999/xlink",
+        height: "20",
+        width: "80",
+        viewBox: "0 0 84 21",
+        preserveAspectRatio: "xMinYMin meet",
+        version: "1.1",
+        focusable: "false",
+        className: "lazy-loaded"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("g", {
+        className: "inbug",
+        stroke: "none",
+        strokeWidth: "1",
+        fill: "none",
+        fillRule: "evenodd"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        d: "M19.479,0 L1.583,0 C0.727,0 0,0.677 0,1.511 L0,19.488 C0,20.323 0.477,21 1.333,21 L19.229,21 C20.086,21 21,20.323 21,19.488 L21,1.511 C21,0.677 20.336,0 19.479,0",
+        className: "bug-text-color",
+        transform: "translate(63.000000, 0.000000)"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", _defineProperty({
+        fill: "black",
+        d: "M82.479,0 L64.583,0 C63.727,0 63,0.677 63,1.511 L63,19.488 C63,20.323 63.477,21 64.333,21 L82.229,21 C83.086,21 84,20.323 84,19.488 L84,1.511 C84,0.677 83.336,0 82.479,0 Z M71,8 L73.827,8 L73.827,9.441 L73.858,9.441 C74.289,8.664 75.562,7.875 77.136,7.875 C80.157,7.875 81,9.479 81,12.45 L81,18 L78,18 L78,12.997 C78,11.667 77.469,10.5 76.227,10.5 C74.719,10.5 74,11.521 74,13.197 L74,18 L71,18 L71,8 Z M66,18 L69,18 L69,8 L66,8 L66,18 Z M69.375,4.5 C69.375,5.536 68.536,6.375 67.5,6.375 C66.464,6.375 65.625,5.536 65.625,4.5 C65.625,3.464 66.464,2.625 67.5,2.625 C68.536,2.625 69.375,3.464 69.375,4.5 Z",
+        className: "background"
+      }, "fill", "currentColor")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "LinkedIn")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return window.open('https://alex-ciminillo.github.io/tower_of_dreams/', '_blank');
+        },
         className: "profileBottomIntroButton"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Add Hobbies")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        id: "introJavascript",
+        version: "1.1",
+        height: "25",
+        width: "25",
+        xmlns: "http://www.w3.org/2000/svg",
+        xmlnsXlink: "http://www.w3.org/1999/xlink",
+        x: "0px",
+        y: "0px",
+        viewBox: "0 0 454.635 454.635",
+        style: {
+          enableBackground: 'new 0 0 454.635 454.635'
+        }
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        d: "M286.306,301.929h-17.472L295.141,82.85c0.708-5.89-1.709-13.694-5.621-18.155L236.506,4.255 C234.134,1.551,230.785,0,227.317,0s-6.816,1.551-9.188,4.255l-53.015,60.439c-3.912,4.461-6.328,12.266-5.621,18.155 l26.307,219.079h-17.472c-8.412,0-15.256,6.844-15.256,15.256v18.984c0,8.412,6.844,15.256,15.256,15.256h37.118v33.143 c-10.014,6.95-16.588,18.523-16.588,31.609c0,21.206,17.252,38.458,38.458,38.458s38.458-17.252,38.458-38.458 c0-13.086-6.574-24.659-16.588-31.609v-33.143h37.118c8.412,0,15.256-6.844,15.256-15.256v-18.984 C301.562,308.772,294.718,301.929,286.306,301.929z"
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "JavaScript")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return window.open('https://www.facebook.com/ACSC.CIMI/', '_blank');
+        },
         className: "profileBottomIntroButton"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Add Featured")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "introFIcon"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
+        height: "40",
+        width: "40"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        fill: "black",
+        d: "M15 35.8C6.5 34.3 0 26.9 0 18 0 8.1 8.1 0 18 0s18 8.1 18 18c0 8.9-6.5 16.3-15 17.8l-1-.8h-4l-1 .8z"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+        fill: "#E4E6EB",
+        d: "M25 23l.8-5H21v-3.5c0-1.4.5-2.5 2.7-2.5H26V7.4c-1.3-.2-2.7-.4-4-.4-4.1 0-7 2.5-7 7v4h-4.5v5H15v12.7c1 .2 2 .3 3 .3s2-.1 3-.3V23h4z"
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Facebook")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "profileBottomPhotosContainer",
         className: "profileBottomPhotosContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -1931,118 +3448,28 @@ var Profile = /*#__PURE__*/function (_React$Component) {
         className: "profileBottomPhotosBottom"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomPhotosBottomRow"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend1URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend2URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend3URL, ")")
-        }
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, this.getMyPhotos(1), this.getMyPhotos(2), this.getMyPhotos(3)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomPhotosBottomRow"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend4URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend5URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend6URL, ")")
-        }
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, this.getMyPhotos(4), this.getMyPhotos(5), this.getMyPhotos(6)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomPhotosBottomRow"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend7URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend8URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.profileBackgroundURL, ")")
-        }
-      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, this.getMyPhotos(7), this.getMyPhotos(8), this.getMyPhotos(9))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "profileBottomFriendsContainer",
         className: "profileBottomFriendsContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFriendsTop"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Friends"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "See all friends"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFriendsMiddle"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "617 friends")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getNumberOfFriends())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFriendsPicsContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFriendsPics"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFriendsPicsRow"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomFriends"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend8URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Seth Ciminillo")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomFriends"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend7URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Samantha Young")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomFriends"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend6URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "David Young"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, this.getFriendPic(1), this.getFriendPic(2), this.getFriendPic(3)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFriendsPicsRow"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomFriends"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend5URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Sabrina Clark")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomFriends"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend4URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Austin Ciminillo")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomFriends"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend3URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Amanda Sutton"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, this.getFriendPic(4), this.getFriendPic(5), this.getFriendPic(6)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFriendsPicsRow"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomFriends"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend2URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Betsy Ulrich")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomFriends"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend1URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Julie Woodruff")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomFriends"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.profileBackgroundURL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Claire Dahlke")))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, this.getFriendPic(7), this.getFriendPic(8), this.getFriendPic(9))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "profileBottomLifeContainer",
         className: "profileBottomLifeContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -2125,7 +3552,7 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       }, this.getProfilePhoto(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         onClick: this.writePostModal.bind(this),
         className: "profileBottomMakePostTopButton"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "What's on your mind?"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, this.profilePostText())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomMakePostGrayLine"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomMakePostButtons"
@@ -2151,6 +3578,7 @@ var Profile = /*#__PURE__*/function (_React$Component) {
         d: "M98.75 12c1.379 0 2.5-1.121 2.5-2.5S100.129 7 98.75 7a2.503 2.503 0 0 0-2.5 2.5c0 1.379 1.121 2.5 2.5 2.5",
         transform: "translate(354 158.5)"
       })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Live video")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: this.writePostModal.bind(this),
         className: "profileBottomMakePostButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         viewBox: "0 0 24 24",
@@ -2171,6 +3599,7 @@ var Profile = /*#__PURE__*/function (_React$Component) {
         d: "m111.61 22.963-11.604-1.015a2.77 2.77 0 0 1-2.512-2.995L98.88 3.09A2.77 2.77 0 0 1 101.876.58l11.603 1.015a2.77 2.77 0 0 1 2.513 2.994l-1.388 15.862a2.77 2.77 0 0 1-2.994 2.513zm.13-1.494.082.004a1.27 1.27 0 0 0 1.287-1.154l1.388-15.862a1.27 1.27 0 0 0-1.148-1.37l-11.604-1.014a1.27 1.27 0 0 0-1.37 1.15l-1.387 15.86a1.27 1.27 0 0 0 1.149 1.37l11.603 1.016z",
         transform: "translate(352 156.5)"
       })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Photo/video")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: this.writePostModal.bind(this),
         className: "profileBottomMakePostButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
         "data-visualcompletion": "css-img",
@@ -2278,6 +3707,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_comment_actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../actions/comment_actions */ "./frontend/actions/comment_actions.js");
 /* harmony import */ var _actions_like_actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../actions/like_actions */ "./frontend/actions/like_actions.js");
 /* harmony import */ var _actions_friend_actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../actions/friend_actions */ "./frontend/actions/friend_actions.js");
+/* harmony import */ var _util_image_util__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../util/image_util */ "./frontend/util/image_util.js");
+
+
 
 
 
@@ -2296,7 +3728,10 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
     comments: state.entities.comments,
     likes: state.entities.likes,
     friends: state.entities.friends,
-    ownProps: ownProps
+    ownProps: ownProps,
+    profImages: _util_image_util__WEBPACK_IMPORTED_MODULE_9__.profImages,
+    backImages: _util_image_util__WEBPACK_IMPORTED_MODULE_9__.backImages,
+    postImages: _util_image_util__WEBPACK_IMPORTED_MODULE_9__.postImages
   };
 };
 
@@ -2334,6 +3769,15 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     createFriend: function createFriend(friend) {
       return dispatch((0,_actions_friend_actions__WEBPACK_IMPORTED_MODULE_8__.createFriend)(friend));
+    },
+    deleteFriend: function deleteFriend(id) {
+      return dispatch((0,_actions_friend_actions__WEBPACK_IMPORTED_MODULE_8__.deleteFriend)(id));
+    },
+    updateFriend: function updateFriend(friend) {
+      return dispatch((0,_actions_friend_actions__WEBPACK_IMPORTED_MODULE_8__.updateFriend)(friend));
+    },
+    searchUsers: function searchUsers(query) {
+      return dispatch((0,_actions_user_actions__WEBPACK_IMPORTED_MODULE_3__.searchUsers)(query));
     }
   };
 };
@@ -2598,7 +4042,20 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
     key: "handleCancelChangeBackground",
     value: function handleCancelChangeBackground() {
       this.event.target.value = '';
-      $('#profileBackgroundIMG').attr("src", "".concat(this.props.users[this.userId].coverPhotoUrl));
+      var tempPicNum = 0;
+
+      if (this.props.currentUser.id > 100) {
+        tempPicNum = this.props.currentUser.id - 100;
+      } else {
+        tempPicNum = this.props.currentUser.id;
+      }
+
+      if (this.props.currentUser.id < 195) {
+        $('#profileBackgroundIMG').attr("src", "".concat(this.props.backImages[tempPicNum]));
+      } else {
+        $('#profileBackgroundIMG').attr("src", "".concat(this.props.users[this.userId].coverPhotoUrl));
+      }
+
       $('#backgroundPicChoiceBar').removeClass('backgroundPicChoiceBarShow');
     }
   }, {
@@ -2618,6 +4075,29 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getProfilePhoto",
     value: function getProfilePhoto() {
+      if (!this.props.users[this.userId]) return;
+      var tempPicNum = 0;
+
+      if (this.userId > 100) {
+        tempPicNum = this.userId - 100;
+      } else {
+        tempPicNum = this.userId;
+      }
+
+      if (this.userId < 195) {
+        return this.props.users[this.userId].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "profileImage",
+          style: {
+            backgroundImage: "url(".concat(this.props.users[this.userId].photoUrl, ")")
+          }
+        }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          className: "profileImage",
+          style: {
+            backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
+          }
+        });
+      }
+
       return this.props.users[this.userId] ? this.props.users[this.userId].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileImage",
         style: {
@@ -2638,6 +4118,31 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getBackgroundPhoto",
     value: function getBackgroundPhoto() {
+      if (!this.props.users[this.userId]) return;
+      var tempPicNum = 0;
+
+      if (this.userId > 100) {
+        tempPicNum = this.userId - 100;
+      } else {
+        tempPicNum = this.userId;
+      }
+
+      if (this.userId < 195) {
+        return this.props.users[this.userId] ? this.props.users[this.userId].coverPhotoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+          id: "profileBackgroundIMG",
+          src: this.props.users[this.userId].coverPhotoUrl,
+          className: "backgroundPic"
+        }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+          id: "profileBackgroundIMG",
+          src: this.props.backImages[tempPicNum],
+          className: "backgroundPic"
+        }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+          id: "profileBackgroundIMG",
+          src: this.props.backImages[tempPicNum],
+          className: "backgroundPic"
+        });
+      }
+
       return this.props.users[this.userId] ? this.props.users[this.userId].coverPhotoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         id: "profileBackgroundIMG",
         src: this.props.users[this.userId].coverPhotoUrl,
@@ -2709,6 +4214,9 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
       this.props.createFriend(friendship);
     }
   }, {
+    key: "deleteFriendRequest",
+    value: function deleteFriendRequest() {}
+  }, {
     key: "getFriendshipStatus",
     value: function getFriendshipStatus() {
       var _this = this;
@@ -2722,7 +4230,11 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
       div = this.props.currentUser.friendsRequested.map(function (request) {
         if (request.friendId == _this.userId) {
           requested = true;
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          return request.status === 'pending' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            key: request.id,
+            onClick: function onClick() {
+              _this.props.deleteFriend(request.id);
+            },
             className: "addStoryButton"
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
             className: "addStoryIcon",
@@ -2730,7 +4242,16 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
             alt: "",
             height: "16",
             width: "16"
-          }), "I sent request!");
+          }), "Cancel Request") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            key: request.id,
+            className: "addStoryButton"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+            className: "addStoryIcon",
+            src: "https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/33EToHSZ94f.png",
+            alt: "",
+            height: "16",
+            width: "16"
+          }), "Friends");
         }
       });
 
@@ -2741,7 +4262,15 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
       div = this.props.currentUser.friendRequests.map(function (request) {
         if (request.userId == _this.userId) {
           requested = true;
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          return request.status === 'pending' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            onClick: function onClick() {
+              return _this.props.updateFriend({
+                friend: {
+                  id: request.id,
+                  status: 'accepted'
+                }
+              });
+            },
             className: "addStoryButton"
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
             className: "addStoryIcon",
@@ -2749,7 +4278,15 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
             alt: "",
             height: "16",
             width: "16"
-          }), "They sent request!");
+          }), "Accept Friend") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+            className: "addStoryButton"
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+            className: "addStoryIcon",
+            src: "https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/33EToHSZ94f.png",
+            alt: "",
+            height: "16",
+            width: "16"
+          }), "Friends");
         }
       });
 
@@ -2809,6 +4346,68 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
       }), "Message")));
     }
   }, {
+    key: "getNumberOfFriends",
+    value: function getNumberOfFriends() {
+      if (!this.props.users[this.userId]) return;
+      if (!this.props.users[this.userId].friendsRequested) return;
+      var count = 0;
+      this.props.users[this.userId].friendsRequested.map(function (request) {
+        if (request.status === "accepted") {
+          count += 1;
+        }
+      });
+      this.props.users[this.userId].friendRequests.map(function (request) {
+        if (request.status === "accepted") {
+          count += 1;
+        }
+      });
+      return "".concat(count, " Friends");
+    }
+  }, {
+    key: "getFriends",
+    value: function getFriends() {
+      if (!this.props.users[this.userId]) return;
+      if (!this.props.users[this.userId].friendsRequested) return;
+      var friendArray = [];
+      this.props.users[this.userId].friendsRequested.map(function (request) {
+        if (request.status === "accepted") {
+          friendArray.push(request.friendId);
+        }
+      });
+      this.props.users[this.userId].friendRequests.map(function (request) {
+        if (request.status === "accepted") {
+          friendArray.push(request.userId);
+        }
+      });
+      return friendArray;
+    }
+  }, {
+    key: "getFriendPic",
+    value: function getFriendPic(number) {
+      var _this2 = this;
+
+      if (!this.props.users[this.userId]) return;
+      if (!this.props.users[this.userId].friendsRequested) return;
+      var friendArray = this.getFriends();
+      var tempPicNum = 0;
+
+      if (friendArray[number] > 100) {
+        tempPicNum = friendArray[number] - 100;
+      } else {
+        tempPicNum = friendArray[number];
+      }
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this2.props.ownProps.history.push("/users/".concat(friendArray[number]));
+        },
+        className: "friendPicDiv"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+        src: this.props.profImages[tempPicNum],
+        className: "friendPic"
+      }));
+    }
+  }, {
     key: "render",
     value: function render() {
       console.log(this.props);
@@ -2842,51 +4441,11 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
         className: "profilePicMaxHeight"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "friendsNumber"
-      }, "617 Friends")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, this.getNumberOfFriends())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profilePicMaxHeight"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "friendsImages"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "friendPicDiv"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: window.friend1URL,
-        className: "friendPic"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "friendPicDiv"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: window.friend2URL,
-        className: "friendPic"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "friendPicDiv"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: window.friend3URL,
-        className: "friendPic"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "friendPicDiv"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: window.friend4URL,
-        className: "friendPic"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "friendPicDiv"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: window.friend5URL,
-        className: "friendPic"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "friendPicDiv"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: window.friend6URL,
-        className: "friendPic"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "friendPicDiv"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: window.friend7URL,
-        className: "friendPic"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "friendPicDiv"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        src: window.friend8URL,
-        className: "friendPic"
-      })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, this.getFriendPic(1), this.getFriendPic(2), this.getFriendPic(3), this.getFriendPic(4), this.getFriendPic(5), this.getFriendPic(6), this.getFriendPic(7), this.getFriendPic(8))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profilePicMaxHeight2"
       }, this.getAddStoryButtons()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profilePicMaxHeight3"
@@ -4190,6 +5749,12 @@ var WritePost = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getPhoto",
     value: function getPhoto() {
+      if (this.state.photoUrl) {
+        $('#writePostContainer').addClass('writePostWithPic');
+        $('#writePostMiddle').addClass('writePostMiddleWithPic');
+        $('#writePostTextBox').addClass('writePostTextBoxWithPic');
+      }
+
       return this.state.photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "writePostPhotoDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -4204,6 +5769,7 @@ var WritePost = /*#__PURE__*/function (_React$Component) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "writePostBackgroundFade"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "writePostContainer",
         className: "writePostContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "writePostTop"
@@ -4224,6 +5790,7 @@ var WritePost = /*#__PURE__*/function (_React$Component) {
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "writePostGrayLine"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "writePostMiddle",
         className: "writePostMiddle"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "writePostPicAndName"
@@ -4242,6 +5809,7 @@ var WritePost = /*#__PURE__*/function (_React$Component) {
         height: "12",
         width: "12"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Public")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "writePostTextBox",
         className: "writePostTextBox"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("textarea", {
         onChange: this.update('body'),
@@ -4354,24 +5922,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _users_reducer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./users_reducer */ "./frontend/reducers/users_reducer.js");
 /* harmony import */ var _posts_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./posts_reducer */ "./frontend/reducers/posts_reducer.js");
 /* harmony import */ var _comments_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./comments_reducer */ "./frontend/reducers/comments_reducer.js");
 /* harmony import */ var _likes_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./likes_reducer */ "./frontend/reducers/likes_reducer.js");
 /* harmony import */ var _friends_reducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./friends_reducer */ "./frontend/reducers/friends_reducer.js");
+/* harmony import */ var _search_reducer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./search_reducer */ "./frontend/reducers/search_reducer.js");
 
 
 
 
 
 
-var entitiesReducer = (0,redux__WEBPACK_IMPORTED_MODULE_5__.combineReducers)({
+
+var entitiesReducer = (0,redux__WEBPACK_IMPORTED_MODULE_6__.combineReducers)({
   users: _users_reducer__WEBPACK_IMPORTED_MODULE_0__["default"],
   posts: _posts_reducer__WEBPACK_IMPORTED_MODULE_1__["default"],
   comments: _comments_reducer__WEBPACK_IMPORTED_MODULE_2__["default"],
   likes: _likes_reducer__WEBPACK_IMPORTED_MODULE_3__["default"],
-  friends: _friends_reducer__WEBPACK_IMPORTED_MODULE_4__["default"]
+  friends: _friends_reducer__WEBPACK_IMPORTED_MODULE_4__["default"],
+  search: _search_reducer__WEBPACK_IMPORTED_MODULE_5__["default"]
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (entitiesReducer);
 
@@ -4465,7 +6036,6 @@ var likesReducer = function likesReducer() {
       return action.likes;
 
     case _actions_like_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_LIKE:
-      console.log("hello");
       nextState[action.like.id] = action.like;
       return nextState;
 
@@ -4630,6 +6200,38 @@ var rootReducer = (0,redux__WEBPACK_IMPORTED_MODULE_4__.combineReducers)({
 
 /***/ }),
 
+/***/ "./frontend/reducers/search_reducer.js":
+/*!*********************************************!*\
+  !*** ./frontend/reducers/search_reducer.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _actions_user_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/user_actions */ "./frontend/actions/user_actions.js");
+
+
+var searchReducer = function searchReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  Object.freeze(state);
+
+  switch (action.type) {
+    case _actions_user_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_SEARCHED_USERS:
+      return action.users;
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (searchReducer);
+
+/***/ }),
+
 /***/ "./frontend/reducers/session_errors_reducer.js":
 /*!*****************************************************!*\
   !*** ./frontend/reducers/session_errors_reducer.js ***!
@@ -4761,7 +6363,6 @@ var usersReducer = function usersReducer() {
       return Object.assign({}, state, _defineProperty({}, action.otherUser.id, action.otherUser));
 
     case _actions_user_actions__WEBPACK_IMPORTED_MODULE_1__.RECEIVE_ALL_USERS:
-      console.log("hello");
       return action.users;
 
     default:
@@ -4876,7 +6477,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "fetchFriends": () => (/* binding */ fetchFriends)
 /* harmony export */ });
 var createFriend = function createFriend(friend) {
-  console.log(friend);
   return $.ajax({
     method: 'POST',
     url: "/api/friends",
@@ -4889,13 +6489,11 @@ var deleteFriend = function deleteFriend(friendId) {
     url: "/api/friends/".concat(friendId)
   });
 };
-var updateFriend = function updateFriend(formData) {
+var updateFriend = function updateFriend(friend) {
   return $.ajax({
     method: 'PATCH',
-    url: "/api/friends/".concat(parseInt(formData.get('friend[id]'))),
-    data: formData,
-    contentType: false,
-    processData: false
+    url: "/api/friends/".concat(friend.friend.id),
+    data: friend
   });
 };
 var fetchFriends = function fetchFriends() {
@@ -4904,6 +6502,25 @@ var fetchFriends = function fetchFriends() {
     url: '/api/friends'
   });
 };
+
+/***/ }),
+
+/***/ "./frontend/util/image_util.js":
+/*!*************************************!*\
+  !*** ./frontend/util/image_util.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "profImages": () => (/* binding */ profImages),
+/* harmony export */   "backImages": () => (/* binding */ backImages),
+/* harmony export */   "postImages": () => (/* binding */ postImages)
+/* harmony export */ });
+var profImages = ["https://www.incimages.com/uploaded_files/image/1920x1080/getty_478389113_970647970450091_99776.jpg", "https://www.jerseysbest.com/wp-content/uploads/2019/02/GettyImages-871518740.jpg", "https://cdn.lifehack.org/wp-content/uploads/2013/08/happy-person.jpeg", "https://miro.medium.com/max/1200/1*HEoLBLidT2u4mhJ0oiDgig.png", "https://imageio.forbes.com/specials-images/dam/imageserve/1084793354/960x0.jpg?fit=bounds&format=jpg&width=960", "https://images.unsplash.com/photo-1542596594-649edbc13630?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aGFwcHklMjBwZW9wbGV8ZW58MHx8MHx8&w=1000&q=80", "https://nypost.com/wp-content/uploads/sites/2/2017/04/170404-happy-workers-feature.jpg?quality=80&strip=all&w=1024", "https://images2.minutemediacdn.com/image/upload/c_fill,g_auto,h_1248,w_2220/v1555283250/shape/mentalfloss/istock-508455188.jpg?itok=DBIAayDL", "https://i.dailymail.co.uk/i/pix/2017/07/18/14/427394C200000578-4707164-Happy_people_are_healthier_Some_65_percent_of_relevant_studies_f-m-21_1500384450707.jpg", "https://www.theladders.com/wp-content/uploads/Happy_People_Happy_Man.jpg", "https://nickwignall.com/wp-content/uploads/2020/06/Happy-People-Nick-Wignall-2.jpg", "https://static.independent.co.uk/s3fs-public/thumbnails/image/2016/12/12/14/happiness.jpg?quality=75&width=982&height=726&auto=webp", "https://cdn.lifehack.org/wp-content/uploads/2015/02/what-makes-people-happy-1024x768.jpeg", "https://the-happy-manager.com/wp-content/uploads/bigstock-Portrait-Of-Smiling-Employees-272904928-min-scaled.jpg", "https://ggsc.s3.amazonaws.com/images/uploads/How_Happy_Are_People_at_Work.jpg", "https://media1.popsugar-assets.com/files/thumbor/IVbDQEcEnIVaIvk1ktGmTVvZJ3c/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2019/11/17/245/n/1922441/tmp_6mv7xy_5d5b15258a507669_GettyImages-847741712.jpg", "https://wp.en.aleteia.org/wp-content/uploads/sites/2/2018/09/web3-happy-people-outside-smile-sun-nature-eduardo-dutra-620857-unsplash.jpg", "https://goodmenproject.com/wp-content/uploads/2021/12/iStock-1212931050.jpg", "https://goodlifefamilymag.com/wp-content/uploads/2018/11/happy.jpg", "https://www.teachthought.com/wp-content/uploads/2015/07/hdptcar-fi-2.jpg", "https://m.buro247.my/images/habits-of-happy-people-cr3.jpg", "http://amysdayspa.com/wp-content/uploads/2014/09/people-smiling2.jpg", "https://content.thriveglobal.com/wp-content/uploads/2017/08/o-HAPPY-facebook.jpg", "https://www.talentsmarteq.com/media/uploads/articles/onpage/11-Habits-of-Truly-Happy-People.jpg", "https://images.fastcompany.net/image/upload/w_1280,f_auto,q_auto,fl_lossy/wp-cms/uploads/2021/08/p-1-3-habits-of-especially-happy-people.jpg", "https://s10721.pcdn.co/wp-content/uploads/2015/08/happy-people-secrets.jpg", "https://cdn.lifehack.org/wp-content/uploads/2015/12/18113204/happinessa.jpg", "https://livepurposefullynow.com/wp-content/uploads/2013/12/Happy-people-1-e1555947125774.jpg", "http://static.oprah.com/2015/10/GettyImages-565706549-949x534.jpg", "https://cdn.activebeat.com/eyJidWNrZXQiOiJwdWItc3RvcmFnZSIsImtleSI6ImFjdGl2ZWJlYXQvd3AtY29udGVudC91cGxvYWRzLzIwMTMvMTIvSGFwcHktNC5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjEwMDAsImhlaWdodCI6NjY4LCJmaXQiOiJjb3ZlciIsImJhY2tncm91bmQiOnsiciI6MCwiZyI6MCwiYiI6MCwiYWxwaGEiOjF9LCJwb3NpdGlvbiI6InRvcCJ9fX0=", "https://www.incimages.com/uploaded_files/image/1920x1080/getty_107808334_121413.jpg", "https://www.artofliving.org/sites/www.artofliving.org/files/styles/original_image/public/wysiwyg_imageupload/guilherme-stecanella-375176-unsplash.jpg?itok=lR2wOhfN", "https://cdn.lifehack.org/wp-content/uploads/2014/09/happy-people.jpeg", "https://www.yourtango.com/sites/default/files/image_blog/things-genuinely-happy-people-know.jpg", "https://hosbeg.com/wp-content/uploads/2014/01/happy-senior-couple.jpg", "https://cdn.lifehack.org/wp-content/uploads/2015/06/Geniuenly-Happy-People.jpg", "https://api.time.com/wp-content/uploads/2014/04/what-makes-people-happy1.jpg", "https://www.classycareergirl.com/wp-content/uploads/2016/03/Top-Secrets-of-How-to-be-Happy.jpg", "https://miro.medium.com/max/10944/0*5LFD04Z9opX7U84q", "https://1721181113.rsc.cdn77.org/data/images/full/28575/how-happy-are-healthy-people.jpg", "https://www.thedelite.com/wp-content/uploads/2015/09/happy-girl-in-leaves.jpg", "https://st.depositphotos.com/1043073/1218/i/600/depositphotos_12186995-stock-photo-woman-drop-leaves-in-autumn.jpg", "https://ggsc.s3.amazonaws.com/images/uploads/A_key_to_being_single_and_happy.jpg", "https://images.hivisasa.com/1200/It9Rrm02rE20.jpg", "https://www.mumlyfe.com.au/wp-content/uploads/2020/11/Happy-people-raise-happy-kids-raise-yourself-first.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRARfoCTMjAVAVwGfGvXDqoRtp9ev7IXDCRyg&usqp=CAU", "https://i.insider.com/5c8fa9a0daa507013503f274?width=700", "https://miro.medium.com/max/9000/0*r1IOE2Apr3Tl-Wsl.", "https://www.signalsaz.com/wp-content/uploads/2021/05/happy-family-happy-people.jpg", "http://drvidyahattangadi.com/wp-content/uploads/2016/08/happyppl1.jpg", "https://cdn.lifehack.org/wp-content/uploads/2014/04/laughter1.jpg", "http://brainprick.com/wp-content/uploads/2012/07/Happy-People1.jpg", "https://www.happierhuman.com/wp-content/uploads/2018/10/how-to-be-happy.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmPykxIl0RL3TBnzYgJ4OQwJyyvTRRKtpw6A&usqp=CAU", "https://cdn.pixabay.com/photo/2014/09/13/23/05/jumping-444612_1280.jpg", "https://www.success.com/wp-content/uploads/2017/12/11-Simple-Ways-to-Find-Joy.jpg", "https://viadedios.org/wp-content/uploads/2020/01/5-happy-people-thumbs-up-web.jpg", "https://post.psychcentral.com/wp-content/uploads/2020/09/040417_norwitalia_THUMB-732x415.jpg", "https://imageio.forbes.com/blogs-images/womensmedia/files/2018/07/Photo-happy-1-unsplash-michael-dam.jpg?format=jpg&width=1200&fit=bounds", "https://insidetema.com/wp-content/uploads/2018/05/170717100550_1_900x600.jpg", "https://cdn.lifehack.org/wp-content/uploads/2019/03/happy-people.jpeg", "https://content.thriveglobal.com/wp-content/uploads/2018/01/Happy_guy.jpg", "https://image.cnbcfm.com/api/v1/image/105846315-makeit_04082019_bajuelos_jon_haidt_happiness_v2.00_03_34_04.still001.jpg?v=1554993624", "https://images.unsplash.com/photo-1545315003-c5ad6226c272?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aGFwcHklMjBwZW9wbGV8ZW58MHx8MHx8&w=1000&q=80", "https://goodmenproject.com/wp-content/uploads/2021/04/be_happy.jpg", "https://assets.entrepreneur.com/content/3x2/2000/20180627194538-GettyImages-828514788.jpeg?crop=1:1", "https://heymondo.com/blog/wp-content/uploads/2021/03/shutterstock_757552030_compressed.jpg", "https://freepngimg.com/thumb/happy_person/7-2-happy-person-picture.png", "https://freedesignfile.com/upload/2017/06/Sunset-happy-people-playing-HD-picture.jpg", "https://cdn.wallpapersafari.com/5/83/oGPQXn.jpg", "https://www.wisebread.com/files/fruganomics/blog-images/laughing-dv2051009-small_0.jpg", "https://wa-health.kaiserpermanente.org/wp-content/uploads/2016/04/who-is-happier.jpg", "https://www.nicepng.com/png/detail/227-2271585_what-you-can-win-two-happy-people-png.png", "https://p0.pikist.com/photos/468/51/happiness-lifestyle-smile-expression-12-year-boy-happy-people-smiling-person.jpg", "https://images.unsplash.com/photo-1533227268428-f9ed0900fb3b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aGFwcHklMjBwZXJzb258ZW58MHx8MHx8&w=1000&q=80", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDzlXKTh54o_Z6mBfVlTum99Mre9nIdIR5Zw&usqp=CAU", "https://goodtimes.ca/wp-content/uploads/2019/09/Family.jpg", "https://www.jerseysbest.com/wp-content/uploads/2019/02/GettyImages-906648100-1024x684.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZE564Pa-5z81RVIAuSKPcdAk-WrPNWiOPGQ&usqp=CAU", "https://www.babycenter.com/ims/2015/01/Bby-and-Mom-Generic-18_wide.jpg", "https://www.happierhuman.com/wp-content/uploads/2018/10/how-to-be-happy-socialize-more.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdGqe1qSN_gd4AXjOXG4gNeoqCoikwJFVjGA&usqp=CAU", "https://media.istockphoto.com/photos/happy-young-family-picture-id1316638351?b=1&k=20&m=1316638351&s=170667a&w=0&h=eICVP7qZCS2CQ7uhynA22BqVtPJ3dMKiONjrFVJYC2g=", "https://static.cms.yp.ca/ecms/media/1/14904244_xl-1444104346-600x360.jpg", "https://dynamicmedia.zuza.com/zz/m/original_/6/d/6dd24270-031f-4c8f-977e-a740ae973a48/HAPPY123___Super_Portrait.jpg", "https://miro.medium.com/max/1200/0*sLAyw20gNkZ8CU1M.", "https://www.sciencenews.org/wp-content/uploads/2021/03/030821_EG_CDC_guide_feat-1030x580.jpg", "https://imageio.forbes.com/specials-images/imageserve/5de9d537b269e900075d8985/Teenage-girl-with-sunglasses-using-smart-phone/960x0.jpg?fit=bounds&format=jpg&width=960", "https://dz9yg0snnohlc.cloudfront.net/cro-happiness-is-a-choice-how-to-be-happy-1.jpg", "https://thumbs.dreamstime.com/b/happy-person-credit-card-isolated-blue-studio-169369423.jpg", "https://www.fool.ca/wp-content/uploads/2019/11/Happy-people-together-in-the-park1.jpg", "https://miro.medium.com/max/1200/1*qNzXZ8l5VqMIL8zwLRTOLA.jpeg", "https://www.creativehealthyfamily.com/wp-content/uploads/2021/06/truly-happy-people-dont-post-on-social-media-f.jpg", "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/happy-female-runner-jogging-in-the-morning-in-royalty-free-image-1594150552.jpg?crop=0.561xw:0.842xh;0.136xw,0.117xh&resize=480:*", "https://cdn.apartmenttherapy.info/image/fetch/f_auto,q_auto:eco,c_fill,g_auto,w_800,h_400/https%3A%2F%2Fstorage.googleapis.com%2Fgen-atmedia%2F2%2F2015%2F03%2F008d3d8fdd415a8e2bbd07934e29b05eb5c478f1.jpeg", "https://thumbs.dreamstime.com/b/happy-person-shopping-bags-phone-studio-161302509.jpg", "https://media.istockphoto.com/photos/relax-you-did-good-picture-id1283630226?b=1&k=20&m=1283630226&s=170667a&w=0&h=yLA1c0bwlZX066RksdZHiBI7_BXZYViPJIwuvSYfqdU=", "https://us.nttdata.com/en/-/media/nttdataamerica/images/blogs/blog-post/732077-workforce-readiness-blog-517x368.jpg?h=368&iar=0&w=517&hash=1F690D8F8F356DEC1596DA0FB05878A2", "https://i.insider.com/5fd3abd79cf1420018d2ed53?width=700", "https://images.unsplash.com/photo-1523464862212-d6631d073194?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8aGFwcHklMjBwZXJzb258ZW58MHx8MHx8&w=1000&q=80", "https://media.hswstatic.com/eyJidWNrZXQiOiJjb250ZW50Lmhzd3N0YXRpYy5jb20iLCJrZXkiOiJnaWZcL21ha2VzLXBlb3BsZS1oYXBweS0yLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJ3aWR0aCI6NDAwfX19"];
+var backImages = ["https://www.incimages.com/uploaded_files/image/1920x1080/getty_152414899_97046097045006_68075.jpg", "https://www.alwaysonpurpose.com/wp-content/uploads/2019/11/happypeople-1024x679.jpg", "https://youhaveacalling.com/wp-content/uploads/2012/05/Fun-Group-of-Young-People-Jump-19461599.jpg", "https://i.ytimg.com/vi/dvI75yHBHdQ/maxresdefault.jpg", "https://bestlifeonline.com/wp-content/uploads/sites/3/2019/12/happy-woman-in-nature-at-sunset.jpg?quality=82&strip=1&resize=640%2C360", "https://www.theladders.com/wp-content/uploads/friends-happy-190821.jpg", "https://hfc-media.s3.amazonaws.com/cache/e1/62/e162ccda8ce0f197f8863f327add9233.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIhgUrPoMBNoBdiB7m5sqecedCfErxcvnBtQ&usqp=CAU", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsba__xt7qCndMFs45_B846PQZ883Q_wVn_Q&usqp=CAU", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIE29gGzcy4e9IE38UdZWS-Stt5MyzA2HtCA&usqp=CAU", "https://declutterthemind.com/wp-content/uploads/traitshappypeople.jpg", "https://miro.medium.com/max/1400/0*4Lv_N-t8L8yrNWY-", "https://www.incimages.com/uploaded_files/image/1920x1080/getty_494581822_130796.jpg", "https://kavadasinsurance.com/wp-content/uploads/2015/09/happy-people21.jpg", "https://cdn.tinybuddha.com/wp-content/uploads/2015/04/Happy-people.png", "https://www.aconsciousrethink.com/wp-content/uploads/2015/08/happy-people-702x336.jpg", "https://static01.nyt.com/images/2018/05/08/well/physed-happiness/physed-happiness-facebookJumbo.jpg?year=2018&h=549&w=1050&s=3eacf428cedceb82b3c80ce13508e478b0bb6791108c3fda2d52f50bbce10bc8&k=ZQJBKqZ0VN", "https://images2.minutemediacdn.com/image/upload/c_fill,g_auto,h_1248,w_2220/f_auto,q_auto,w_1100/v1555389293/shape/mentalfloss/istock_000060800302_small.jpg", "https://www.harveker.com/blog/wp-content/uploads/sites/2/2020/02/habits-of-happy-people.jpg", "https://349142-1097166-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/bigstock-Senior-citizens-on-holiday-22143350.jpg", "https://dotunroy.files.wordpress.com/2015/05/happy-people.jpg", "https://talkshop.ph/blog/wp-content/uploads/2014/07/Super-Happy-People-yay.jpg", "https://madeyousmileback.com/wp-content/uploads/2019/06/Joyful-Happy-People-1.jpg", "https://wallpapercave.com/wp/wp3719970.jpg", "https://i1.wp.com/www.qed.ng/wp-content/uploads/2016/03/women.png?fit=1068%2C580&ssl=1", "https://www.nicepng.com/png/detail/291-2916674_com-all-rights-reserved-happy-people-png.png", "https://www.theladders.com/wp-content/uploads/friends_190412.jpg", "https://www.nicepng.com/png/detail/227-2271622_happy-people-business-team-celebrating-png.png", "https://www.njlifehacks.com/wp-content/uploads/2017/02/happiness-is-contagious.png", "https://assomption-psa.org/wp-content/uploads/2020/12/stick-people-children-5293336_1280.png", "http://i.huffpost.com/gen/1569363/thumbs/o-TWO-PEOPLE-HAPPY-570.jpg?1", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBH762mE9Oy2DikB3AWYamgZYOQsBLK49-XA&usqp=CAU", "https://ggsc.s3.amazonaws.com/images/application_uploads/happy_people.jpg", "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-happy-quotes-1574799429.jpg", "https://lawyersfinancial.ca/sites/default/files/2019-08/AdobeStock_261983334%20web%20pano.jpg", "https://www.mghclaycenter.org/assets/brady-bunch-3.jpg", "https://www.science.org/cms/10.1126/science.1201060/asset/6a36ec8f-cbe5-4d73-9dc5-3a5fa46702d4/assets/graphic/331_542_f1.jpeg", "https://im.indiatimes.in/content/2020/Sep/happy-indians_5f66fd46d9f5b.jpg?w=725&h=379", "https://3k8pb633fck715pnk94793lq-wpengine.netdna-ssl.com/wp-content/uploads/happy-people-black-and-white-720x360.jpg", "http://www.thegreatcoursesdaily.com/wp-content/uploads/2020/10/header-16.jpg", "http://tamarathorpe.com/wp-content/uploads/2018/02/happygroup.jpg", "https://puravida-ibiza.com/wp-content/uploads/2019/04/15_0511_pura_vida-0045-900x600.jpg", "https://cdn-prod.medicalnewstoday.com/content/images/articles/321/321019/group-of-happy-people.jpg", "https://media-cldnry.s-nbcnews.com/image/upload/t_nbcnews-fp-1024-512,f_auto,q_auto:best/newscms/2021_07/2233721/171120-smile-stock-njs-333p.jpg", "https://image.shutterstock.com/image-photo/jumping-beach-summer-holidays-vacation-260nw-295432112.jpg", "https://heymondo.com/blog/wp-content/uploads/2021/03/shutterstock_371958268_compressed.jpg", "https://www.rightway.co.nz/hubfs/Group-of-young-stylish-happy-people-leaning-against-the-wall-and-talking-while-drinks-coffee-in-the-paper-cup.-944868364_1323x796.jpeg", "https://www.incimages.com/uploaded_files/image/1920x1080/getty_491752390_363270.jpg", "https://cms.qz.com/wp-content/uploads/2018/12/friends-2.jpg?quality=75&strip=all&w=1600&h=900&crop=1", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1md0a6P0D5gWhD4s82T0Azl92xm637KNdaQ&usqp=CAU", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvKkL7O2zO_AyUE_eNRXkcO-Pnzyxbe6weLg&usqp=CAU", "https://www.billboard.com/wp-content/uploads/media/little-big-town-acm-awards-show-2017-billboard-1548.jpg", "https://g.foolcdn.com/editorial/images/609661/20_04_27-people-sitting-in-a-movie-theater-_gettyimages-824033280.jpg", "https://www.foodallergy.org/sites/default/files/styles/1680x680/public/2022-01/shutterstock_1825416533.png?h=0cd817c1&itok=seE4rhTO", "https://halcyon.v3.imaginuitycenters.com/wp-content/uploads/sites/179/2020/04/Dining-Banner.jpg", "https://www.success.com/wp-content/uploads/legacy/sites/default/files/main/articles/upliftingquotesforacheerfulspirit.jpg", "https://www.aota.org/-/media/aota-images/membership/diverse-group-of-happy-people-networking-students.jpg?cx=0.57&cy=0.51&cw=650&ch=410&hash=2A0C0DFFDF85667F7FC02BA88E08875F", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7sM8SNQkIKYEt7X1aOm69-zxHsZz7gBIAsQ&usqp=CAU", "https://media.ed.edmunds-media.com/non-make/fe/fe_325171_1600.jpg", "https://s28126.pcdn.co/blogs/ask-experian/wp-content/uploads/How-Do-I-Refinance-a-Car-Loan_-900x579.jpg", "https://www.glcymca.org/sites/default/files/styles/prgf_gallery/public/2021-08/referral_promo_image.jpg?itok=-2PP9OBv", "https://static.wixstatic.com/media/887b1b_017fb3f7accc4f7bafbd87c08e2d6093~mv2.jpg/v1/fill/w_640,h_400,al_c,q_80,usm_0.66_1.00_0.01/887b1b_017fb3f7accc4f7bafbd87c08e2d6093~mv2.webp", "https://s3.amazonaws.com/images.teladoc.com/www/2019/site/ways-we-help/FamilyHeaderFinal.jpg", "https://content.solutran.com/CMS/0/980.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFVCKkBOxmoAL-mPCDis6OHZsAflJUe_A9Nw&usqp=CAU", "https://i0.wp.com/post.healthline.com/wp-content/uploads/2020/10/Friends_Car_Laughing_1296x728-header-1296x729.jpg?w=1155&h=2268", "https://media.istockphoto.com/photos/happy-people-dance-in-nightclub-party-concert-picture-id1201075450?k=20&m=1201075450&s=612x612&w=0&h=foDeDX9WxCC_h1sUAut6MOi47T1RPzqKqcg0lVumvyE=", "http://www.misfitentrepreneur.com/uploads/5/5/3/7/55370213/happy-2_orig.jpg", "http://sacompassion.net/wp-content/uploads/2016/07/happy.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUcKwKOZnuXxRfkhjONua4wwZvYiPUvQZ_qg&usqp=CAU", "https://happier1.imgix.net/img/blog/20150319-20150319-shutterstock_81215629.jpg?w=700", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKmifOVUK94NccNW_1Odo7-XRvyEtBTcB7kw&usqp=CAU", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6uMwvPz4qO_iRg2mZq1f2nVJKdWO_-NUVIA&usqp=CAU", "https://ninaamir.com/wp-content/uploads/2016/03/smile-1031894_1280-1024x512.jpg", "https://www.humnutrition.com/blog/wp-content/uploads/2016/06/7-Steps-to-Reach-Your-Happy-Weight-Wellnest-Feature.jpg", "https://cdn.cdnparenting.com/articles/2018/05/644737381-H.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTmLcWdv8HpbxNjmg7AWUF9yuqTHIROpHMeg&usqp=CAU", "https://st2.depositphotos.com/6498856/9557/v/600/depositphotos_95576242-stock-illustration-gold-happy-birthday.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQexW3B_CAjWYIxwYK6tIy_I7mvWN0C5AdDlg&usqp=CAU", "https://media.npr.org/assets/img/2022/01/20/twentysomethings_austin_season1_episode11_00_18_23_03_r_wide-4417e112f359f04afb22e28a52dea1b66773b56d-s400-c85.jpg", "https://d39l2hkdp2esp1.cloudfront.net/img/photo/170891/170891_00_2x.jpg", "https://www.mayoclinichealthsystem.org/-/media/national-files/images/hometown-health/2018/mature-man-laughing-during-meditation-class.jpg?h=370&w=660&la=en&hash=7B426C0D256F211689911FE30050F05D", "https://i2.wp.com/cms.babbel.news/wp-content/uploads/2019/07/CM_MagazineHeader_HappyBDay.png?resize=1200,630", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt1WVHbU5xGXm8JuvDppRlNs6-bcmZWvqA3g&usqp=CAU", "https://www.verywellmind.com/thmb/s77nZwlew3lgTvzt2UcHyik80k0=/400x250/filters:no_upscale():max_bytes(150000):strip_icc()/women-taking-pictures-together-on-beach-503849289-5b4a300fc9e77c0037200c31.jpg", "https://www.authentichappiness.sas.upenn.edu/sites/default/files/styles/slider/public/banner/seeinghappybanner.jpg?itok=vxLbc7z8", "https://akm-img-a-in.tosshub.com/indiatoday/images/bodyeditor/202005/Happy_birthday_0-x701.jpeg?77uq2K_4PkRAN8hIbXnMh81H1HdOnfNc", "https://static.toiimg.com/thumb/msid-65673335,imgsize-84303,width-400,height-300,resizemode-75/65673335.jpg", "https://akm-img-a-in.tosshub.com/indiatoday/images/bodyeditor/202005/Happy_Birthday_20-1200x732.jpg?cRQdZPAvHqu1u87N9D.xI1x0mR4Tbiee", "https://image.shutterstock.com/image-photo/happy-life-success-260nw-628904273.jpg", "https://media.istockphoto.com/photos/happy-puppy-dog-smiling-on-isolated-yellow-background-picture-id1267466399?b=1&k=20&m=1267466399&s=170667a&w=0&h=KvxHe6yir1ZBtHVp4hYLxDv-g3nkvmzhi-sn0D9w9VQ=", "https://media.istockphoto.com/photos/christmas-happy-holidays-backgrounds-still-life-from-above-overhead-picture-id1353417748?b=1&k=20&m=1353417748&s=170667a&w=0&h=IdUHwXntz7jTmv_mWJdRBxbRH2nydbHz8-t6L8WdEp4=", "https://gumlet.assettype.com/freepressjournal/2021-10/acc0db62-a218-4fb2-a390-6ccc5843cb6a/Untitled_design___2021_10_01T130644_956.png?format=webp&w=400&dpr=2.6", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8ep8g4hmNOhjLlwg4oSjotg7JqZSGiAUEdg&usqp=CAU", "https://lifejourney4two.com/wp-content/uploads/2018/07/Smile.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYCssKOT1w-s1ko9e-m2neCVa3R5MNfso0ng&usqp=CAU", "https://news.sap.com/wp-content/blogs.dir/1/files/286480_GettyImages-519272982_2600.jpg_F.jpg", "https://www.midvalleysouthkey.com/img/events/skmsmile2021/skm-smile-680.jpg", "https://static.onecms.io/wp-content/uploads/sites/38/2012/03/12225411/shutterstock_464199479_0.jpg", "https://assets.pokemon.com/assets/cms2/img/misc/pokemon-smile/pokemon-smile-169.jpg", "https://wallpaperaccess.com/full/1462227.jpg"];
+var postImages = ["https://s36370.pcdn.co/wp-content/uploads/2016/03/Happiness-Habits-10-Things-Happy-People-Do-Before-Bed.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmt97O123BLRU_5j-Y-LsqtXa34JlaweK1SQ&usqp=CAU", "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Happy_People.jpg/2560px-Happy_People.jpg", "https://seniorstoday.in/wp-content/uploads/2021/05/10-Habits-of-Happy-People-Seniors-Today.jpg", "https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Happy_People_A_Year_in_the_Taiga_poster.jpg/220px-Happy_People_A_Year_in_the_Taiga_poster.jpg", "https://www.incimages.com/uploaded_files/image/1920x1080/getty_505175324_2000131020009280246_158016.jpg", "https://www.verywellmind.com/thmb/t8ZyS-djTrEGWduR0_-Tyv_GI6s=/1333x1000/smart/filters:no_upscale()/how-to-find-happiness-4584480-01-226657a7a742468aa1c25502def90bfd.png", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuw3il3XYPs_YSoPmcVTf1qW_9SI2FuTP6qQ&usqp=CAU", "https://st.depositphotos.com/1043073/1218/i/600/depositphotos_12186995-stock-photo-woman-drop-leaves-in-autumn.jpg", "https://img.ehstoday.com/files/base/ebm/ehstoday/image/2021/02/Happy_Employee__Elnur_.602d3c9402634.png?auto=format&fit=crop&h=278&w=500&q=60", "https://images.myguide-cdn.com/melbourne/events/large/the-habits-of-happy-people-a-meditation-day-course-611337.jpg", "http://www.lovethispic.com/uploaded_images/54978-Happy-People.jpg", "https://www.njlifehacks.com/wp-content/uploads/2017/02/happiness-is-contagious.png", "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/sites/13278/images/8TyERSOPQUuatt7RFSug_The_Very_Happy_People_Study.png", "https://www.seekpng.com/png/detail/57-577495_happy-people-attract-other-successful-people-happy-people.png", "https://efe.com.vn/wp-content/uploads/2017/07/Successful-year.jpg", "https://www.boldsky.com/img/2016/01/8-happy-13-1452657517.jpg", "https://static1.bigstockphoto.com/2/0/9/large1500/9022006.jpg", "https://static.oprah.com/images/200512/omag/200512-omag-happy-600x411.jpg", "https://www.borgenmagazine.com/wp-content/uploads/2020/08/Poor-People-Are-Happier-1.jpg", "https://img2.thejournal.ie/article/978361/river?version=978455&width=1340", "https://hips.hearstapps.com/ame-prod-redonline-assets.s3.amazonaws.com/main/thumbs/17840/happy-health-and-self-redonline.co.uk.jpg?crop=1xw:0.7496251874062968xh;center,top&resize=480:*", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4C_BR3337JiFNf_kkpIgV2l-G_q80sWTMmA&usqp=CAU", "https://upload.wikimedia.org/wikipedia/en/9/9c/R_kelly_happy_people.jpg", "https://www.incimages.com/uploaded_files/image/1920x1080/colorful-balloons-1940x900_36130.jpg", "https://img.discogs.com/deSqujcblXCbQPJP9MDiX7CUkVA=/fit-in/600x537/filters:strip_icc():format(webp):mode_rgb():quality(90)/discogs-images/R-2409459-1508855092-6462.jpeg.jpg", "https://images.unsplash.com/photo-1569292567777-e5d61a759322?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80", "https://goodtimes.ca/wp-content/uploads/2020/08/4-1.jpg", "https://www.creativefabrica.com/wp-content/uploads/2019/08/Its-not-happy-people-who-are-thankful-its-thankful-people.jpg", "https://www.creativehealthyfamily.com/wp-content/uploads/2021/06/truly-happy-people-dont-post-on-social-media-fba.jpg", "https://www.coursecorrectioncoaching.com/wp-content/uploads/2017/07/How-to-Redefine-Yourself-for-Happiness-Title-Template.png", "https://images.newscientist.com/wp-content/uploads/2022/01/19105457/PRI_218919765.jpg", "https://wisdomquotes.com/wp-content/uploads/happiness-quotes-truly-happy-people-dont-need-to-show-others-that-they-are-maxime-lagace-wisdom-quotes.jpg", "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/newscms/2017_28/2069151/170711-better-work-motivation-ed-337p.jpg", "https://images.pexels.com/photos/3019836/pexels-photo-3019836.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", "https://therightmessages.com/wp-content/uploads/2018/10/Only-happy-people-understand-love.jpg", "https://www.birthdaywishes.expert/wp-content/uploads/2015/12/Happy-people-see-the-good-in-everything-and-everyone.-500x500.jpg?ezimgfmt=rs:402x402/rscb1/ng:webp/ngcb1", "https://news.climate.columbia.edu/wp-content/uploads/2015/04/Very_happy_Tibetan_Buddhist_Monk1.jpg", "https://pbs.twimg.com/media/FFhhD_1WYAQoYdR?format=jpg&name=4096x4096", "https://us.123rf.com/450wm/macrovector/macrovector1508/macrovector150800318/44389720-family-fun-set-with-happy-people-jumping-sitting-on-couch-riding-a-bicycle-flat-isolated-vector-illu.jpg?ver=6", "https://imgcdn.saxo.com/_9781935578246", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuC5xjvQhk7ZnXaplgX1uGG7_sTkPZ0JfsYA&usqp=CAU", "https://offroadingpro.com/wp-content/uploads/2021/02/happy-people-riding-atv-quad-bikes.jpg", "https://www.carteiradoestudante.com.br/blog/wp-content/uploads/2018/02/iStock-616015082.jpg", "https://everydaypower.com/wp-content/uploads/2018/09/happiness-quotes-2.jpg", "https://wisdomquotes.com/wp-content/uploads/relationship-quotes-the-secret-to-a-happy-relationship-is-two-happy-people-naval-ravikant-wisdom-quotes.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST2Ir7aky2eGNv7SY5tsupjIBvuPf0QbBgGQ&usqp=CAU", "https://images.unsplash.com/photo-1579047917338-a6a69144fe63?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8aGFwcHklMjBwZXJzb258ZW58MHx8MHx8&w=1000&q=80", "https://cdn.lifehack.org/wp-content/uploads/2013/08/smile.gif", "https://www.happierhuman.com/wp-content/uploads/2020/11/Why-Happiness-is-Important-more-creative.jpg", "https://hips.hearstapps.com/wdy.h-cdn.co/assets/16/14/womensday-quote1.jpg?crop=1xw:1.0xh;center,top&resize=480:*", "https://rapidpeaks.com/wp-content/uploads/2021/07/TN_SAPxManCity-Heroes_16-9.jpg", "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/1282643693/medium_image_1282643693.jpg", "https://image.scoopwhoop.com/q30/s4.scoopwhoop.com/anj/psycho/749836728.jpg", "https://pbs.twimg.com/media/FHIGQkqWQA0S_gf.jpg", "https://www.fccu.org/getmedia/b13887aa-8989-410a-a793-1f85ce506777/refer-a-friend.jpg?width=500&height=352&ext=.jpg", "https://miro.medium.com/max/1838/1*f6o1dT7F0Mk-Oi0-g08q2w.jpeg", "https://sc-cms.psu.edu/s3/files/styles/4_3_1000w/public/2022/01/Joice%20Kelly%20on%20Unsplash.jpg?h=51a72048&itok=tsSLYcIh", "https://statustown.com/wp-content/uploads/birthdaywishesimages/Birthday-Wishes-for-Boyfriend-1513.jpg", "http://asset-a.grid.id/crop/0x0:0x0/760x600/photo/cewekbangetfoto/original/14088_7-habits-of-happy-people.jpeg", "https://miro.medium.com/max/1400/1*iIdxLiKGHkZQ58eDRy-HHg.jpeg", "https://pbs.twimg.com/media/FFpZ5IIXsAEILr0.jpg", "http://gayaboutique.it/wp-content/uploads/2018/11/pigiama-happy-people-collezione-autunno-inverno-2018-pigiama-a-milano-per-tutta-la-famiglia-105.jpeg", "https://g.foolcdn.com/editorial/images/649328/gettyimages-487190592.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0mP_bkGSoFgW0qCl3e8D-9MTJINMz_Q7Q2Q&usqp=CAU", "https://cdn.lifehack.org/wp-content/uploads/2013/07/Keep-smiling-and-one-day-life-will-get-tired-of-updating-you..jpg", "https://dg.imgix.net/do-you-think-you-re-happy-jgdbfiey-en/landscape/do-you-think-you-re-happy-jgdbfiey-9bb0198eeccd0a3c3c13aed064e2e2b3.jpg?ts=1520525855&ixlib=rails-4.2.0&fit=crop&w=2000&h=1050", "https://i.ytimg.com/vi/qmMDQI4IQ4g/maxresdefault.jpg", "https://cdn.lifehack.org/wp-content/uploads/2014/11/Stay-Happy-All-The-Time.jpg", "https://assets.ltkcontent.com/images/90946/words-rhyme-with-happy_ad06ec9afc.jpg", "https://www.90daykorean.com/wp-content/uploads/2016/05/How-to-Say-Happy-in-Korean-Title.png", "https://i.scdn.co/image/ab67706f00000003fe0099a8dcd3054706ffc92f", "https://cf-images.us-east-1.prod.boltdns.net/v1/static/342952160001/c994eff7-29d1-477d-9609-af9373afdd81/7d45f74d-7948-4b96-a53d-f935a958dbef/640x382/match/image.jpg", "https://www.sunlife.ca/content/dam/sunlife/regional/canada/images/cxo/frl150-getty-1204274923-branded-feature-1200x600.jpg", "https://www.powerthesaurus.org/_images/terms/happy-synonyms.png", "https://content.api.news/v3/images/bin/8c6f66fd84e435e0cfe4f028f0d4c21f", "https://cdn.psychologytoday.com/sites/default/files/styles/article-inline-half/public/field_blog_entry_images/2018-04/tanzim-547047-unsplash_1.jpg?itok=dThcEAqX", "https://dobienews.scuc.txed.net/wp-content/uploads/2017/02/635897155843902854-397286477_Remember-to-be-happy.jpg", "https://psychprofessionals.com.au/wp-content/uploads/2015/05/images.jpeg", "https://www.livehappy.com/wp-content/uploads/2016/05/Happy-Couple.jpg", "https://www.happysoul.in/upload/bloglistingimage/1607682491Laughter-02.jpg", "https://images.squarespace-cdn.com/content/v1/59e51f9bf14aa199001d4943/1613581820793-P2MFZSO58AXH7XAXQBBX/am2_2225.jpg?format=750w", "https://happy.green/wp-content/uploads/2020/10/hearth-background.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9CIvDdGSRSNuv_Iwq9-1G-AAmHqukNT43lQ&usqp=CAU", "https://akm-img-a-in.tosshub.com/indiatoday/images/bodyeditor/202005/Happy_birthday_20-x733.jpeg?9s.JX3Cd7GVizHyF5VElvZFvf_wwZIIt", "https://media.istockphoto.com/photos/happy-smiling-africanamerican-child-girl-yellow-background-picture-id1168369629?k=20&m=1168369629&s=170667a&w=0&h=p8oRJ0sxoggv0ky00N6rhpJM8ld0j-1b0IuipQrTctA=", "https://www.newyearwiki.com/wp-content/uploads/Happy-New-Year-Funny-Quotes-1024x576.jpg", "https://www.homemade-gifts-made-easy.com/image-files/birthday-wishes-for-friend-donut-look-year-older-800x800.png", "https://m.media-amazon.com/images/I/61Y6II9TmHL._SS500_.jpg", "https://cdn.happybirthdaywisher.com/images/a-birthday-wish-from-my-heart-to-yours-love-mn.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDubQ_0w4o6YvRWf5-jbAt6sQq7ABMGET9UQ&usqp=CAU", "https://images.unsplash.com/photo-1546074177-31bfa593f731?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aGFwcHklMjBuZXclMjB5ZWFyfGVufDB8fDB8fA%3D%3D&w=1000&q=80", "https://media.istockphoto.com/photos/christmas-background-with-gingerbread-man-holding-a-happy-holidays-picture-id1353283099?b=1&k=20&m=1353283099&s=170667a&w=0&h=KeFYA4kNV_NH_UUbBM_ouXqfSFb0CyO2ZWzmgREdHHI=", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6QjacuTiNawihLrEsMi1repORAj9aMEb06Q&usqp=CAU", "https://www.dentaldelaware.com/wp-content/uploads/2021/02/girl-smile.jpg", "https://www.365give.ca/wp-content/uploads/2011/02/day-140-365give-1024x513.jpg", "https://images.newindianexpress.com/uploads/user/imagelibrary/2022/1/1/w1200X800/The_Power.jpg", "https://i1.sndcdn.com/artworks-000118951193-k98ycc-t500x500.jpg", "https://images.indianexpress.com/2019/03/baby-smile.jpg", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8K4vWFLEPC2XPQ_obK7e6BRCJ04l-3YSFSg&usqp=CAU", "https://imgix.bustle.com/uploads/image/2018/3/2/720edf30-6277-4794-a5c9-969405f4884c-fotolia_85562602_subscription_monthly_m.jpg?w=540&fit=crop&crop=faces&auto=format%2Ccompress"];
 
 /***/ }),
 
@@ -5112,7 +6729,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "addFileToUser": () => (/* binding */ addFileToUser),
 /* harmony export */   "fetchOtherUser": () => (/* binding */ fetchOtherUser),
-/* harmony export */   "fetchUsers": () => (/* binding */ fetchUsers)
+/* harmony export */   "fetchUsers": () => (/* binding */ fetchUsers),
+/* harmony export */   "searchUsers": () => (/* binding */ searchUsers)
 /* harmony export */ });
 var addFileToUser = function addFileToUser(formData) {
   return $.ajax({
@@ -5133,6 +6751,13 @@ var fetchUsers = function fetchUsers() {
   return $.ajax({
     method: 'GET',
     url: '/api/users'
+  });
+};
+var searchUsers = function searchUsers(query) {
+  return $.ajax({
+    method: 'GET',
+    url: '/api/users',
+    data: query
   });
 };
 

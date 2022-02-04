@@ -27,7 +27,17 @@ export default class ProfilePics extends React.Component {
 
     handleCancelChangeBackground() {
         this.event.target.value = '';
-        $('#profileBackgroundIMG').attr("src", `${this.props.users[this.userId].coverPhotoUrl}`);
+        let tempPicNum = 0;
+        if (this.props.currentUser.id > 100) {
+            tempPicNum = this.props.currentUser.id - 100
+        } else {
+            tempPicNum = this.props.currentUser.id
+        }
+        if (this.props.currentUser.id < 195) {
+            $('#profileBackgroundIMG').attr("src", `${this.props.backImages[tempPicNum]}`);
+        } else {
+            $('#profileBackgroundIMG').attr("src", `${this.props.users[this.userId].coverPhotoUrl}`);
+        }
         $('#backgroundPicChoiceBar').removeClass('backgroundPicChoiceBarShow');
     }
 
@@ -42,6 +52,21 @@ export default class ProfilePics extends React.Component {
     }
 
     getProfilePhoto() {
+
+        if (!this.props.users[this.userId]) return
+
+        let tempPicNum = 0;
+        if (this.userId > 100) {
+            tempPicNum = this.userId - 100
+        } else {
+            tempPicNum = this.userId
+        }
+        if (this.userId < 195) {
+            return this.props.users[this.userId].photoUrl ? 
+            <div className='profileImage' style={{backgroundImage: `url(${this.props.users[this.userId].photoUrl})`}}  ></div>
+            : <div className='profileImage' style={{backgroundImage: `url(${this.props.profImages[tempPicNum]})`}}  ></div>
+        }
+
         return this.props.users[this.userId] ?
         this.props.users[this.userId].photoUrl ? 
         <div className='profileImage' style={{backgroundImage: `url(${this.props.users[this.userId].photoUrl})`}}  ></div>
@@ -50,6 +75,21 @@ export default class ProfilePics extends React.Component {
     }
 
     getBackgroundPhoto() {
+        if (!this.props.users[this.userId]) return
+
+        let tempPicNum = 0;
+        if (this.userId > 100) {
+            tempPicNum = this.userId - 100
+        } else {
+            tempPicNum = this.userId
+        }
+        if (this.userId < 195) {
+            return this.props.users[this.userId] ?
+            this.props.users[this.userId].coverPhotoUrl ? 
+            <img id="profileBackgroundIMG" src={this.props.users[this.userId].coverPhotoUrl}  className='backgroundPic' />
+            : <img id="profileBackgroundIMG" src={this.props.backImages[tempPicNum]}  className='backgroundPic' />        
+            : <img id="profileBackgroundIMG" src={this.props.backImages[tempPicNum]}  className='backgroundPic' />}
+
         return this.props.users[this.userId] ?
         this.props.users[this.userId].coverPhotoUrl ? 
         <img id="profileBackgroundIMG" src={this.props.users[this.userId].coverPhotoUrl}  className='backgroundPic' />
@@ -93,6 +133,10 @@ export default class ProfilePics extends React.Component {
         this.props.createFriend(friendship)
     }
 
+    deleteFriendRequest() {
+
+    }
+
     getFriendshipStatus() {
         if (!this.props.currentUser.friendsRequested) { return }
         let div
@@ -100,9 +144,15 @@ export default class ProfilePics extends React.Component {
         div = this.props.currentUser.friendsRequested.map((request)=>{
             if(request.friendId == this.userId) {
                 requested = true;
-                return <div className='addStoryButton' >
+                return request.status === 'pending' ? 
+                <div key={request.id} onClick={()=>{this.props.deleteFriend(request.id)}} className='addStoryButton' >
                     <img className="addStoryIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/33EToHSZ94f.png" alt="" height="16" width="16"/>
-                    I sent request!
+                    Cancel Request
+                </div>
+                :
+                <div key={request.id} className='addStoryButton' >
+                    <img className="addStoryIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/33EToHSZ94f.png" alt="" height="16" width="16"/>
+                    Friends
                 </div>
             }
         })
@@ -110,9 +160,15 @@ export default class ProfilePics extends React.Component {
         div = this.props.currentUser.friendRequests.map((request)=>{
             if(request.userId == this.userId) {
                 requested = true;
-                return <div className='addStoryButton' >
+                return request.status === 'pending' ? 
+                <div onClick={()=>this.props.updateFriend({friend: { id: request.id, status: 'accepted' }})} className='addStoryButton' >
                     <img className="addStoryIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/33EToHSZ94f.png" alt="" height="16" width="16"/>
-                    They sent request!
+                    Accept Friend
+                </div>
+                :
+                <div className='addStoryButton' >
+                    <img className="addStoryIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/33EToHSZ94f.png" alt="" height="16" width="16"/>
+                    Friends
                 </div>
             }
         })
@@ -148,6 +204,50 @@ export default class ProfilePics extends React.Component {
                 </div>
             </div>
     }
+
+
+    getNumberOfFriends() {
+        if (!this.props.users[this.userId]) return
+        if (!this.props.users[this.userId].friendsRequested) return
+        let count = 0;
+        this.props.users[this.userId].friendsRequested.map((request)=>{
+            if (request.status === "accepted") { count += 1 }
+        })
+        this.props.users[this.userId].friendRequests.map((request)=>{
+            if (request.status === "accepted") { count += 1 }
+        })
+        return `${count} Friends`
+    }
+
+    getFriends() {
+        if (!this.props.users[this.userId]) return
+        if (!this.props.users[this.userId].friendsRequested) return
+        let friendArray = [];
+        this.props.users[this.userId].friendsRequested.map((request)=>{
+            if (request.status === "accepted") { friendArray.push(request.friendId) }
+        })
+        this.props.users[this.userId].friendRequests.map((request)=>{
+            if (request.status === "accepted") { friendArray.push(request.userId) }
+        })
+        return friendArray
+    }
+
+    getFriendPic(number) {
+        if (!this.props.users[this.userId]) return
+        if (!this.props.users[this.userId].friendsRequested) return
+        let friendArray = this.getFriends();
+        let tempPicNum = 0;
+        if (friendArray[number] > 100) {
+            tempPicNum = friendArray[number] - 100
+        } else {
+            tempPicNum = friendArray[number]
+        }
+        return <div onClick={()=>this.props.ownProps.history.push(`/users/${friendArray[number]}`)} className='friendPicDiv' >
+                    <img src={this.props.profImages[tempPicNum]} className='friendPic' />
+                </div>
+    }
+
+
 
     render() {
         console.log(this.props)
@@ -186,34 +286,18 @@ export default class ProfilePics extends React.Component {
                     <div className='name' >{this.getUserName()}</div>
                 </div>
                 <div className='profilePicMaxHeight' >
-                    <div className='friendsNumber' >617 Friends</div>
+                    <div className='friendsNumber' >{this.getNumberOfFriends()}</div>
                 </div>
                 <div className='profilePicMaxHeight' >
                     <div className='friendsImages' >
-                        <div className='friendPicDiv' >
-                            <img src={window.friend1URL} className='friendPic' />
-                        </div>
-                        <div className='friendPicDiv' >
-                            <img src={window.friend2URL}  className='friendPic' />
-                        </div>
-                        <div className='friendPicDiv' >
-                            <img src={window.friend3URL}  className='friendPic' />
-                        </div>
-                        <div className='friendPicDiv' >
-                            <img src={window.friend4URL}  className='friendPic' />
-                        </div>
-                        <div className='friendPicDiv' >
-                            <img src={window.friend5URL}  className='friendPic' />
-                        </div>
-                        <div className='friendPicDiv' >
-                            <img src={window.friend6URL}  className='friendPic' />
-                        </div>
-                        <div className='friendPicDiv' >
-                            <img src={window.friend7URL}  className='friendPic' />
-                        </div>
-                        <div className='friendPicDiv' >
-                            <img src={window.friend8URL}  className='friendPic' />
-                        </div>
+                        {this.getFriendPic(1)}
+                        {this.getFriendPic(2)}
+                        {this.getFriendPic(3)}
+                        {this.getFriendPic(4)}
+                        {this.getFriendPic(5)}
+                        {this.getFriendPic(6)}
+                        {this.getFriendPic(7)}
+                        {this.getFriendPic(8)}
                     </div>
                 </div>
                 <div className='profilePicMaxHeight2' >

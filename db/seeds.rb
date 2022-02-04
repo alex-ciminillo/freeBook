@@ -6,25 +6,90 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+95.times do 
 
-User.create([{ first_name: 'Steph', last_name: 'Symillian', username: 'steph@gmail.com', password: 'password1!', birthday: 'Sept 7 1992', gender: 'female' }, 
-             { first_name: 'Sam', last_name: 'Symillian', username: 'sam@gmail.com', password: 'password1!', birthday: 'Dec 14 1993', gender: 'male' },
-             { first_name: 'Bina', last_name: 'Elitine', username: 'bina@gmail.com', password: 'password1!', birthday: 'Jan 12 1988', gender: 'female' },
-             { first_name: 'Kent', last_name: 'Elitine', username: 'kent@gmail.com', password: 'password1!', birthday: 'Apr 23 1985', gender: 'male' },
-             { first_name: 'Anton', last_name: 'Texan', username: 'anton@gmail.com', password: 'password1!', birthday: 'Nov 5 1997', gender: 'male' },
-             { first_name: 'Annika', last_name: 'Miles', username: 'annika@gmail.com', password: 'password1!', birthday: 'Feb 1 1999', gender: 'female' },
-             { first_name: 'Dave', last_name: 'Mitchell', username: 'dave@gmail.com', password: 'password1!', birthday: 'Mar 30 1989', gender: 'male' },
-             { first_name: 'Ben', last_name: 'Timiton', username: 'ben@gmail.com', password: 'password1!', birthday: 'May 29 1983', gender: 'male' },
-             { first_name: 'Mander', last_name: 'Tiberon', username: 'mander@gmail.com', password: 'password1!', birthday: 'June 18 2001', gender: 'male' },
-             { first_name: 'Valerie', last_name: 'Hill', username: 'valerie@gmail.com', password: 'password1!', birthday: 'July 20 2002', gender: 'female' }])
+    first = Faker::Name.male_first_name
+    last = Faker::Name.last_name
+    user = User.create([{ first_name: first, last_name: last, username: "#{first}#{last}@gmail.com", password: 'Password1!', birthday: Faker::Date.birthday(min_age: 18, max_age: 65), gender: 'male' }])
 
+end
 
+95.times do 
 
+    first = Faker::Name.female_first_name
+    last = Faker::Name.last_name
+    user = User.create([{ first_name: first, last_name: last, username: "#{first}#{last}@gmail.com", password: 'Password1!', birthday: Faker::Date.birthday(min_age: 18, max_age: 65), gender: 'female' }])
 
+end
 
-
-
-
+User.create([{ first_name: 'Alexzander', last_name: 'Ciminillo', username: 'ciminilloa@findlay.edu', password: 'Password1!', birthday: Faker::Date.birthday(min_age: 18, max_age: 65), gender: 'male' }])
 
 
+250.times do 
+    author = rand(198)
+    post = Post.create([{body: Faker::Quote.famous_last_words, author_id: author}])
+end
 
+250.times do 
+    author = rand(198)
+    post = Post.create([{body: Faker::Quote.yoda, author_id: author}])
+end
+
+250.times do 
+    author = rand(198)
+    post = Post.create([{body: Faker::Quote.most_interesting_man_in_the_world, author_id: author}])
+end
+
+250.times do 
+    author = rand(198)
+    post = Post.create([{body: Faker::Quote.matz, author_id: author}])
+end
+
+250.times do 
+    author = rand(198)
+    post = Post.create([{body: Faker::Quote.jack_handey, author_id: author}])
+end
+
+500.times do 
+    author = rand(198)
+    post = rand(1255)
+    comment = Comment.create([{body: Faker::Quote.most_interesting_man_in_the_world, author_id: author, post_id: post}])
+end
+
+500.times do 
+    author = rand(198)
+    post = rand(1255)
+    comment = Comment.create([{body: Faker::Quote.yoda, author_id: author, post_id: post}])
+end
+
+500.times do 
+    author = rand(198)
+    post = rand(1255)
+    comment = Comment.create([{body: Faker::Quote.robin, author_id: author, post_id: post}])
+end
+
+500.times do 
+    author = rand(198)
+    post = rand(1255)
+    comment = Comment.create([{body: Faker::Quote.singular_siegler, author_id: author, post_id: post}])
+end
+
+
+15000.times do 
+    user = rand(198)
+    post = rand(1255)
+    like = Like.create([{user_id: user, post_id: post}])
+end
+
+
+4000.times do 
+    user1 = rand(198)
+    user2 = rand(198)
+    friend = Friend.create([{user_id: user1, friend_id: user2, status: 'accepted'}])
+end
+
+1500.times do 
+    user1 = rand(198)
+    user2 = rand(198)
+    friend = Friend.create([{user_id: user1, friend_id: user2, status: 'pending'}])
+end

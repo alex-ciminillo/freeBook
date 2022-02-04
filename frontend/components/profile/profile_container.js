@@ -6,7 +6,9 @@ import { showModal } from '../../actions/modal_actions';
 import { fetchPosts } from '../../actions/post_actions'
 import { fetchComments, createComment } from '../../actions/comment_actions';
 import { getLikes, addLike, deleteLike } from '../../actions/like_actions'
-import { fetchFriends, createFriend } from '../../actions/friend_actions'
+import { fetchFriends, createFriend, deleteFriend, updateFriend } from '../../actions/friend_actions'
+import { profImages, backImages, postImages } from '../../util/image_util'
+import { searchUsers } from './../../actions/user_actions'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -16,7 +18,10 @@ const mapStateToProps = (state, ownProps) => {
     comments: state.entities.comments,
     likes: state.entities.likes,
     friends: state.entities.friends,
-    ownProps
+    ownProps,
+    profImages,
+    backImages,
+    postImages
   };
 };
 
@@ -32,7 +37,10 @@ const mapDispatchToProps = (dispatch) => {
     addLike: (like)=> dispatch(addLike(like)),
     deleteLike: (id)=> dispatch(deleteLike(id)),
     fetchFriends: ()=> dispatch(fetchFriends()),
-    createFriend: (friend) => dispatch(createFriend(friend))
+    createFriend: (friend) => dispatch(createFriend(friend)),
+    deleteFriend: (id) => dispatch(deleteFriend(id)),
+    updateFriend: (friend) => dispatch(updateFriend(friend)),
+    searchUsers: (query) => dispatch(searchUsers(query))
    }
 };
 

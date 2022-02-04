@@ -1,8 +1,13 @@
 class Api::UsersController < ApplicationController
 
   def index
-    @users = User.all
+    if params[:query].present? 
+      @users = User.name_search(params[:query])
+    else 
+      @users = User.all
+    end
     render :index
+    
   end
 
   def create
@@ -34,7 +39,7 @@ class Api::UsersController < ApplicationController
     
   private
   def user_params
-      params.require(:user).permit(:profpic, :coverpic, :username, :password, :first_name, :last_name, :birthday, :gender)
+      params.require(:user).permit(:profpic, :coverpic, :username, :password, :first_name, :last_name, :birthday, :gender, :query)
   end
     
 end

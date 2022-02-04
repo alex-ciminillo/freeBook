@@ -335,7 +335,7 @@
     z-index: 6;
     font-size: 18px;
     color: #65676B;
-    font-family: 'SFPRODISPLAYREGULAR';
+    font-family: Arial, Helvetica, sans-serif;
     margin-bottom: -74px;
 }
 
@@ -352,6 +352,7 @@
 }
 
 .friendPicDiv {
+    cursor: pointer;
     width: 36px;
     height: 36px;
     background-color: rgb(255, 255, 255);
@@ -360,6 +361,10 @@
     overflow: hidden;
     display: flex;
     
+}
+
+.friendPicDiv:hover {
+    filter: brightness(70%)
 }
 
 .friendPicDiv:first-child {

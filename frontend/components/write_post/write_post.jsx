@@ -50,6 +50,11 @@ export default class WritePost extends React.Component {
     }
 
     getPhoto() {
+        if (this.state.photoUrl) {
+            $('#writePostContainer').addClass('writePostWithPic')
+            $('#writePostMiddle').addClass('writePostMiddleWithPic')
+            $('#writePostTextBox').addClass('writePostTextBoxWithPic')
+        }
         return this.state.photoUrl ? 
         <div className='writePostPhotoDiv' >
             <div style={{backgroundImage: `url(${this.state.photoUrl})`}} ></div>
@@ -60,7 +65,7 @@ export default class WritePost extends React.Component {
     render() {
         return (
             <div className='writePostBackgroundFade' >
-                <div className='writePostContainer' >
+                <div id='writePostContainer' className='writePostContainer' >
                     <div className='writePostTop' >
                         <div>
                             <div>Create Post</div>
@@ -71,7 +76,7 @@ export default class WritePost extends React.Component {
                         </div>
                     </div>
                     <div className='writePostGrayLine' ></div>
-                    <div className='writePostMiddle' >
+                    <div id='writePostMiddle' className='writePostMiddle' >
                         <div className='writePostPicAndName' >
                             <div className='writePostProfilePicDiv' >
                                 <div style={{backgroundImage: `url(${this.props.currentUser.photoUrl})`}} ></div>
@@ -85,7 +90,7 @@ export default class WritePost extends React.Component {
                             </div>
                             
                         </div>
-                        <div className='writePostTextBox' >
+                        <div id='writePostTextBox' className='writePostTextBox' >
                             <textarea onChange={this.update('body')} placeholder="What's on your mind?" ></textarea>
                         </div>
                         {this.getPhoto()}

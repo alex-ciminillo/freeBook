@@ -14,9 +14,10 @@ class Api::FriendsController < ApplicationController
     end
 
     def update
-        @friend = Friend.find(param[:id])
+        @friend = Friend.find(params[:id])
 
         if @friend.update(friend_params)
+            @users = User.all
             render 'api/users/index'
         else
             render json: @friend.errors.full_messages, status: 422
@@ -27,6 +28,7 @@ class Api::FriendsController < ApplicationController
         @friend = Friend.find_by(id: params[:id])
 
         if @friend.destroy
+            @users = User.all
             render 'api/users/index'
         else
             render json: @friend.errors.full_messages, status: 422

@@ -41,6 +41,277 @@
     font-style: normal;
 }
 
+#greetingMiddlePostsContainerTop {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profileBottomFullContainer3 {
+    position: fixed;
+    top: 55px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.profileBottomFullContainer4 {
+    position: fixed;
+    top: 55px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.profileBottomRightSideOptionsContainer {
+    margin-top: 15px;
+    width: 365px;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    
+}
+
+.profileBottomLeftSideOptionsContainer {
+    margin-top: 15px;
+    width: 365px;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    
+}
+
+.profileBottomLeftSideOptionsLine {
+    height: 1px;
+    align-self: center;
+    width: 100%;
+    margin-left: 35px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.171);
+}
+
+.profileBottomLeftSideOptionsLine2 {
+    height: 1px;
+    align-self: flex-start;
+    width: 95%;
+    margin-left: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.171);
+}
+
+.friendRequestsContainer {
+    align-self: center;
+    width: 95%;
+    border-radius: 7px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 1px 2px #00000033;
+    overflow: hidden;
+    margin-bottom: 15px;
+    margin-left: -5px;
+}
+
+.friendRequestsContainer > div:first-child {
+    margin-top: 15px;
+    margin-left: 15px;
+    align-self: flex-start;
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.friendRequestsContainer > div:first-child > div:first-child {
+    align-self: center;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+    margin-bottom: 2px;
+}
+
+.friendRequestsContainer > div:first-child > div:last-child {
+    align-self: center;
+    padding-left: 10px;
+    color: rgba(0, 0, 0, 0.904);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .8rem;
+    font-weight: bold;
+}
+
+.friendRequestsFriendPic {
+    margin-top: 5px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.friendRequestsFriendPic > div:first-child {
+    margin-left: 15px;
+    align-self: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    overflow: hidden;
+}
+
+.friendRequestsFriendPic > div:first-child > div {
+    width: 60px;
+    height: 60px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.friendRequestsFriendPic > div:last-child {
+    margin-left: 10px;
+    align-self: center;
+    color: rgba(0, 0, 0, 0.877);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .8rem;
+    font-weight: bold;
+
+}
+
+.friendRequestsConfirmButtons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    margin-left: -20px;
+    margin-bottom: 30px;
+}
+
+.friendRequestsConfirmButtons > div:first-child {
+    width: 98px;
+    height: 36px;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    background-color: #1b74e4;
+    border-radius: 7px;
+    margin-right: 10px;
+}
+
+.friendRequestsConfirmButtons > div:first-child > div {
+    
+    align-self: center;
+    color: white;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .9rem;
+}
+
+.friendRequestsConfirmButtons > div:last-child {
+    width: 98px;
+    height: 36px;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    background-color: #e4e6eb;
+    border-radius: 7px;
+}
+
+.friendRequestsConfirmButtons > div:last-child > div {
+    
+    align-self: center;
+    color: black;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .9rem;
+
+    
+}
+
+.profileBottomLeftSideOptions {
+   
+    margin-top: 5px;
+    cursor: pointer;
+    width: 355px;
+    height: 52px;
+    margin-left: 10px;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.friendRequestsContainer {
+
+}
+
+.profileBottomLeftSideOptions:hover {
+    background-color: rgba(0, 0, 0, 0.085);
+}
+
+
+
+.profileBottomLeftSideOptions > div:first-child {
+    margin-left: 5px;
+    align-self: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 100%;
+    overflow: hidden;
+}
+
+.profileBottomLeftSideOptions > div:first-child > div {
+    width: 36px;
+    height: 36px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.profileBottomLeftSideOptions > div:last-child {
+    align-self: center;
+    display: flex;
+    justify-content: center;
+}
+
+.profileBottomLeftSideOptions > div:last-child > div {
+    align-self: center;
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    padding-left: 10px;
+}
+
+
+
+
+.profileBottomFullContainer2 {
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+}
+
+.profileBottomInnerContainer2 {
+    margin-left: 65px;
+    padding-top: 15px;
+    height: 100%;
+    width: 900px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.profileBottomRightSide2 {
+    margin-top: 60px;
+    height: 100%;
+    width: 512.5px;
+    border-radius: inherit;
+}
 
 
 body {

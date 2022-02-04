@@ -27,7 +27,6 @@ export const receiveAllFriends = (friends) => ({
 });
 
 export const createFriend = (friend) => dispatch => {
-    console.log(friend)
     return APIUtil.createFriend(friend)
         .then((friend) => dispatch(receiveAllUsers(friend)))
 }
@@ -36,12 +35,12 @@ export const createFriend = (friend) => dispatch => {
 
 export const deleteFriend = (friendId) => dispatch => (
     APIUtil.deleteFriend(friendId)
-        .then(() => dispatch(removeFriend(friendId)))
+        .then((friends) => dispatch(receiveAllUsers(friends)))
 )
 
 export const updateFriend = (friend) => dispatch => (
     APIUtil.updateFriend(friend)
-        .then((friend) => dispatch(addFriend(friend)))
+        .then((friend) => dispatch(receiveAllUsers(friend)))
 )
 
 export const fetchFriends = () => dispatch => (

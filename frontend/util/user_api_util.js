@@ -25,6 +25,14 @@ export const fetchUsers = () => (
     })
 );
 
+export const searchUsers = (query) => (
+    $.ajax({
+        method: 'GET',
+        url: '/api/users',
+        data: query
+    })
+);
+
 
 
 

@@ -68,6 +68,7 @@
 }
 
 .profileBottomIntroButton {
+    cursor: pointer;
     width: 100%;
     height: 36px;
     display: flex;
@@ -77,11 +78,31 @@
     margin-top: 25px;
 }
 
+#introFIcon {
+    transform: scale(0.6, 0.6);
+    margin-right: -5px;
+    fill: black;
+}
+
+#introLinkedIn {
+    margin-left: -60px;
+}
+
+#introJavascript {
+    margin-right: -2px;
+}
+
 .profileBottomIntroButton:hover {
     background-color: #bcbdc2;
 }
 
-.profileBottomIntroButton > div {
+.profileBottomIntroButton > svg {
+    margin-right: 5px;
+    align-self: center;
+    margin-bottom: 3px;
+}
+
+.profileBottomIntroButton > div:last-child {
     align-self: center;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 600;
@@ -272,9 +293,14 @@
 }
 
 .profileBottomFriends {
+    cursor: pointer;
     border-radius: inherit;
     width: 31%;
     height: 100%;
+}
+
+.profileBottomFriends:hover {
+    filter: brightness(80%);
 }
 
 .profileBottomFriends > div:first-child {
@@ -528,6 +554,7 @@
 }
 
 .profileBottomMakePostButton {
+    cursor: pointer;
     border-radius: 7px;
     height: 100%;
     width: 33.3%;
@@ -767,10 +794,15 @@
 }
 
 .profileBottomPostsTopNameAndDate > div:first-child {
+    cursor: pointer;
     font-family: Arial, Helvetica, sans-serif;
     color: #050505;
     font-size: .9rem;
     font-weight: bold;
+}
+
+.profileBottomPostsTopNameAndDate > div:first-child:hover {
+    text-decoration: underline;
 }
 
 .profileBottomPostsTopNameAndDate > div:last-child {
@@ -836,12 +868,15 @@
 }
 
 .profileBottomPostsOptions > div > div {
+    cursor:pointer;
     width: 49%;
     height: 99%;
     align-self: center;
     display: flex;
     justify-content: center;
+    border-radius: 7px;
 }
+
 
 .profileBottomPostsOptions > div > div > div {
     align-self: center;
@@ -869,7 +904,7 @@
     display: flex;
     justify-content: space-between;
     margin-top: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .profileBottomPostsBottomDiv > div:first-child {
@@ -926,7 +961,7 @@
 }
 
 .profileBottomPostsComment > div:first-child {
-    width: 32px;
+    min-width: 32px;
     height: 32px;
     overflow: hidden;
     border-radius: 100%;
@@ -952,10 +987,15 @@
 
 
 .profileBottomPostsComment > div:last-child > div:first-child {
+    cursor: pointer;
     font-family: Arial, Helvetica, sans-serif;
     font-size: .7rem;
     color: black;
     font-weight: bold;
+}
+
+.profileBottomPostsComment > div:last-child > div:first-child:hover {
+    text-decoration: underline;
 }
 
 .profileBottomPostsComment > div:last-child > div:last-child {
