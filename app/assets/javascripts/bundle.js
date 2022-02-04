@@ -877,6 +877,7 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
     value: function countLikes() {
       var _this6 = this;
 
+      if (!this.props.currentUser) return;
       Object.keys(this.props.likes).map(function (key) {
         if (_this6.props.likes[key].userId == _this6.props.currentUser.id) {
           $("#likes".concat(_this6.props.likes[key].postId)).addClass('filterLike');
@@ -1276,8 +1277,11 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var _this13 = this;
 
-      this.userId = this.props.currentUser.id;
-      this.user = this.props.currentUser;
+      if (this.props.currentUser) {
+        this.userId = this.props.currentUser.id;
+        this.user = this.props.currentUser;
+      }
+
       console.log(this.props);
       return this.props.currentUser ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "greetingMiddlePostsContainerTop",

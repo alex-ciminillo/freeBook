@@ -152,6 +152,7 @@ export default class Greeting extends React.Component {
     }
 
     countLikes() {
+        if (!this.props.currentUser) return
         Object.keys(this.props.likes).map((key) => {
             if (this.props.likes[key].userId == this.props.currentUser.id) {
                 $(`#likes${this.props.likes[key].postId}`).addClass('filterLike')
@@ -454,8 +455,10 @@ export default class Greeting extends React.Component {
     
 
     render() {
-        this.userId = this.props.currentUser.id
-        this.user = this.props.currentUser
+        if (this.props.currentUser) {
+            this.userId = this.props.currentUser.id
+            this.user = this.props.currentUser
+        }
         console.log(this.props)
         return this.props.currentUser ? (
             <div id='greetingMiddlePostsContainerTop' onClick={()=>this.clearSearchBar()} >
