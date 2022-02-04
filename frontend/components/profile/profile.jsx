@@ -59,9 +59,11 @@ export default class Profile extends React.Component {
             return  <div className='profileBottomPostsMiddleHeight' >
                         <div style={{backgroundImage: `url(${this.props.posts[key].photoUrl})`}} ></div>
                     </div>
-        } else if (key < 954 && key % 4 == 0) {
+        } else if (key < 1219 && key % 4 == 0) {
             let picNum = 0
-            if (key > 800) {
+            if (key > 1200) {
+                picNum = (key - 1200)/4 
+            } else if (key > 800) {
                 picNum = (key - 800)/4  
             } else if (key > 400) {
                 picNum = (key - 400)/4
@@ -272,9 +274,11 @@ export default class Profile extends React.Component {
     getPhotosArray() {
         let photosArray = [];
         Object.keys(this.props.posts).map((key) => {
-            if (key < 954 && key % 4 == 0) {
+            if (key < 1219 && key % 4 == 0) {
                 let picNum = 0
-                if (key > 800) {
+                if (key > 1200) {
+                    picNum = (key - 1200)/4 
+                } else if (key > 800) {
                     picNum = (key - 800)/4  
                 } else if (key > 400) {
                     picNum = (key - 400)/4

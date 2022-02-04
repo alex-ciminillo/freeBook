@@ -21,7 +21,7 @@ export default class Greeting extends React.Component {
     }
 
     componentDidUpdate() {
-        this.countLikes()
+        this.countLikes();
     }
 
     getProfilePhoto() {
@@ -32,7 +32,7 @@ export default class Greeting extends React.Component {
         } else {
             tempPicNum = this.props.currentUser.id
         }
-        if (this.props.currentUser.id < 195) {
+        if (this.props.currentUser.id < 192) {
             return this.props.users[this.props.currentUser.id].photoUrl ? 
             <div className='profileBottomMakePostTopPic' style={{backgroundImage: `url(${this.props.users[this.props.currentUser.id].photoUrl})`}}  ></div>
             : <div className='profileBottomMakePostTopPic' style={{backgroundImage: `url(${this.props.profImages[tempPicNum]})`}}  ></div>
@@ -58,9 +58,11 @@ export default class Greeting extends React.Component {
             return  <div className='profileBottomPostsMiddleHeight' >
                         <div style={{backgroundImage: `url(${this.props.posts[key].photoUrl})`}} ></div>
                     </div>
-        } else if (key < 954 && key % 4 == 0) {
+        } else if (key < 1219 && key % 4 == 0) {
             let picNum = 0
-            if (key > 800) {
+            if (key > 1200) {
+                picNum = (key - 1200)/4 
+            } else if (key > 800) {
                 picNum = (key - 800)/4  
             } else if (key > 400) {
                 picNum = (key - 400)/4
@@ -113,7 +115,7 @@ export default class Greeting extends React.Component {
         } else {
             tempPicNum = this.props.comments[ckey].authorId
         }
-        if (this.props.comments[ckey].authorId < 195) {
+        if (this.props.comments[ckey].authorId < 192) {
             return this.props.users[this.props.comments[ckey].authorId].photoUrl ?
         <div style={{backgroundImage: `url(${this.props.users[this.props.comments[ckey].authorId].photoUrl})` }} ></div>
         : 
@@ -206,7 +208,7 @@ export default class Greeting extends React.Component {
         } else {
             tempPicNum = this.props.currentUser.id
         }
-        if (this.props.currentUser.id < 195) {
+        if (this.props.currentUser.id < 192) {
             return this.props.currentUser.photoUrl ?
         <div style={{backgroundImage: `url(${this.props.currentUser.photoUrl})`}} ></div>
         :
@@ -229,7 +231,7 @@ export default class Greeting extends React.Component {
         } else {
             tempPicNum = this.props.posts[key].authorId
         }
-        if (this.props.posts[key].authorId < 195) {
+        if (this.props.posts[key].authorId < 192) {
             
             return this.props.users[this.props.posts[key].authorId].photoUrl ? 
             <div style={{backgroundImage: `url(${this.props.users[this.props.posts[key].authorId].photoUrl})`}} ></div>
@@ -272,9 +274,11 @@ export default class Greeting extends React.Component {
     getPhotosArray() {
         let photosArray = [];
         Object.keys(this.props.posts).map((key) => {
-            if (key < 954 && key % 4 == 0) {
+            if (key < 1219 && key % 4 == 0) {
                 let picNum = 0
-                if (key > 800) {
+                if (key > 1200) {
+                    picNum = (key - 1200)/4 
+                } else if (key > 800) {
                     picNum = (key - 800)/4  
                 } else if (key > 400) {
                     picNum = (key - 400)/4
@@ -387,21 +391,21 @@ export default class Greeting extends React.Component {
     }
 
     getFriends() {
-        if (!this.props.users[this.userId]) return
-        if (!this.props.users[this.userId].friendsRequested) return
+        if (!this.props.currentUser) return
+        if (!this.props.currentUser.friendsRequested) return
         let friendArray = [];
-        this.props.users[this.userId].friendsRequested.map((request)=>{
+        this.props.currentUser.friendsRequested.map((request)=>{
             if (request.status === "accepted") { friendArray.push(request.friendId) }
         })
-        this.props.users[this.userId].friendRequests.map((request)=>{
+        this.props.currentUser.friendRequests.map((request)=>{
             if (request.status === "accepted") { friendArray.push(request.userId) }
         })
         return friendArray
     }
 
     getFriendPic(number) {
-        if (!this.props.users[this.userId]) return
-        if (!this.props.users[this.userId].friendsRequested) return
+        if (!this.props.currentUser) return
+        if (!this.props.currentUser.friendsRequested) return
         let friendArray = this.getFriends();
         let tempPicNum = 0;
         if (friendArray[number] > 100) {
@@ -409,22 +413,44 @@ export default class Greeting extends React.Component {
         } else {
             tempPicNum = friendArray[number]
         }
-        return <div onClick={()=>this.props.history.push(`/users/${friendArray[number]}`)} className='profileBottomFriends'>
+        if (!this.props.users[friendArray[number]]) {
+            return 
+        }
+        return <div className='friendsPicAndNameList' onClick={()=>this.props.history.push(`/users/${friendArray[number]}`)} >
+                    <div>
                     <div style={{backgroundImage: `url(${this.props.profImages[tempPicNum]})`}} ></div>
+                    </div>
                     <div>{this.props.users[friendArray[number]].firstName} {this.props.users[friendArray[number]].lastName}</div>
+                
                 </div>
     }
 
     getFriendRequestName() {
         if (!this.props.currentUser.friendRequests) return
         if (this.props.currentUser.friendRequests.length < 1) return
-        console.log(this.props.users[this.props.currentUser.friendRequests[0].userId].firstName)
+        if (!this.props.users[this.props.currentUser.friendRequests[0].userId]) return
         return <div>{this.props.users[this.props.currentUser.friendRequests[0].userId].firstName} {this.props.users[this.props.currentUser.friendRequests[0].userId].lastName}</div>
     }
 
-    getFriendRequestPic() {
-        if (!this.props.currentUser.friendRequests) return
+    getMyFriendList(){
+        let numArray = [1,2,3,4,5,6,7,8,9,10,11]
+        return numArray.map((key)=>{
+            return this.getFriendPic(key)
+        })
+    }
 
+    getFriendNumber() {
+        return this.props.currentUser.friendRequests[0].userId
+    }
+
+    acceptFriendRequest() {
+        this.props.updateFriend({friend: {id: this.props.currentUser.friendRequests[0].id, status: 'accepted'}})
+    }
+
+    getFriendRequestPic() {
+        if (!this.props.currentUser) { return }
+        if (!this.props.currentUser.friendRequests) { return }
+            
         let tempProfPic = 0;
         if (this.props.currentUser.friendRequests.length < 1) return
         if (this.props.currentUser.friendRequests[0].userId > 100) {
@@ -433,6 +459,9 @@ export default class Greeting extends React.Component {
             tempProfPic = this.props.currentUser.friendRequests[0].userId
         }
         return <div style={{backgroundImage: `url(${this.props.profImages[tempProfPic]})`}} ></div>
+    
+
+        
     }
 
     getNumberOfFriends() {
@@ -615,18 +644,22 @@ export default class Greeting extends React.Component {
                                 <div style={{backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/yk/r/851ZgTnFYJI.png)'}} ></div>
                                 <div>Friend requests</div>
                             </div>
-                            <div className='friendRequestsFriendPic' >
+                            <div onClick={()=>this.props.history.push(`/users/${this.getFriendNumber()}`)} className='friendRequestsFriendPic' >
                                     <div>
                                         {this.getFriendRequestPic()}
                                     </div>
                                     {this.getFriendRequestName()}
                             </div>
                             <div className='friendRequestsConfirmButtons' >
-                                <div><div>Confirm</div></div>
+                                <div onClick={()=>this.acceptFriendRequest()} ><div>Confirm</div></div>
                                 <div><div>Delete</div></div>
                             </div>
                         </div>
                         <div className='profileBottomLeftSideOptionsLine2' ></div>
+                        <div className='profileBottomLeftSideFriends' >
+                            <div>Friends</div>
+                            {this.getMyFriendList()}
+                        </div>
                     </div>
                 </div>
             </div>

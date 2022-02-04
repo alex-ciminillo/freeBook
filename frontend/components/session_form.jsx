@@ -116,17 +116,17 @@ export default class SessionForm extends React.Component {
         setTimeout(function fillInput() {
             if (usernameInput.value !== username) { 
                 usernameInput.value = getDemoEmail(username, usernameInput);
-                setTimeout(fillInput, 150) 
+                setTimeout(fillInput, 100) 
             } else { 
                 passwordInput.value = getDemoPassword(password, passwordInput); 
                 if (passwordInput.value !== password) { 
-                    setTimeout(fillInput, 150) 
+                    setTimeout(fillInput, 100) 
                 } else {
                     const user = Object.assign({}, {username: username, password: password});
                     processForm(user);
                 }
             }
-        }, 150)
+        }, 100)
         
     }
 

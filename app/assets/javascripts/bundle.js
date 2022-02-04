@@ -694,7 +694,7 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
         tempPicNum = this.props.currentUser.id;
       }
 
-      if (this.props.currentUser.id < 195) {
+      if (this.props.currentUser.id < 192) {
         return this.props.users[this.props.currentUser.id].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
           className: "profileBottomMakePostTopPic",
           style: {
@@ -752,10 +752,12 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
             backgroundImage: "url(".concat(this.props.posts[key].photoUrl, ")")
           }
         }));
-      } else if (key < 954 && key % 4 == 0) {
+      } else if (key < 1219 && key % 4 == 0) {
         var picNum = 0;
 
-        if (key > 800) {
+        if (key > 1200) {
+          picNum = (key - 1200) / 4;
+        } else if (key > 800) {
           picNum = (key - 800) / 4;
         } else if (key > 400) {
           picNum = (key - 400) / 4;
@@ -824,7 +826,7 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
         tempPicNum = this.props.comments[ckey].authorId;
       }
 
-      if (this.props.comments[ckey].authorId < 195) {
+      if (this.props.comments[ckey].authorId < 192) {
         return this.props.users[this.props.comments[ckey].authorId].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
           style: {
             backgroundImage: "url(".concat(this.props.users[this.props.comments[ckey].authorId].photoUrl, ")")
@@ -946,7 +948,7 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
         tempPicNum = this.props.currentUser.id;
       }
 
-      if (this.props.currentUser.id < 195) {
+      if (this.props.currentUser.id < 192) {
         return this.props.currentUser.photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
           style: {
             backgroundImage: "url(".concat(this.props.currentUser.photoUrl, ")")
@@ -981,7 +983,7 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
         tempPicNum = this.props.posts[key].authorId;
       }
 
-      if (this.props.posts[key].authorId < 195) {
+      if (this.props.posts[key].authorId < 192) {
         return this.props.users[this.props.posts[key].authorId].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
           style: {
             backgroundImage: "url(".concat(this.props.users[this.props.posts[key].authorId].photoUrl, ")")
@@ -1042,10 +1044,12 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
 
       var photosArray = [];
       Object.keys(this.props.posts).map(function (key) {
-        if (key < 954 && key % 4 == 0) {
+        if (key < 1219 && key % 4 == 0) {
           var picNum = 0;
 
-          if (key > 800) {
+          if (key > 1200) {
+            picNum = (key - 1200) / 4;
+          } else if (key > 800) {
             picNum = (key - 800) / 4;
           } else if (key > 400) {
             picNum = (key - 400) / 4;
@@ -1177,15 +1181,15 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getFriends",
     value: function getFriends() {
-      if (!this.props.users[this.userId]) return;
-      if (!this.props.users[this.userId].friendsRequested) return;
+      if (!this.props.currentUser) return;
+      if (!this.props.currentUser.friendsRequested) return;
       var friendArray = [];
-      this.props.users[this.userId].friendsRequested.map(function (request) {
+      this.props.currentUser.friendsRequested.map(function (request) {
         if (request.status === "accepted") {
           friendArray.push(request.friendId);
         }
       });
-      this.props.users[this.userId].friendRequests.map(function (request) {
+      this.props.currentUser.friendRequests.map(function (request) {
         if (request.status === "accepted") {
           friendArray.push(request.userId);
         }
@@ -1197,8 +1201,8 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
     value: function getFriendPic(number) {
       var _this12 = this;
 
-      if (!this.props.users[this.userId]) return;
-      if (!this.props.users[this.userId].friendsRequested) return;
+      if (!this.props.currentUser) return;
+      if (!this.props.currentUser.friendsRequested) return;
       var friendArray = this.getFriends();
       var tempPicNum = 0;
 
@@ -1208,29 +1212,65 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
         tempPicNum = friendArray[number];
       }
 
+      if (!this.props.users[friendArray[number]]) {
+        return;
+      }
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "friendsPicAndNameList",
         onClick: function onClick() {
           return _this12.props.history.push("/users/".concat(friendArray[number]));
-        },
-        className: "profileBottomFriends"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        }
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         style: {
           backgroundImage: "url(".concat(this.props.profImages[tempPicNum], ")")
         }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.users[friendArray[number]].firstName, " ", this.props.users[friendArray[number]].lastName));
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.users[friendArray[number]].firstName, " ", this.props.users[friendArray[number]].lastName));
     }
   }, {
     key: "getFriendRequestName",
     value: function getFriendRequestName() {
       if (!this.props.currentUser.friendRequests) return;
       if (this.props.currentUser.friendRequests.length < 1) return;
-      console.log(this.props.users[this.props.currentUser.friendRequests[0].userId].firstName);
+      if (!this.props.users[this.props.currentUser.friendRequests[0].userId]) return;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.users[this.props.currentUser.friendRequests[0].userId].firstName, " ", this.props.users[this.props.currentUser.friendRequests[0].userId].lastName);
+    }
+  }, {
+    key: "getMyFriendList",
+    value: function getMyFriendList() {
+      var _this13 = this;
+
+      var numArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+      return numArray.map(function (key) {
+        return _this13.getFriendPic(key);
+      });
+    }
+  }, {
+    key: "getFriendNumber",
+    value: function getFriendNumber() {
+      return this.props.currentUser.friendRequests[0].userId;
+    }
+  }, {
+    key: "acceptFriendRequest",
+    value: function acceptFriendRequest() {
+      this.props.updateFriend({
+        friend: {
+          id: this.props.currentUser.friendRequests[0].id,
+          status: 'accepted'
+        }
+      });
     }
   }, {
     key: "getFriendRequestPic",
     value: function getFriendRequestPic() {
-      if (!this.props.currentUser.friendRequests) return;
+      if (!this.props.currentUser) {
+        return;
+      }
+
+      if (!this.props.currentUser.friendRequests) {
+        return;
+      }
+
       var tempProfPic = 0;
       if (this.props.currentUser.friendRequests.length < 1) return;
 
@@ -1275,7 +1315,7 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this13 = this;
+      var _this14 = this;
 
       if (this.props.currentUser) {
         this.userId = this.props.currentUser.id;
@@ -1286,7 +1326,7 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
       return this.props.currentUser ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "greetingMiddlePostsContainerTop",
         onClick: function onClick() {
-          return _this13.clearSearchBar();
+          return _this14.clearSearchBar();
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFullContainer3"
@@ -1494,12 +1534,21 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
           backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/yk/r/851ZgTnFYJI.png)'
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Friend requests")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.history.push("/users/".concat(_this14.getFriendNumber()));
+        },
         className: "friendRequestsFriendPic"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getFriendRequestPic()), this.getFriendRequestName()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "friendRequestsConfirmButtons"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Confirm")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Delete")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.acceptFriendRequest();
+        }
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Confirm")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Delete")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomLeftSideOptionsLine2"
-      })))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "profileBottomLeftSideFriends"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Friends"), this.getMyFriendList())))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "greetingPageContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "greetingContainer"
@@ -2835,10 +2884,12 @@ var Profile = /*#__PURE__*/function (_React$Component) {
             backgroundImage: "url(".concat(this.props.posts[key].photoUrl, ")")
           }
         }));
-      } else if (key < 954 && key % 4 == 0) {
+      } else if (key < 1219 && key % 4 == 0) {
         var picNum = 0;
 
-        if (key > 800) {
+        if (key > 1200) {
+          picNum = (key - 1200) / 4;
+        } else if (key > 800) {
           picNum = (key - 800) / 4;
         } else if (key > 400) {
           picNum = (key - 400) / 4;
@@ -3124,10 +3175,12 @@ var Profile = /*#__PURE__*/function (_React$Component) {
 
       var photosArray = [];
       Object.keys(this.props.posts).map(function (key) {
-        if (key < 954 && key % 4 == 0) {
+        if (key < 1219 && key % 4 == 0) {
           var picNum = 0;
 
-          if (key > 800) {
+          if (key > 1200) {
+            picNum = (key - 1200) / 4;
+          } else if (key > 800) {
             picNum = (key - 800) / 4;
           } else if (key > 400) {
             picNum = (key - 400) / 4;
@@ -4718,12 +4771,12 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
       setTimeout(function fillInput() {
         if (usernameInput.value !== username) {
           usernameInput.value = getDemoEmail(username, usernameInput);
-          setTimeout(fillInput, 150);
+          setTimeout(fillInput, 100);
         } else {
           passwordInput.value = getDemoPassword(password, passwordInput);
 
           if (passwordInput.value !== password) {
-            setTimeout(fillInput, 150);
+            setTimeout(fillInput, 100);
           } else {
             var user = Object.assign({}, {
               username: username,
@@ -4732,7 +4785,7 @@ var SessionForm = /*#__PURE__*/function (_React$Component) {
             processForm(user);
           }
         }
-      }, 150);
+      }, 100);
     }
   }, {
     key: "renderErrors",
