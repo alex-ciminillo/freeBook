@@ -32,7 +32,7 @@ export default class Greeting extends React.Component {
         } else {
             tempPicNum = this.props.currentUser.id
         }
-        if (this.props.currentUser.id < 192) {
+        if (this.props.currentUser.id < 52) {
             return this.props.users[this.props.currentUser.id].photoUrl ? 
             <div className='profileBottomMakePostTopPic' style={{backgroundImage: `url(${this.props.users[this.props.currentUser.id].photoUrl})`}}  ></div>
             : <div className='profileBottomMakePostTopPic' style={{backgroundImage: `url(${this.props.profImages[tempPicNum]})`}}  ></div>
@@ -115,7 +115,7 @@ export default class Greeting extends React.Component {
         } else {
             tempPicNum = this.props.comments[ckey].authorId
         }
-        if (this.props.comments[ckey].authorId < 192) {
+        if (this.props.comments[ckey].authorId < 52) {
             return this.props.users[this.props.comments[ckey].authorId].photoUrl ?
         <div style={{backgroundImage: `url(${this.props.users[this.props.comments[ckey].authorId].photoUrl})` }} ></div>
         : 
@@ -208,7 +208,7 @@ export default class Greeting extends React.Component {
         } else {
             tempPicNum = this.props.currentUser.id
         }
-        if (this.props.currentUser.id < 192) {
+        if (this.props.currentUser.id < 52) {
             return this.props.currentUser.photoUrl ?
         <div style={{backgroundImage: `url(${this.props.currentUser.photoUrl})`}} ></div>
         :
@@ -231,7 +231,7 @@ export default class Greeting extends React.Component {
         } else {
             tempPicNum = this.props.posts[key].authorId
         }
-        if (this.props.posts[key].authorId < 192) {
+        if (this.props.posts[key].authorId < 52) {
             
             return this.props.users[this.props.posts[key].authorId].photoUrl ? 
             <div style={{backgroundImage: `url(${this.props.users[this.props.posts[key].authorId].photoUrl})`}} ></div>

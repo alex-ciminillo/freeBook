@@ -33,7 +33,7 @@ export default class ProfilePics extends React.Component {
         } else {
             tempPicNum = this.props.currentUser.id
         }
-        if (this.props.currentUser.id < 195) {
+        if (this.props.currentUser.id < 52) {
             $('#profileBackgroundIMG').attr("src", `${this.props.backImages[tempPicNum]}`);
         } else {
             $('#profileBackgroundIMG').attr("src", `${this.props.users[this.userId].coverPhotoUrl}`);
@@ -61,7 +61,7 @@ export default class ProfilePics extends React.Component {
         } else {
             tempPicNum = this.userId
         }
-        if (this.userId < 195) {
+        if (this.userId < 52) {
             return this.props.users[this.userId].photoUrl ? 
             <div className='profileImage' style={{backgroundImage: `url(${this.props.users[this.userId].photoUrl})`}}  ></div>
             : <div className='profileImage' style={{backgroundImage: `url(${this.props.profImages[tempPicNum]})`}}  ></div>
@@ -83,7 +83,7 @@ export default class ProfilePics extends React.Component {
         } else {
             tempPicNum = this.userId
         }
-        if (this.userId < 195) {
+        if (this.userId < 52) {
             return this.props.users[this.userId] ?
             this.props.users[this.userId].coverPhotoUrl ? 
             <img id="profileBackgroundIMG" src={this.props.users[this.userId].coverPhotoUrl}  className='backgroundPic' />
