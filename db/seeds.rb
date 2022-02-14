@@ -26,70 +26,70 @@ User.create([{ first_name: 'Alexzander', last_name: 'Ciminillo', username: 'cimi
 
 
 50.times do 
-    author = rand(51)
+    author = rand(52)
     post = Post.create([{body: Faker::Quote.famous_last_words, author_id: author}])
 end
 
 50.times do 
-    author = rand(51)
+    author = rand(52)
     post = Post.create([{body: Faker::Quote.yoda, author_id: author}])
 end
 
 50.times do 
-    author = rand(51)
+    author = rand(52)
     post = Post.create([{body: Faker::Quote.most_interesting_man_in_the_world, author_id: author}])
 end
 
 50.times do 
-    author = rand(51)
+    author = rand(52)
     post = Post.create([{body: Faker::Quote.matz, author_id: author}])
 end
 
 50.times do 
-    author = rand(51)
+    author = rand(52)
     post = Post.create([{body: Faker::Quote.jack_handey, author_id: author}])
 end
 
 100.times do 
-    author = rand(51)
+    author = rand(52)
     post = rand(250)
     comment = Comment.create([{body: Faker::Quote.most_interesting_man_in_the_world, author_id: author, post_id: post}])
 end
 
 100.times do 
-    author = rand(51)
+    author = rand(52)
     post = rand(250)
     comment = Comment.create([{body: Faker::Quote.yoda, author_id: author, post_id: post}])
 end
 
 100.times do 
-    author = rand(51)
+    author = rand(52)
     post = rand(250)
     comment = Comment.create([{body: Faker::Quote.robin, author_id: author, post_id: post}])
 end
 
 100.times do 
-    author = rand(51)
+    author = rand(52)
     post = rand(250)
     comment = Comment.create([{body: Faker::Quote.singular_siegler, author_id: author, post_id: post}])
 end
 
 
 4000.times do 
-    user = rand(51)
+    user = rand(52)
     post = rand(250)
     like = Like.create([{user_id: user, post_id: post}])
 end
 
 
-2000.times do 
-    user1 = rand(51)
-    user2 = rand(51)
+4000.times do 
+    user1 = rand(52)
+    user2 = rand(52)
     friend = Friend.create([{user_id: user1, friend_id: user2, status: 'accepted'}])
 end
 
 1000.times do 
-    user1 = rand(51)
-    user2 = rand(51)
+    user1 = rand(52)
+    user2 = rand(52)
     friend = Friend.create([{user_id: user1, friend_id: user2, status: 'pending'}])
 end
