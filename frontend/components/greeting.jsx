@@ -12,7 +12,7 @@ export default class Greeting extends React.Component {
     }
 
     componentDidMount() {
-        this.props.hideModal();
+        
         this.props.fetchUsers();
         this.props.fetchComments();
         this.props.fetchPosts();
@@ -21,8 +21,45 @@ export default class Greeting extends React.Component {
     }
 
     componentDidUpdate() {
+        this.props.hideModal();
         this.countLikes();
     }
+
+
+
+    getAllFriendsSideBar() {
+
+        if (this.props.currentUser.friendRequests.length < 1) {
+            return null
+        } else {
+            return <div className='profileBottomFullContainer4' >
+            <div className='profileBottomRightSideOptionsContainer'>
+                <div className='friendRequestsContainer' >
+                    <div>
+                        <div style={{backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/yk/r/851ZgTnFYJI.png)'}} ></div>
+                        <div>Friend requests</div>
+                    </div>
+                    <div onClick={()=>this.props.history.push(`/users/${this.getFriendNumber()}`)} className='friendRequestsFriendPic' >
+                            <div>
+                                {this.getFriendRequestPic()}
+                            </div>
+                            {this.getFriendRequestName()}
+                    </div>
+                    <div className='friendRequestsConfirmButtons' >
+                        <div onClick={()=>this.acceptFriendRequest()} ><div>Confirm</div></div>
+                        <div><div>Delete</div></div>
+                    </div>
+                </div>
+                <div className='profileBottomLeftSideOptionsLine2' ></div>
+                <div className='profileBottomLeftSideFriends' >
+                    <div>Friends</div>
+                    {this.getMyFriendList()}
+                </div>
+            </div>
+        </div>
+        }
+    }
+
 
     getProfilePhoto() {
         if (!this.props.users[this.userId]) return
@@ -637,31 +674,7 @@ export default class Greeting extends React.Component {
                         </div>
                         </div>
                 </div>
-                <div className='profileBottomFullContainer4' >
-                    <div className='profileBottomRightSideOptionsContainer'>
-                        <div className='friendRequestsContainer' >
-                            <div>
-                                <div style={{backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/yk/r/851ZgTnFYJI.png)'}} ></div>
-                                <div>Friend requests</div>
-                            </div>
-                            <div onClick={()=>this.props.history.push(`/users/${this.getFriendNumber()}`)} className='friendRequestsFriendPic' >
-                                    <div>
-                                        {this.getFriendRequestPic()}
-                                    </div>
-                                    {this.getFriendRequestName()}
-                            </div>
-                            <div className='friendRequestsConfirmButtons' >
-                                <div onClick={()=>this.acceptFriendRequest()} ><div>Confirm</div></div>
-                                <div><div>Delete</div></div>
-                            </div>
-                        </div>
-                        <div className='profileBottomLeftSideOptionsLine2' ></div>
-                        <div className='profileBottomLeftSideFriends' >
-                            <div>Friends</div>
-                            {this.getMyFriendList()}
-                        </div>
-                    </div>
-                </div>
+                {this.getAllFriendsSideBar()}
             </div>
         ) : (
             <div className='greetingPageContainer' >

@@ -411,6 +411,7 @@ export default class Profile extends React.Component {
         } else {
             tempPicNum = friendArray[number]
         }
+        if (!this.props.users[friendArray[number]]) return null
         return <div onClick={()=>this.props.history.push(`/users/${friendArray[number]}`)} className='profileBottomFriends'>
                     <div style={{backgroundImage: `url(${this.props.profImages[tempPicNum]})`}} ></div>
                     <div>{this.props.users[friendArray[number]].firstName} {this.props.users[friendArray[number]].lastName}</div>
