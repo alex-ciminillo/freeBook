@@ -70,8 +70,8 @@ export default class ProfilePics extends React.Component {
         return this.props.users[this.userId] ?
         this.props.users[this.userId].photoUrl ? 
         <div className='profileImage' style={{backgroundImage: `url(${this.props.users[this.userId].photoUrl})`}}  ></div>
-        : <div className='profileImage' style={{backgroundImage: `url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)`}}  ></div>
-        : <div className='profileImage' style={{backgroundImage: `url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)`}}  ></div>
+        : <div className='profileImage' style={{backgroundImage: `url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)`}}  ></div>
+        : <div className='profileImage' style={{backgroundImage: `url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)`}}  ></div>
     }
 
     getBackgroundPhoto() {
@@ -184,11 +184,11 @@ export default class ProfilePics extends React.Component {
         return value ?
             <div className='addStoryAndEditButtonsDiv'>
                 <div className='addStoryEditProfileDiv' >
-                    <div className='addStoryButton' >
+                    <div onClick={()=>this.props.showModal({modal: 'writePost'})}  className='addStoryButton' >
                     <img className="addStoryIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yp/r/bR3-u2s-xwG.png" alt="" height="16" width="16"/>
                         Add to story
                     </div>
-                    <div className='editProfileButton' >
+                    <div onClick={()=>this.props.showModal({modal: 'comingSoon', feature: 'Editing'})} className='editProfileButton' >
                     <img className="editProfileIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yW/r/OR6SzrfoMFg.png" alt="" height="16" width="16" /> 
                         Edit profile
                     </div>
@@ -197,7 +197,7 @@ export default class ProfilePics extends React.Component {
             <div className='addStoryAndEditButtonsDiv'>
                 <div className='addStoryEditProfileDiv' >
                     {this.getFriendshipStatus()}
-                    <div className='editProfileButton' >
+                    <div onClick={()=>this.props.showModal({modal: 'comingSoon', feature: 'Messenger'})} className='editProfileButton' >
                     <img className="editProfileIcon" src="https://static.xx.fbcdn.net/rsrc.php/v3/yI/r/YIxFfN5ecJG.png" alt="" height="16" width="16" /> 
                         Message
                     </div>
@@ -233,6 +233,7 @@ export default class ProfilePics extends React.Component {
     }
 
     getFriendPic(number) {
+        
         if (!this.props.users[this.userId]) return
         if (!this.props.users[this.userId].friendsRequested) return
         let friendArray = this.getFriends();
@@ -242,6 +243,7 @@ export default class ProfilePics extends React.Component {
         } else {
             tempPicNum = friendArray[number]
         }
+        if (!friendArray[number]) return
         return <div onClick={()=>this.props.ownProps.history.push(`/users/${friendArray[number]}`)} className='friendPicDiv' >
                     <img src={this.props.profImages[tempPicNum]} className='friendPic' />
                 </div>
@@ -250,7 +252,6 @@ export default class ProfilePics extends React.Component {
 
 
     render() {
-        console.log(this.props)
         this.userId = this.props.ownProps.match.params.id
         this.user = this.props.users[this.userId]
         return (

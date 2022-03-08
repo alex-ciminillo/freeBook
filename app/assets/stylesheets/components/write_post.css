@@ -25,6 +25,19 @@
     box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.2),0 2px 4px 0 rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
+.comingSoonContainer {
+    border-radius: 7px;
+    align-self: center;
+    width: 500px;
+    height: 230px;
+    background-color: white;
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.2),0 2px 4px 0 rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+
+}
+
 .writePostWithPic {
     height: 655px;
 }

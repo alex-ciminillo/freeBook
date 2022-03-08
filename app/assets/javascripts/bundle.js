@@ -259,10 +259,12 @@ var SHOW_MODAL = 'SHOW_MODAL';
 var HIDE_MODAL = 'HIDE_MODAL';
 var showModal = function showModal(_ref) {
   var modal = _ref.modal,
-      file = _ref.file;
+      file = _ref.file,
+      feature = _ref.feature;
   return {
     type: SHOW_MODAL,
     modal: modal,
+    feature: feature,
     file: file
   };
 };
@@ -609,6 +611,95 @@ var App = function App() {
 
 /***/ }),
 
+/***/ "./frontend/components/coming_soon/coming_soon.jsx":
+/*!*********************************************************!*\
+  !*** ./frontend/components/coming_soon/coming_soon.jsx ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ComingSoon)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var ComingSoon = /*#__PURE__*/function (_React$Component) {
+  _inherits(ComingSoon, _React$Component);
+
+  var _super = _createSuper(ComingSoon);
+
+  function ComingSoon(props) {
+    _classCallCheck(this, ComingSoon);
+
+    return _super.call(this, props);
+  }
+
+  _createClass(ComingSoon, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostBackgroundFade"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        id: "writePostContainer",
+        className: "comingSoonContainer"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostTop"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.info.feature, " Coming Soon!")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: this.props.hideModal.bind(this)
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
+        "data-visualcompletion": "css-img",
+        className: "hu5pjgll m6k467ps",
+        style: {
+          backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/ya/r/RZkmtYdsqev.png)',
+          backgroundPosition: '-84px -67px',
+          backgroundSize: 'auto',
+          width: '20px',
+          height: '20px',
+          backgroundRepeat: 'no-repeat',
+          display: 'inline-block'
+        }
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "writePostGrayLine"
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        className: "comingSoonMiddle"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "The ", this.props.info.feature, " feature is not ready yet!"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "For a list of all available features, please visit ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("a", {
+        href: "https://github.com/alex-ciminillo/freeBook",
+        target: "_blank"
+      }, "Freebook's Github")))));
+    }
+  }]);
+
+  return ComingSoon;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+
+
+
+/***/ }),
+
 /***/ "./frontend/components/greeting.jsx":
 /*!******************************************!*\
   !*** ./frontend/components/greeting.jsx ***!
@@ -685,8 +776,6 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getAllFriendsSideBar",
     value: function getAllFriendsSideBar() {
-      var _this2 = this;
-
       if (this.props.currentUser.friendRequests.length < 1) {
         return null;
       } else {
@@ -695,25 +784,6 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
           className: "profileBottomRightSideOptionsContainer"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-          className: "friendRequestsContainer"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-          style: {
-            backgroundImage: 'url(https://static.xx.fbcdn.net/rsrc.php/v3/yk/r/851ZgTnFYJI.png)'
-          }
-        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Friend requests")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-          onClick: function onClick() {
-            return _this2.props.history.push("/users/".concat(_this2.getFriendNumber()));
-          },
-          className: "friendRequestsFriendPic"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getFriendRequestPic()), this.getFriendRequestName()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-          className: "friendRequestsConfirmButtons"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-          onClick: function onClick() {
-            return _this2.acceptFriendRequest();
-          }
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Confirm")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Delete")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-          className: "profileBottomLeftSideOptionsLine2"
-        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
           className: "profileBottomLeftSideFriends"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Friends"), this.getMyFriendList())));
       }
@@ -752,12 +822,12 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
       }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomMakePostTopPic",
         style: {
-          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+          backgroundImage: "url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)"
         }
       }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomMakePostTopPic",
         style: {
-          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+          backgroundImage: "url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)"
         }
       });
     }
@@ -771,10 +841,10 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "update",
     value: function update(field) {
-      var _this3 = this;
+      var _this2 = this;
 
       return function (e) {
-        _this3.setState(_defineProperty({}, field, e.currentTarget.value));
+        _this2.setState(_defineProperty({}, field, e.currentTarget.value));
       };
     }
   }, {
@@ -832,12 +902,12 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "checkComments",
     value: function checkComments(key) {
-      var _this4 = this;
+      var _this3 = this;
 
       this.hasComments = false;
       Object.keys(this.props.comments).map(function (ckey) {
-        if (_this4.props.comments[ckey].postId == key) {
-          _this4.hasComments = true;
+        if (_this3.props.comments[ckey].postId == key) {
+          _this3.hasComments = true;
         }
       });
 
@@ -887,7 +957,7 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "checkCommentInfo",
     value: function checkCommentInfo(ckey) {
-      var _this5 = this;
+      var _this4 = this;
 
       if (!this.props.users[this.props.comments[ckey].authorId]) return;
       return this.props.users ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -895,41 +965,41 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
         className: "profileBottomPostsComment"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getCommentPic(ckey)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         onClick: function onClick() {
-          return _this5.props.history.push("/users/".concat(_this5.props.comments[ckey].authorId));
+          return _this4.props.history.push("/users/".concat(_this4.props.comments[ckey].authorId));
         }
       }, this.props.users[this.props.comments[ckey].authorId].firstName, " ", this.props.users[this.props.comments[ckey].authorId].lastName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.comments[ckey].body))) : null;
     }
   }, {
     key: "getComments",
     value: function getComments(key) {
-      var _this6 = this;
+      var _this5 = this;
 
       return Object.keys(this.props.comments).map(function (ckey) {
-        if (_this6.props.comments[ckey].postId == key) {
-          return _this6.checkCommentInfo(ckey);
+        if (_this5.props.comments[ckey].postId == key) {
+          return _this5.checkCommentInfo(ckey);
         }
       });
     }
   }, {
     key: "countLikes",
     value: function countLikes() {
-      var _this7 = this;
+      var _this6 = this;
 
       if (!this.props.currentUser) return;
       Object.keys(this.props.likes).map(function (key) {
-        if (_this7.props.likes[key].userId == _this7.props.currentUser.id) {
-          $("#likes".concat(_this7.props.likes[key].postId)).addClass('filterLike');
+        if (_this6.props.likes[key].userId == _this6.props.currentUser.id) {
+          $("#likes".concat(_this6.props.likes[key].postId)).addClass('filterLike');
         }
       });
     }
   }, {
     key: "getNumberOfLikes",
     value: function getNumberOfLikes(postId) {
-      var _this8 = this;
+      var _this7 = this;
 
       var counter = 0;
       Object.keys(this.props.likes).map(function (key) {
-        if (_this8.props.likes[key].postId == postId) {
+        if (_this7.props.likes[key].postId == postId) {
           counter += 1;
         }
       });
@@ -946,14 +1016,14 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "createLike",
     value: function createLike(postId) {
-      var _this9 = this;
+      var _this8 = this;
 
       var liked = false;
       Object.keys(this.props.likes).map(function (key) {
-        if (_this9.props.likes[key].postId == postId && _this9.props.likes[key].userId == _this9.props.currentUser.id) {
+        if (_this8.props.likes[key].postId == postId && _this8.props.likes[key].userId == _this8.props.currentUser.id) {
           $("#likes".concat(postId)).removeClass('filterLike');
 
-          _this9.props.deleteLike(_this9.props.likes[key].id);
+          _this8.props.deleteLike(_this8.props.likes[key].id);
 
           liked = true;
           return;
@@ -1063,20 +1133,20 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getPostInfo",
     value: function getPostInfo(key) {
-      var _this10 = this;
+      var _this9 = this;
 
       return this.props.users[this.props.posts[key].authorId] ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomPostsTopNameAndDate"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         onClick: function onClick() {
-          return _this10.props.history.push("/users/".concat(_this10.props.posts[key].authorId));
+          return _this9.props.history.push("/users/".concat(_this9.props.posts[key].authorId));
         }
       }, this.props.users[this.props.posts[key].authorId].firstName, " ", this.props.users[this.props.posts[key].authorId].lastName), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getTime(this.props.posts[key].createdAt))) : null;
     }
   }, {
     key: "getPhotosArray",
     value: function getPhotosArray() {
-      var _this11 = this;
+      var _this10 = this;
 
       var photosArray = [];
       Object.keys(this.props.posts).map(function (key) {
@@ -1093,13 +1163,13 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
             picNum = key / 4;
           }
 
-          if (_this11.props.posts[key].authorId == _this11.userId) {
+          if (_this10.props.posts[key].authorId == _this10.userId) {
             photosArray.push(picNum);
             return;
           }
 
-          _this11.props.posts[key].likes.map(function (like) {
-            if (like.userId == _this11.userId) {
+          _this10.props.posts[key].likes.map(function (like) {
+            if (like.userId == _this10.userId) {
               photosArray.push(picNum);
               return;
             }
@@ -1122,31 +1192,31 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getAllPosts",
     value: function getAllPosts() {
-      var _this12 = this;
+      var _this11 = this;
 
       if (Object.keys(this.props.posts).length < 1) return;
       var orderPosts = [];
       Object.keys(this.props.posts).map(function (key) {
-        orderPosts.unshift(_this12.props.posts[key].id);
+        orderPosts.unshift(_this11.props.posts[key].id);
       });
       return orderPosts.map(function (key) {
         var commented = false;
-        Object.keys(_this12.props.comments).map(function (commentkey) {
-          if (_this12.props.comments[commentkey].postId == key && _this12.props.comments[commentkey].authorId == _this12.userId) {
+        Object.keys(_this11.props.comments).map(function (commentkey) {
+          if (_this11.props.comments[commentkey].postId == key && _this11.props.comments[commentkey].authorId == _this11.userId) {
             commented = true;
           }
         });
         var liked = false;
 
-        if (_this12.props.posts[key].likes) {
-          _this12.props.posts[key].likes.map(function (likekey) {
-            if (likekey.userId == _this12.userId) {
+        if (_this11.props.posts[key].likes) {
+          _this11.props.posts[key].likes.map(function (likekey) {
+            if (likekey.userId == _this11.userId) {
               liked = true;
             }
           });
         }
 
-        if (_this12.props.posts[key].authorId == _this12.userId) {
+        if (_this11.props.posts[key].authorId == _this11.userId) {
           return;
         } else {
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -1158,14 +1228,14 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
             className: "profileBottomPostsTopLeft"
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             className: "profileBottomPostsTopPicDiv"
-          }, _this12.checkProfilePhoto(key)), _this12.getPostInfo(key))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          }, _this11.checkProfilePhoto(key)), _this11.getPostInfo(key))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             className: "profileBottomPostsMiddle"
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this12.props.posts[key].body), _this12.getPostsPic(key)), _this12.getNumberOfLikes(key), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this11.props.posts[key].body), _this11.getPostsPic(key)), _this11.getNumberOfLikes(key), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             className: "profileBottomPostsOptions"
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             id: "likes".concat(key),
             onClick: function onClick() {
-              return _this12.createLike(key);
+              return _this11.createLike(key);
             }
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
             "data-visualcompletion": "css-img",
@@ -1191,16 +1261,16 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
               backgroundRepeat: 'no-repeat',
               display: 'inline-block'
             }
-          }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Comment")))), _this12.checkComments(key), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+          }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Comment")))), _this11.checkComments(key), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             className: "profileBottomPostsBottom"
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
             className: "profileBottomPostsBottomDiv"
-          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this12.getMakeCommentPic()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
+          }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, _this11.getMakeCommentPic()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
             id: key,
-            onSubmit: _this12.handleComments.bind(_this12)
+            onSubmit: _this11.handleComments.bind(_this11)
           }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
             id: key,
-            onChange: _this12.update('body'),
+            onChange: _this11.update('body'),
             type: "text",
             placeholder: "Write a comment..."
           })))));
@@ -1235,7 +1305,7 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getFriendPic",
     value: function getFriendPic(number) {
-      var _this13 = this;
+      var _this12 = this;
 
       if (!this.props.currentUser) return;
       if (!this.props.currentUser.friendsRequested) return;
@@ -1255,7 +1325,7 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "friendsPicAndNameList",
         onClick: function onClick() {
-          return _this13.props.history.push("/users/".concat(friendArray[number]));
+          return _this12.props.history.push("/users/".concat(friendArray[number]));
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         style: {
@@ -1274,11 +1344,11 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getMyFriendList",
     value: function getMyFriendList() {
-      var _this14 = this;
+      var _this13 = this;
 
       var numArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
       return numArray.map(function (key) {
-        return _this14.getFriendPic(key);
+        return _this13.getFriendPic(key);
       });
     }
   }, {
@@ -1351,68 +1421,106 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this15 = this;
+      var _this14 = this;
 
       if (this.props.currentUser) {
         this.userId = this.props.currentUser.id;
         this.user = this.props.currentUser;
       }
 
-      console.log(this.props);
       return this.props.currentUser ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "greetingMiddlePostsContainerTop",
         onClick: function onClick() {
-          return _this15.clearSearchBar();
+          return _this14.clearSearchBar();
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFullContainer3"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomLeftSideOptionsContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          _this14.props.history.push("/users/".concat(_this14.props.currentUser.id));
+        },
         className: "profileBottomLeftSideOptions"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getProfilePhoto()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Alexzander Ciminillo"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getProfilePhoto()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.currentUser.firstName))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Friends Page'
+          });
+        },
         className: "profileBottomLeftSideOptions"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         style: {
           backgroundImage: "url(https://static.xx.fbcdn.net/rsrc.php/v3/yx/r/-XF4FQcre_i.png)"
         }
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Friends"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Groups'
+          });
+        },
         className: "profileBottomLeftSideOptions"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         style: {
           backgroundImage: "url(https://static.xx.fbcdn.net/rsrc.php/v3/yD/r/mk4dH3FK0jT.png)"
         }
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Groups"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Marketplace'
+          });
+        },
         className: "profileBottomLeftSideOptions"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         style: {
           backgroundImage: "url(\thttps://static.xx.fbcdn.net/rsrc.php/v3/ys/r/9BDqQflVfXI.png)"
         }
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Marketplace"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Memories'
+          });
+        },
         className: "profileBottomLeftSideOptions"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         style: {
           backgroundImage: "url(https://static.xx.fbcdn.net/rsrc.php/v3/y7/r/AYj2837MmgX.png)"
         }
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Memories"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return window.open('https://www.hud.gov/i_want_to/get_involved_in_my_community', '_blank');
+        },
         className: "profileBottomLeftSideOptions"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         style: {
           backgroundImage: "url(https://static.xx.fbcdn.net/rsrc.php/v3/yk/r/WreZVYrGEZH.png)"
         }
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Community Help"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return window.open('https://www.usgs.gov/programs/climate-adaptation-science-centers', '_blank');
+        },
         className: "profileBottomLeftSideOptions"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         style: {
           backgroundImage: "url(https://static.xx.fbcdn.net/rsrc.php/v3/yD/r/tKwWVioirmj.png)"
         }
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Climate Science Center"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return window.open('https://www.cdc.gov/coronavirus/2019-ncov/index.html', '_blank');
+        },
         className: "profileBottomLeftSideOptions"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         style: {
           backgroundImage: "url(https://static.xx.fbcdn.net/rsrc.php/v3/yR/r/tInzwsw2pVX.png)"
         }
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "COVID-19 Information Center"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return window.open('https://greatnonprofits.org/near-me/', '_blank');
+        },
         className: "profileBottomLeftSideOptions"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         style: {
@@ -1442,6 +1550,12 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomMakePostButtonsInner"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Live Videos'
+          });
+        },
         className: "profileBottomMakePostButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         viewBox: "0 0 24 24",
@@ -1482,7 +1596,12 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
         d: "m111.61 22.963-11.604-1.015a2.77 2.77 0 0 1-2.512-2.995L98.88 3.09A2.77 2.77 0 0 1 101.876.58l11.603 1.015a2.77 2.77 0 0 1 2.513 2.994l-1.388 15.862a2.77 2.77 0 0 1-2.994 2.513zm.13-1.494.082.004a1.27 1.27 0 0 0 1.287-1.154l1.388-15.862a1.27 1.27 0 0 0-1.148-1.37l-11.604-1.014a1.27 1.27 0 0 0-1.37 1.15l-1.387 15.86a1.27 1.27 0 0 0 1.149 1.37l11.603 1.016z",
         transform: "translate(352 156.5)"
       })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Photo/video")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        onClick: this.writePostModal.bind(this),
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Life Events'
+          });
+        },
         className: "profileBottomMakePostButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
         "data-visualcompletion": "css-img",
@@ -1504,6 +1623,12 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Posts")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomPostsHeaderTopButtons"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Filters'
+          });
+        },
         className: "profileBottomPostsHeaderTopFilter"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
         "data-visualcompletion": "css-img",
@@ -1517,6 +1642,12 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
           display: 'inline-block'
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Filters")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Manage Posts'
+          });
+        },
         className: "profileBottomPostsHeaderTopManage"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
         "data-visualcompletion": "css-img",
@@ -1547,6 +1678,12 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
           display: 'inline-block'
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "List view")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Grid View'
+          });
+        },
         className: "profileBottomPostsHeaderBottomButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
         "data-visualcompletion": "css-img",
@@ -1579,11 +1716,94 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
         className: "connectFriends"
       }, "Connect with friends and the world", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("br", null), "around you on Freebook."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", {
         className: "connectFriends2"
-      }, "Connect with friends and the world around you on Freebook.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_login_form_container__WEBPACK_IMPORTED_MODULE_1__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Create a Page"), " for a celebrity, brand or business.")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, "Connect with friends and the world around you on Freebook.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_login_form_container__WEBPACK_IMPORTED_MODULE_1__["default"], null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Pages'
+          });
+        }
+      }, "Create a Page"), " for a celebrity, brand or business.")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "greetingFooterDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "greetingLanguages"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "English (US)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Espa\xF1ol"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Fran\xE7ais (France)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "\u4E2D\u6587(\u7B80\u4F53)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "\u0627\u0644\u0639\u0631\u0628\u064A\u0629"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Portugu\xEAs (Brasil)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Italiano"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "\uD55C\uAD6D\uC5B4"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "\u0939\u093F\u0928\u094D\u0926\u0940"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "\u65E5\u672C\u8A9E"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Languages'
+          });
+        }
+      }, "English (US)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Languages'
+          });
+        }
+      }, "Espa\xF1ol"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Languages'
+          });
+        }
+      }, "Fran\xE7ais (France)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Languages'
+          });
+        }
+      }, "\u4E2D\u6587(\u7B80\u4F53)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Languages'
+          });
+        }
+      }, "\u0627\u0644\u0639\u0631\u0628\u064A\u0629"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Languages'
+          });
+        }
+      }, "Portugu\xEAs (Brasil)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Languages'
+          });
+        }
+      }, "Italiano"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Languages'
+          });
+        }
+      }, "\uD55C\uAD6D\uC5B4"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Languages'
+          });
+        }
+      }, "\u0939\u093F\u0928\u094D\u0926\u0940"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Languages'
+          });
+        }
+      }, "\u65E5\u672C\u8A9E"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this14.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Languages'
+          });
+        },
         className: "greetingLanguagesPlus"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         viewBox: "0 0 20 20",
@@ -1604,9 +1824,7 @@ var Greeting = /*#__PURE__*/function (_React$Component) {
         className: "greetingGrayLine"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "greetingOptions"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Sign Up"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Log In"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Messenger"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Facebook Lite"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Watch"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Places"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Games"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Marketplace"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Facebook Pay"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Oculus"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Portal"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Instagram"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Bulletin"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Local"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Fundraisers"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Services"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Voting Information Center"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Groups"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "About"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Create Ad"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Create Page"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Developers"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Careers"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Privacy"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Cookies"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Ad Choices", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
-        className: "adChoicesIcon"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Terms"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Help")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "grettingCopyright"
       }, "Mata \xA9 2022"))));
     }
@@ -1785,6 +2003,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _signup_form_container__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../signup_form_container */ "./frontend/components/signup_form_container.jsx");
 /* harmony import */ var _profile_choose_pics_choose_pics_container__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../profile/choose_pics/choose_pics_container */ "./frontend/components/profile/choose_pics/choose_pics_container.js");
 /* harmony import */ var _write_post_write_post__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../write_post/write_post */ "./frontend/components/write_post/write_post.jsx");
+/* harmony import */ var _coming_soon_coming_soon__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../coming_soon/coming_soon */ "./frontend/components/coming_soon/coming_soon.jsx");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1806,6 +2025,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -1840,6 +2060,13 @@ var Modal = /*#__PURE__*/function (_React$Component) {
         case "writePost":
           return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_write_post_write_post__WEBPACK_IMPORTED_MODULE_3__["default"], {
             createPost: this.props.createPost,
+            hideModal: this.props.hideModal,
+            info: this.props.info,
+            currentUser: this.props.currentUser
+          });
+
+        case "comingSoon":
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_coming_soon_coming_soon__WEBPACK_IMPORTED_MODULE_4__["default"], {
             hideModal: this.props.hideModal,
             info: this.props.info,
             currentUser: this.props.currentUser
@@ -1966,7 +2193,7 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
         tempPicNum = this.props.currentUser.id;
       }
 
-      if (this.props.currentUser.id < 195) {
+      if (this.props.currentUser.id < 52) {
         return this.props.users[this.props.currentUser.id].photoUrl ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
           className: "navBarProfilePic",
           style: {
@@ -1988,12 +2215,12 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
       }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "navBarProfilePic",
         style: {
-          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+          backgroundImage: "url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)"
         }
       }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "navBarProfilePic",
         style: {
-          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+          backgroundImage: "url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)"
         }
       });
     }
@@ -2118,7 +2345,6 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var _this4 = this;
 
-      console.log(this.props);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         onClick: function onClick() {
           return _this4.clearSearchBar();
@@ -2181,19 +2407,12 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
         type: "text",
         onChange: this.searchForPeeps(),
         placeholder: "Search Freebook"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "sandwichMenuDiv"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
-        className: "sandwichMenu"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
-        height: "28",
-        width: "28"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-        fill: "#65676B",
-        d: "M23.5 4a1.5 1.5 0 110 3h-19a1.5 1.5 0 110-3h19zm0 18a1.5 1.5 0 110 3h-19a1.5 1.5 0 110-3h19zm0-9a1.5 1.5 0 110 3h-19a1.5 1.5 0 110-3h19z"
-      }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "navBarGroupMiddle"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this4.props.history.push('/');
+        },
         className: "navBarGroupMiddleDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         viewBox: "0 0 28 28",
@@ -2203,6 +2422,12 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
         d: "M17.5 23.979 21.25 23.979C21.386 23.979 21.5 23.864 21.5 23.729L21.5 13.979C21.5 13.427 21.949 12.979 22.5 12.979L24.33 12.979 14.017 4.046 3.672 12.979 5.5 12.979C6.052 12.979 6.5 13.427 6.5 13.979L6.5 23.729C6.5 23.864 6.615 23.979 6.75 23.979L10.5 23.979 10.5 17.729C10.5 17.04 11.061 16.479 11.75 16.479L16.25 16.479C16.939 16.479 17.5 17.04 17.5 17.729L17.5 23.979ZM21.25 25.479 17 25.479C16.448 25.479 16 25.031 16 24.479L16 18.327C16 18.135 15.844 17.979 15.652 17.979L12.348 17.979C12.156 17.979 12 18.135 12 18.327L12 24.479C12 25.031 11.552 25.479 11 25.479L6.75 25.479C5.784 25.479 5 24.695 5 23.729L5 14.479 3.069 14.479C2.567 14.479 2.079 14.215 1.868 13.759 1.63 13.245 1.757 12.658 2.175 12.29L13.001 2.912C13.248 2.675 13.608 2.527 13.989 2.521 14.392 2.527 14.753 2.675 15.027 2.937L25.821 12.286C25.823 12.288 25.824 12.289 25.825 12.29 26.244 12.658 26.371 13.245 26.133 13.759 25.921 14.215 25.434 14.479 24.931 14.479L23 14.479 23 23.729C23 24.695 22.217 25.479 21.25 25.479Z"
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this4.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Marketplace'
+          });
+        },
         className: "navBarGroupMiddleDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         viewBox: "0 0 28 28",
@@ -2212,6 +2437,12 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
         d: "M17.5 23.75 21.75 23.75C22.164 23.75 22.5 23.414 22.5 23L22.5 14 22.531 14C22.364 13.917 22.206 13.815 22.061 13.694L21.66 13.359C21.567 13.283 21.433 13.283 21.34 13.36L21.176 13.497C20.591 13.983 19.855 14.25 19.095 14.25L18.869 14.25C18.114 14.25 17.382 13.987 16.8 13.506L16.616 13.354C16.523 13.278 16.39 13.278 16.298 13.354L16.113 13.507C15.53 13.987 14.798 14.25 14.044 14.25L13.907 14.25C13.162 14.25 12.439 13.994 11.861 13.525L11.645 13.35C11.552 13.275 11.419 13.276 11.328 13.352L11.155 13.497C10.57 13.984 9.834 14.25 9.074 14.25L8.896 14.25C8.143 14.25 7.414 13.989 6.832 13.511L6.638 13.351C6.545 13.275 6.413 13.275 6.32 13.351L5.849 13.739C5.726 13.84 5.592 13.928 5.452 14L5.5 14 5.5 23C5.5 23.414 5.836 23.75 6.25 23.75L10.5 23.75 10.5 17.5C10.5 16.81 11.06 16.25 11.75 16.25L16.25 16.25C16.94 16.25 17.5 16.81 17.5 17.5L17.5 23.75ZM3.673 8.75 24.327 8.75C24.3 8.66 24.271 8.571 24.238 8.483L23.087 5.355C22.823 4.688 22.178 4.25 21.461 4.25L6.54 4.25C5.822 4.25 5.177 4.688 4.919 5.338L3.762 8.483C3.729 8.571 3.7 8.66 3.673 8.75ZM24.5 10.25 3.5 10.25 3.5 12C3.5 12.414 3.836 12.75 4.25 12.75L4.421 12.75C4.595 12.75 4.763 12.69 4.897 12.58L5.368 12.193C6.013 11.662 6.945 11.662 7.59 12.193L7.784 12.352C8.097 12.609 8.49 12.75 8.896 12.75L9.074 12.75C9.483 12.75 9.88 12.607 10.194 12.345L10.368 12.2C11.01 11.665 11.941 11.659 12.589 12.185L12.805 12.359C13.117 12.612 13.506 12.75 13.907 12.75L14.044 12.75C14.45 12.75 14.844 12.608 15.158 12.35L15.343 12.197C15.989 11.663 16.924 11.663 17.571 12.197L17.755 12.35C18.068 12.608 18.462 12.75 18.869 12.75L19.095 12.75C19.504 12.75 19.901 12.606 20.216 12.344L20.38 12.208C21.028 11.666 21.972 11.666 22.62 12.207L23.022 12.542C23.183 12.676 23.387 12.75 23.598 12.75 24.097 12.75 24.5 12.347 24.5 11.85L24.5 10.25ZM24 14.217 24 23C24 24.243 22.993 25.25 21.75 25.25L6.25 25.25C5.007 25.25 4 24.243 4 23L4 14.236C2.875 14.112 2 13.158 2 12L2 9.951C2 9.272 2.12 8.6 2.354 7.964L3.518 4.802C4.01 3.563 5.207 2.75 6.54 2.75L21.461 2.75C22.793 2.75 23.99 3.563 24.488 4.819L25.646 7.964C25.88 8.6 26 9.272 26 9.951L26 11.85C26 13.039 25.135 14.026 24 14.217ZM16 23.75 16 17.75 12 17.75 12 23.75 16 23.75Z"
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this4.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Groups'
+          });
+        },
         className: "navBarGroupMiddleDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         viewBox: "0 0 28 28",
@@ -2228,6 +2459,11 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
           _this4.props.history.push("/users/".concat(_this4.props.currentUser.id));
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getProfilePhoto()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.props.currentUser.firstName))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this4.props.showModal({
+            modal: 'writePost'
+          });
+        },
         className: "createDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         className: "create",
@@ -2246,6 +2482,12 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
         d: "M102.5 207v-13a1 1 0 1 0-2 0v13a1 1 0 1 0 2 0z",
         transform: "translate(354.5 159.5)"
       }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this4.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Messenger'
+          });
+        },
         className: "messagingDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         className: "messaging",
@@ -2255,6 +2497,12 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
         d: "M14 2.042c6.76 0 12 4.952 12 11.64S20.76 25.322 14 25.322a13.091 13.091 0 0 1-3.474-.461.956 .956 0 0 0-.641.047L7.5 25.959a.961.961 0 0 1-1.348-.849l-.065-2.134a.957.957 0 0 0-.322-.684A11.389 11.389 0 0 1 2 13.682C2 6.994 7.24 2.042 14 2.042ZM6.794 17.086a.57.57 0 0 0 .827.758l3.786-2.874a.722.722 0 0 1 .868 0l2.8 2.1a1.8 1.8 0 0 0 2.6-.481l3.525-5.592a.57.57 0 0 0-.827-.758l-3.786 2.874a.722.722 0 0 1-.868 0l-2.8-2.1a1.8 1.8 0 0 0-2.6.481Z"
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this4.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Notifications'
+          });
+        },
         className: "notificationDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         className: "notification",
@@ -2264,6 +2512,12 @@ var NavBar = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
         d: "M7.847 23.488C9.207 23.488 11.443 23.363 14.467 22.806 13.944 24.228 12.581 25.247 10.98 25.247 9.649 25.247 8.483 24.542 7.825 23.488L7.847 23.488ZM24.923 15.73C25.17 17.002 24.278 18.127 22.27 19.076 21.17 19.595 18.724 20.583 14.684 21.369 11.568 21.974 9.285 22.113 7.848 22.113 7.421 22.113 7.068 22.101 6.79 22.085 4.574 21.958 3.324 21.248 3.077 19.976 2.702 18.049 3.295 17.305 4.278 16.073L4.537 15.748C5.2 14.907 5.459 14.081 5.035 11.902 4.086 7.022 6.284 3.687 11.064 2.753 15.846 1.83 19.134 4.096 20.083 8.977 20.506 11.156 21.056 11.824 21.986 12.355L21.986 12.356 22.348 12.561C23.72 13.335 24.548 13.802 24.923 15.73Z"
       }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this4.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Settings'
+          });
+        },
         className: "settingsDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
         className: "settings"
@@ -2300,6 +2554,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _navbar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./navbar */ "./frontend/components/navbar/navbar.jsx");
 /* harmony import */ var _util_image_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../util/image_util */ "./frontend/util/image_util.js");
 /* harmony import */ var _actions_user_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../actions/user_actions */ "./frontend/actions/user_actions.js");
+/* harmony import */ var _actions_modal_actions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../actions/modal_actions */ "./frontend/actions/modal_actions.js");
+
 
 
 
@@ -2307,7 +2563,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var mapStateToProps = function mapStateToProps(state) {
-  console.log(state);
   return {
     currentUser: state.entities.users[state.session.id],
     users: state.entities.users,
@@ -2323,6 +2578,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     searchUsers: function searchUsers(query) {
       return dispatch((0,_actions_user_actions__WEBPACK_IMPORTED_MODULE_4__.searchUsers)(query));
+    },
+    showModal: function showModal(type) {
+      return dispatch((0,_actions_modal_actions__WEBPACK_IMPORTED_MODULE_5__.showModal)(type));
     }
   };
 };
@@ -2382,7 +2640,14 @@ var NewMessage = /*#__PURE__*/function (_React$Component) {
   _createClass(NewMessage, [{
     key: "render",
     value: function render() {
+      var _this = this;
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this.props.showModal({
+            modal: 'writePost'
+          });
+        },
         className: "newMessageDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
         className: "newMessage"
@@ -2411,6 +2676,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../actions/session_actions */ "./frontend/actions/session_actions.js");
 /* harmony import */ var _new_message__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./new_message */ "./frontend/components/new_message/new_message.jsx");
+/* harmony import */ var _actions_modal_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../actions/modal_actions */ "./frontend/actions/modal_actions.js");
+
 
 
 
@@ -2425,6 +2692,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     logout: function logout() {
       return dispatch((0,_actions_session_actions__WEBPACK_IMPORTED_MODULE_1__.logout)());
+    },
+    showModal: function showModal(type) {
+      return dispatch((0,_actions_modal_actions__WEBPACK_IMPORTED_MODULE_3__.showModal)(type));
     }
   };
 };
@@ -2859,12 +3129,12 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomMakePostTopPic",
         style: {
-          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+          backgroundImage: "url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)"
         }
       }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomMakePostTopPic",
         style: {
-          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+          backgroundImage: "url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)"
         }
       });
     }
@@ -3395,7 +3665,6 @@ var Profile = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var _this13 = this;
 
-      console.log(this.props);
       this.userId = this.props.match.params.id;
       this.user = this.props.users[this.userId];
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -3513,7 +3782,7 @@ var Profile = /*#__PURE__*/function (_React$Component) {
         className: "profileBottomPhotosContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomPhotosTop"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Photos"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "See all photos"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Photos"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomPhotosBottom"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomPhotosBottomRow"
@@ -3526,7 +3795,7 @@ var Profile = /*#__PURE__*/function (_React$Component) {
         className: "profileBottomFriendsContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFriendsTop"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Friends"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "See all friends"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Friends"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFriendsMiddle"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, this.getNumberOfFriends())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFriendsPicsContainer"
@@ -3539,63 +3808,6 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       }, this.getFriendPic(4), this.getFriendPic(5), this.getFriendPic(6)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomFriendsPicsRow"
       }, this.getFriendPic(7), this.getFriendPic(8), this.getFriendPic(9))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        id: "profileBottomLifeContainer",
-        className: "profileBottomLifeContainer"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomLifeTop"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Life events"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "See All"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomLifeBottom"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomLifeEvents"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomLifeEvent"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomLifeEventTop"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.profileBackgroundURL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend6URL, ")")
-        }
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomLifeEventIcon"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        height: "20",
-        width: "20",
-        alt: "",
-        referrerPolicy: "origin-when-cross-origin",
-        src: "https://static.xx.fbcdn.net/rsrc.php/v3/yn/r/0sFQdwD-_Tc.png"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomLifeEventText"
-      }, "Claire CIminillo and Alexzander Ciminillo Got Married"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomLifeEventDate"
-      }, "May 20, 2017")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomLifeEvent"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomLifeEventTop"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend8URL, ")")
-        }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        style: {
-          backgroundImage: "url(".concat(window.friend5URL, ")")
-        }
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomLifeEventIcon"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-        height: "20",
-        width: "20",
-        alt: "",
-        referrerPolicy: "origin-when-cross-origin",
-        src: "https://static.xx.fbcdn.net/rsrc.php/v3/yy/r/kLvKfX8XA_K.png"
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomLifeEventText"
-      }, "Got Engaged to Claire Ciminillo"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileBottomLifeEventDate"
-      }, "November 5th, 2016"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "profileBottomCopyrightContainer",
         className: "profileBottomCopyrightContainer"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Privacy"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, " \xB7 "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Terms"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, " \xB7 "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Advertising"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, " \xB7 "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", null, "Ad Choices ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
@@ -3628,6 +3840,12 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomMakePostButtonsInner"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this13.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Live Video'
+          });
+        },
         className: "profileBottomMakePostButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
         viewBox: "0 0 24 24",
@@ -3668,7 +3886,12 @@ var Profile = /*#__PURE__*/function (_React$Component) {
         d: "m111.61 22.963-11.604-1.015a2.77 2.77 0 0 1-2.512-2.995L98.88 3.09A2.77 2.77 0 0 1 101.876.58l11.603 1.015a2.77 2.77 0 0 1 2.513 2.994l-1.388 15.862a2.77 2.77 0 0 1-2.994 2.513zm.13-1.494.082.004a1.27 1.27 0 0 0 1.287-1.154l1.388-15.862a1.27 1.27 0 0 0-1.148-1.37l-11.604-1.014a1.27 1.27 0 0 0-1.37 1.15l-1.387 15.86a1.27 1.27 0 0 0 1.149 1.37l11.603 1.016z",
         transform: "translate(352 156.5)"
       })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Photo/video")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        onClick: this.writePostModal.bind(this),
+        onClick: function onClick() {
+          return _this13.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Life Events'
+          });
+        },
         className: "profileBottomMakePostButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
         "data-visualcompletion": "css-img",
@@ -3690,6 +3913,12 @@ var Profile = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Posts")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileBottomPostsHeaderTopButtons"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this13.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Filters'
+          });
+        },
         className: "profileBottomPostsHeaderTopFilter"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
         "data-visualcompletion": "css-img",
@@ -3703,6 +3932,12 @@ var Profile = /*#__PURE__*/function (_React$Component) {
           display: 'inline-block'
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Filters")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this13.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Manage Posts'
+          });
+        },
         className: "profileBottomPostsHeaderTopManage"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
         "data-visualcompletion": "css-img",
@@ -3733,6 +3968,12 @@ var Profile = /*#__PURE__*/function (_React$Component) {
           display: 'inline-block'
         }
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "List view")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this13.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Grid View'
+          });
+        },
         className: "profileBottomPostsHeaderBottomButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("i", {
         "data-visualcompletion": "css-img",
@@ -3923,6 +4164,8 @@ var ProfileNavBar = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this = this;
+
       this.highlightButton();
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileNavBar"
@@ -3934,55 +4177,38 @@ var ProfileNavBar = /*#__PURE__*/function (_React$Component) {
         className: "profileNavButtonsWord"
       }, "Posts")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "aboutNavButton",
-        onClick: this.props.changeProfileNavbar.bind(this, 'about'),
+        onClick: function onClick() {
+          return _this.props.showModal({
+            modal: 'comingSoon',
+            feature: 'About Page'
+          });
+        },
         className: "profileNavButtons"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileNavButtonsWord"
       }, "About")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "friendsNavButton",
-        onClick: this.props.changeProfileNavbar.bind(this, 'friends'),
+        onClick: function onClick() {
+          return _this.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Friends Page'
+          });
+        },
         className: "profileNavButtons"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileNavButtonsWord"
       }, "Friends")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         id: "photosNavButton",
-        onClick: this.props.changeProfileNavbar.bind(this, 'photos'),
+        onClick: function onClick() {
+          return _this.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Photos Page'
+          });
+        },
         className: "profileNavButtons"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileNavButtonsWord"
-      }, "Photos")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        id: "moreNavButton",
-        className: "profileNavButtons"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileNavButtonsWord"
-      }, "More"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
-        viewBox: "0 0 20 20",
-        width: "1em",
-        height: "1em",
-        className: "profileNavBarMoreIcon"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
-        d: "M10 14a1 1 0 0 1-.755-.349L5.329 9.182a1.367 1.367 0 0 1-.205-1.46A1.184 1.184 0 0 1 6.2 7h7.6a1.18 1.18 0 0 1 1.074.721 1.357 1.357 0 0 1-.2 1.457l-3.918 4.473A1 1 0 0 1 10 14z"
-      })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileNavButtons2"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-        className: "profileNavButtonsOptions"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", {
-        viewBox: "0 0 24 24",
-        width: "1em",
-        height: "1em"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-        cx: "12",
-        cy: "12",
-        r: "2.5"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-        cx: "19.5",
-        cy: "12",
-        r: "2.5"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("circle", {
-        cx: "4.5",
-        cy: "12",
-        r: "2.5"
-      }))))));
+      }, "Photos"))));
     }
   }]);
 
@@ -4008,6 +4234,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_session_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../actions/session_actions */ "./frontend/actions/session_actions.js");
 /* harmony import */ var _profile_nav_bar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./profile_nav_bar */ "./frontend/components/profile/profile_nav_bar/profile_nav_bar.jsx");
 /* harmony import */ var _actions_profile_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../actions/profile_actions */ "./frontend/actions/profile_actions.js");
+/* harmony import */ var _actions_modal_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../actions/modal_actions */ "./frontend/actions/modal_actions.js");
+
 
 
 
@@ -4027,6 +4255,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     changeProfileNavbar: function changeProfileNavbar(button) {
       return dispatch((0,_actions_profile_actions__WEBPACK_IMPORTED_MODULE_3__.changeProfileNavbar)(button));
+    },
+    showModal: function showModal(type) {
+      return dispatch((0,_actions_modal_actions__WEBPACK_IMPORTED_MODULE_4__.showModal)(type));
     }
   };
 };
@@ -4175,12 +4406,12 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
       }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileImage",
         style: {
-          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+          backgroundImage: "url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)"
         }
       }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "profileImage",
         style: {
-          backgroundImage: "url(https://scontent-iad3-2.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=Q5ak-pGAUEQAX8FR-Ea&_nc_ht=scontent-iad3-2.xx&oh=00_AT87ogNS2K3cMHTBP8OwAOgsIZczZWLAO2HT8GkSuwEdpg&oe=62187D78)"
+          backgroundImage: "url(https://scontent-lga3-1.xx.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-5&_nc_sid=7206a8&_nc_ohc=7nKGH13yY-EAX-K9KD7&_nc_ht=scontent-lga3-1.xx&oh=00_AT9BBuUvWm9J43jocpWoJt8svsCCUAXJnLDuFb5sAyTcRw&oe=624BE7F8)"
         }
       });
     }
@@ -4379,12 +4610,19 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getAddStoryButtons",
     value: function getAddStoryButtons() {
+      var _this2 = this;
+
       var value = "".concat(this.userId) === "".concat(this.props.currentUser.id);
       return value ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "addStoryAndEditButtonsDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "addStoryEditProfileDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this2.props.showModal({
+            modal: 'writePost'
+          });
+        },
         className: "addStoryButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         className: "addStoryIcon",
@@ -4393,6 +4631,12 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
         height: "16",
         width: "16"
       }), "Add to story"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this2.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Editing'
+          });
+        },
         className: "editProfileButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         className: "editProfileIcon",
@@ -4405,6 +4649,12 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         className: "addStoryEditProfileDiv"
       }, this.getFriendshipStatus(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+        onClick: function onClick() {
+          return _this2.props.showModal({
+            modal: 'comingSoon',
+            feature: 'Messenger'
+          });
+        },
         className: "editProfileButton"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         className: "editProfileIcon",
@@ -4453,7 +4703,7 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getFriendPic",
     value: function getFriendPic(number) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (!this.props.users[this.userId]) return;
       if (!this.props.users[this.userId].friendsRequested) return;
@@ -4466,9 +4716,10 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
         tempPicNum = friendArray[number];
       }
 
+      if (!friendArray[number]) return;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         onClick: function onClick() {
-          return _this2.props.ownProps.history.push("/users/".concat(friendArray[number]));
+          return _this3.props.ownProps.history.push("/users/".concat(friendArray[number]));
         },
         className: "friendPicDiv"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
@@ -4479,7 +4730,6 @@ var ProfilePics = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log(this.props);
       this.userId = this.props.ownProps.match.params.id;
       this.user = this.props.users[this.userId];
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
@@ -6143,7 +6393,8 @@ var modalReducer = function modalReducer() {
     case _actions_modal_actions__WEBPACK_IMPORTED_MODULE_0__.SHOW_MODAL:
       return {
         modal: action.modal,
-        file: action.file
+        file: action.file,
+        feature: action.feature
       };
 
     case _actions_modal_actions__WEBPACK_IMPORTED_MODULE_0__.HIDE_MODAL:
@@ -44363,19 +44614,18 @@ $(window).scroll(function (event) {
   var scrollHeight = $(window).scrollTop();
   var profilePicsHeight = $('#profilePicsContainerTopOfPage').height();
   var copyrightHeight = $('#profileBottomCopyrightContainer').height();
-  var lifeHeight = $('#profileBottomLifeContainer').height();
   var friendsHeight = $('#profileBottomFriendsContainer').height();
   var photosHeight = $('#profileBottomPhotosContainer').height();
   var introHeight = $('#profileBottomLeftSide').height();
   var windowHeight = $(window).height();
 
-  if (scrollHeight + windowHeight > introHeight + photosHeight + friendsHeight + lifeHeight + copyrightHeight + 40) {
+  if (scrollHeight + windowHeight > introHeight + photosHeight + friendsHeight + copyrightHeight + 170) {
     $('#profileBottomLeftSide').addClass('fixLeftSide');
     $('#profileBottomLeftSide2').removeClass('hideLeftSide');
-    $('#profileBottomLeftSide').css('top', "-".concat(profilePicsHeight + copyrightHeight + 40, "px"));
+    $('#profileBottomLeftSide').css('top', "-".concat(profilePicsHeight + copyrightHeight - 210, "px"));
   }
 
-  if (scrollHeight + windowHeight < introHeight + photosHeight + friendsHeight + lifeHeight + copyrightHeight - 40 - profilePicsHeight - copyrightHeight) {
+  if (scrollHeight + windowHeight < introHeight + photosHeight + friendsHeight + copyrightHeight - 90 - profilePicsHeight - copyrightHeight) {
     $('#profileBottomLeftSide').removeClass('fixLeftSide');
     $('#profileBottomLeftSide2').addClass('hideLeftSide');
   }

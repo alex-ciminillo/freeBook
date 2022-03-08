@@ -37,17 +37,16 @@ $(window).scroll(function (event) {
   let scrollHeight = $(window).scrollTop();
   let profilePicsHeight = $('#profilePicsContainerTopOfPage').height();
   let copyrightHeight = $('#profileBottomCopyrightContainer').height();
-  let lifeHeight = $('#profileBottomLifeContainer').height();
   let friendsHeight = $('#profileBottomFriendsContainer').height();
   let photosHeight = $('#profileBottomPhotosContainer').height();
   let introHeight = $('#profileBottomLeftSide').height();
   let windowHeight = $(window).height();
-  if (scrollHeight  + windowHeight > introHeight + photosHeight + friendsHeight + lifeHeight + copyrightHeight  + 40) {
+  if (scrollHeight  + windowHeight > introHeight + photosHeight + friendsHeight + copyrightHeight  + 170) {
     $('#profileBottomLeftSide').addClass('fixLeftSide');
     $('#profileBottomLeftSide2').removeClass('hideLeftSide');
-    $('#profileBottomLeftSide').css('top', `-${profilePicsHeight + copyrightHeight + 40}px`);
+    $('#profileBottomLeftSide').css('top', `-${profilePicsHeight + copyrightHeight - 210}px`);
    } 
-  if (scrollHeight  + windowHeight < introHeight + photosHeight + friendsHeight + lifeHeight + copyrightHeight  - 40 - profilePicsHeight - copyrightHeight) {
+  if (scrollHeight  + windowHeight < introHeight + photosHeight + friendsHeight + copyrightHeight  - 90 - profilePicsHeight - copyrightHeight) {
     $('#profileBottomLeftSide').removeClass('fixLeftSide');
     $('#profileBottomLeftSide2').addClass('hideLeftSide');
   }

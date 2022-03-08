@@ -11,7 +11,7 @@ export default class NewMessage extends React.Component {
 
     render() {
         return (
-            <div className='newMessageDiv' >
+            <div onClick={()=>this.props.showModal({modal: 'writePost'})} className='newMessageDiv' >
                 <i className='newMessage' ></i>
             </div>
             )

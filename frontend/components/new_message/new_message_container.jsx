@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { logout } from '../../actions/session_actions';
 import NewMessage from './new_message';
-
+import { showModal } from '../../actions/modal_actions';
 
 
 const mapStateToProps = (state) => {
@@ -11,7 +11,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return { logout: () => dispatch(logout()) }
+  return { logout: () => dispatch(logout()),
+    showModal: (type)=>dispatch(showModal(type)) }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewMessage);
